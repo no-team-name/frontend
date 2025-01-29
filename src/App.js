@@ -18,6 +18,9 @@ import LogoutConfirmModal from './components/auth/LogoutConfirmModal';
 import AccountDeleteModal from './components/auth/AccountDeleteModal';
 import NicknameChangeModal from './components/auth/NicknameChangeModal';
 
+import ChatButton from './components/ai/ChatButton';
+import ChatBox from './components/ai/ChatBox';
+
 import { authState } from './recoil/authAtoms';
 
 function App() {
@@ -34,6 +37,7 @@ function App() {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showAccountDeleteModal, setShowAccountDeleteModal] = useState(false);
   const [showNicknameModal, setShowNicknameModal] = useState(false);
+  const [showChatBox, setShowChatBox] = useState(false);
 
   useEffect(() => {
     console.log('App.js useEeffect')
@@ -127,6 +131,8 @@ function App() {
         currentNickname={auth.nickname}
         onNicknameUpdate={handleNicknameUpdate}
       />
+      <ChatButton onClick={() => setShowChatBox(true)} />
+      <ChatBox isOpen={showChatBox} onClose={() => setShowChatBox(false)} />
     </BrowserRouter>
     </AudioParticipantsProvider>
   </WebSocketProvider>
