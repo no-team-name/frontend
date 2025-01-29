@@ -5,6 +5,8 @@ import axios from 'axios';
 
 import TeamNote from './pages/TeamNote/TeamNote';
 import TeamCanvas from './pages/TeamCanvas/TeamCanvas';
+import KanbanBoard from './pages/TeamKanbanBoard/KanbanBoard';
+import Card from "./pages/TeamKanbanBoard/Card";
 import Main from './pages/Main';
 import { WebSocketProvider } from './context/WebSocketContext';
 
@@ -12,6 +14,8 @@ import LoginModal from './components/auth/LoginModal';
 import LogoutConfirmModal from './components/auth/LogoutConfirmModal';
 import AccountDeleteModal from './components/auth/AccountDeleteModal';
 import NicknameChangeModal from './components/auth/NicknameChangeModal';
+import TopPlate from "./pages/TeamKanbanBoard/TopPlate";
+
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -82,6 +86,10 @@ function App() {
         <Route path="/" element={<Main {...sharedProps} />} />
         <Route path="/note/:team_id" element={<TeamNote {...sharedProps} />} />
         <Route path="/canvas/:teamId" element={<TeamCanvas {...sharedProps} />} />
+        <Route path="/kanban-board" element={<KanbanBoard {...sharedProps}/>} />
+        <Route path="/kanban-board/TopPlate" element={<TopPlate {...sharedProps} />} />
+
+
       </Routes>
 
       {/* 모달들 */}
