@@ -1,3 +1,4 @@
+// src/services/AiChatService.js
 import { Client } from '@stomp/stompjs';
 
 class AiChatService {
@@ -7,9 +8,9 @@ class AiChatService {
       reconnectDelay: 5000,
       onConnect: () => {
         console.log("✅ WebSocket 연결 성공 (순수 WS)");
-        this.client.subscribe('/topic/messages', (msg) => {
-          this.onMessageReceived(msg.body);
-        });
+        if (this.userId) {
+          this.subscribeToUserMessages(this.userId);
+        }
       },
       onDisconnect: () => {
         console.log("❌ WebSocket 연결 종료");
@@ -20,6 +21,20 @@ class AiChatService {
     });
 
     this.onMessageReceived = () => {};
+    this.userId = null;
+  }
+
+  setUserId(userId) {
+    this.userId = userId;
+    if (this.client.connected) {
+      this.subscribeToUserMessages(userId);
+    }
+  }
+
+  subscribeToUserMessages(userId) {
+    this.client.subscribe(`/topic/messages/${userId}`, (msg) => {
+      this.onMessageReceived(msg.body);
+    });
   }
 
   connect() {
@@ -36,7 +51,11 @@ class AiChatService {
 
   sendMessage(message) {
     if (this.client.connected) {
-      this.client.publish({ destination: "/app/chat", body: message });
+      const payload = JSON.stringify({
+        memberId: this.userId,
+        message: message,
+      });
+      this.client.publish({ destination: "/app/chat", body: payload });
     } else {
       console.error("⚠️ WebSocket이 연결되지 않았습니다.");
     }
