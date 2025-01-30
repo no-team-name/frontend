@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './ChatBox.css';
 import aiChatService from '../../service/AiChatService';
+import { useRecoilState } from 'recoil';
+import { userState } from '../../recoil/UserAtoms';
 
 const ChatBox = ({ isOpen, onClose }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const [user, setUser] = useRecoilState(userState);
 
   // 현재 타이핑 중인 AI 답변 (중간 메시지)
   const [currentBotMessage, setCurrentBotMessage] = useState("");
@@ -13,32 +16,33 @@ const ChatBox = ({ isOpen, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    aiChatService.connect();
+    if (user.isLogin && user.memberId) {
+      aiChatService.setUserId(user.memberId);
+      aiChatService.connect();
 
-  const handleMessage = (msgBody) => {
-    try {
-      const data = JSON.parse(msgBody);
-      if (data.type === "continue") {
-        setIsLoading(false);
-        setCurrentBotMessage((prev) => prev + data.text);
-      } else if (data.type === "complete") {
-        const finalText = currentBotMessage + data.text;
-        setMessages((prev) => [...prev, { text: finalText, sender: "bot" }]);
-        setCurrentBotMessage("");
-        setIsLoading(false);
+      const handleMessage = (msgBody) => {
+      try {
+        const data = JSON.parse(msgBody);
+        if (data.type === "continue") {
+          setIsLoading(false);
+          setCurrentBotMessage((prev) => prev + data.text);
+        } else if (data.type === "complete") {
+          const finalText = currentBotMessage + data.text;
+          setMessages((prev) => [...prev, { text: finalText, sender: "bot" }]);
+          setCurrentBotMessage("");
+          setIsLoading(false);
+        }
+      } catch (e) {
+        console.error("JSON 파싱 에러:", e);
       }
-    } catch (e) {
-      console.error("JSON 파싱 에러:", e);
+    };
+      aiChatService.setOnMessageReceived(handleMessage);
     }
-  };
-
-  aiChatService.setOnMessageReceived(handleMessage);
-
     return () => {
       aiChatService.removeOnMessageReceived();
       aiChatService.disconnect();
     };
-  }, []);
+  }, [user.isLogin, user.memberId]);
 
   // 유저가 메세지 전송
   const sendMessage = () => {
