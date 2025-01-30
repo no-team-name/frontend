@@ -1,0 +1,8 @@
+.input-create-button {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.input-create-button:hover {
+    background-color: black;  /* 배경색을 검정색으로 설정 */
+    color: white;  /* 글자색을 흰색으로 설정 */
+}
