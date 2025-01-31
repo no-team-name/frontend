@@ -1,0 +1,92 @@
+import axios from "axios";
+//
+const API_BASE_URL = "http://localhost:8080";
+
+// 게시판 목록 가져오기 (페이지 번호를 파라미터로 전달)
+export const getJoinBoardCard = async (page = 0) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/api/join-board?page=${page}`);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+// 검색
+export const searchJoinBoard = async (query, page = 0) => {
+    try {
+        const response = await axios.post(
+            `${API_BASE_URL}/api/join-board/search?page=${page}`, // 페이지 번호는 쿼리 파라미터로 전송
+            {
+                input: query, // 검색어는 본문(body)로 전송
+            }
+        );
+        return response;
+    } catch (error) {
+        console.error("검색 요청 오류:", error);
+    }
+};
+
+
+
+// 특정 게시글 가져오기
+export const getJoinBoard = async (joinBoardId) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/api/join-board/${joinBoardId}`);
+        console.log(response); // 응답 로그를 확인하세요
+        // 응답에서 실제 데이터에 접근
+        if (response && response.data && response.data.data) {
+            return response.data.data; // 실제 데이터 반환
+        } else {
+            console.error("No data found");
+            return null;
+        }
+    } catch (error) {
+        console.error("Error fetching board detail:", error);
+        return null;
+    }
+};
+
+
+// 게시글 작성하기 (POST 요청)
+export const createJoinBoard = async (boardData) => {
+    try {
+        const response = await axios.post(`${API_BASE_URL}/api/join-board`, boardData, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data; // 서버 응답 데이터 반환
+    } catch (error) {
+        console.error("게시글 작성 실패:", error);
+        return null;
+    }
+};
+
+
+// 게시글 수정 API 호출
+export const updateJoinBoard = async (id, boardData) => {
+    try {
+        const response = await axios.put(`${API_BASE_URL}/api/join-board/${id}`, boardData, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error("게시글 수정 실패:", error);
+        throw error;
+    }
+};
+
+// 게시글 삭제 API 호출
+export const deleteJoinBoard = async (id) => {
+    try {
+        const response = await axios.delete(`${API_BASE_URL}/api/join-board/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("게시글 삭제 실패:", error);
+        throw error;
+    }
+};
+
