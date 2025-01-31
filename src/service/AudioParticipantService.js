@@ -7,8 +7,7 @@ class ParticipantsSocketService {
 
   connect() {
     return new Promise((resolve, reject) => {
-      // 예: ws://localhost:4000/ws/participants
-      this.socket = new WebSocket("ws://localhost:8082/go/webrtc");
+      this.socket = new WebSocket(process.env.REACT_APP_WEBRTC_URL);
 
       this.socket.onopen = () => {
         console.log("[ParticipantsWS] connected");

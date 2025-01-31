@@ -10,7 +10,7 @@ function getTokens() {
 
 // Axios 인스턴스 생성
 const apiClient = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL + '/spring',
+  baseURL: process.env.REACT_APP_API_BASE_URL + '/go',
 });
 
 // 요청 인터셉터
