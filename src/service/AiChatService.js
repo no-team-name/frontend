@@ -4,7 +4,7 @@ import { Client } from '@stomp/stompjs';
 class AiChatService {
   constructor() {
     this.client = new Client({
-      brokerURL: "ws://localhost:8082/spring/ws",
+      brokerURL: process.env.REACT_APP_AI_CHATBOT_SOCKET_URL,
       reconnectDelay: 5000,
       onConnect: () => {
         console.log("✅ WebSocket 연결 성공 (순수 WS)");

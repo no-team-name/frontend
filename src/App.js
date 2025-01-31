@@ -21,6 +21,8 @@ import NicknameChangeModal from './components/auth/NicknameChangeModal';
 import ChatButton from './components/ai/ChatButton';
 import ChatBox from './components/ai/ChatBox';
 
+import apiClient from './utils/apiSpring';
+
 import { authState } from './recoil/authAtoms';
 
 function App() {
@@ -47,7 +49,7 @@ function App() {
       setAuth(prev => ({ ...prev, isLogin: true }));
 
       // 서버에서 닉네임 가져오기
-      axios.get('http://localhost:8082/spring/api/member/userinfos', {
+      apiClient.get('/api/member/userinfos', {
         headers: { Authorization: `Bearer ${accessToken}` },
         withCredentials: true,
       })

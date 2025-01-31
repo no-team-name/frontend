@@ -66,5 +66,5 @@ class WebSocketService {
   }
 }
 
-const webSocketService = new WebSocketService('ws://localhost:8082/go/webrtc');
+const webSocketService = new WebSocketService(process.env.REACT_APP_WEBRTC_URL);
 export default webSocketService;
