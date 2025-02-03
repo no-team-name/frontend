@@ -22,7 +22,7 @@ export const WebSocketProvider = ({ children }) => {
     connectingRef.current = true;
 
     console.log('Attempting to connect WebSocket...');
-    const socket = new WebSocket('ws://localhost:8082/go/ws');
+    const socket = new WebSocket(process.env.REACT_APP_PARTICIPANT_SOCKET_URL);
 
     socket.onopen = () => {
       console.log('WebSocket connected');

@@ -55,14 +55,14 @@ const TeamCanvas = ({
 
     // WebRTC provider 설정
     provider.current = new WebrtcProvider(roomName, yDoc.current, {
-      signaling: [`ws://localhost:8082/signaling`],
+      signaling: [process.env.REACT_APP_SIGNALING_URL],
       awareness: awareness.current,
       iceServers: [
-        { urls: "stun:stun.l.google.com:19302" },
+        { urls: process.env.REACT_APP_STUN_SERVER },
         {
-          urls: "turn:127.0.0.1:3478",
-          username: "user",
-          credential: "pass",
+          urls: process.env.REACT_APP_TURN_SERVER,
+          username: process.env.REACT_APP_TURN_USERNAME,
+          credential: process.env.REACT_APP_TURN_CREDENTIAL,
         },
       ],
     });
