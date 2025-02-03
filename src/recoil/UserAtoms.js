@@ -9,5 +9,6 @@ export const userState = atom({
     email: '',
     nickname: '',
     profileImage: '',
+    role:'GUEST',
   },
 });
