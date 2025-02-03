@@ -29,10 +29,11 @@ function JoinBoardDetail() {
 
     const handleDeleteClick = async () => {
         try {
-            await deleteJoinBoard(id);
-            alert('게시글이 삭제되었습니다.');
-            navigate('/join-board', { replace: true });
+            const result = await deleteJoinBoard(id);
+                alert('게시글이 삭제되었습니다.');
+                navigate('/join-board', { replace: true });
         } catch (error) {
+            alert('게시글 삭제에 실패하였습니다.');
             console.error('게시글 삭제 실패:', error);
         }
         handleClose();
