@@ -86,7 +86,7 @@ function App() {
         <Route path="/" element={<Main {...sharedProps} />} />
         <Route path="/note/:team_id" element={<TeamNote {...sharedProps} />} />
         <Route path="/canvas/:teamId" element={<TeamCanvas {...sharedProps} />} />
-        <Route path="/kanban-board" element={<KanbanBoard {...sharedProps}/>} />
+        <Route path="/kanban-board/:teamId" element={<KanbanBoard {...sharedProps}/>} />
         <Route path="/kanban-board/TopPlate" element={<TopPlate {...sharedProps} />} />
 
 
