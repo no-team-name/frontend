@@ -9,6 +9,9 @@ import Sidebar from '../../components/common/Sidebar';
 import CanvasTabs from '../../components/canvas/CanvasTabs';
 import { getCanvasByTeamID, getCanvasByID } from '../../service/CanvasService';
 
+import { useRecoilValue } from 'recoil';
+import { userState } from '../../recoil/UserAtoms';
+
 import * as Y from 'yjs';
 import { WebrtcProvider } from 'y-webrtc';
 import { Awareness } from 'y-protocols/awareness';
@@ -16,7 +19,14 @@ import { Awareness } from 'y-protocols/awareness';
 import { useWebSocket } from '../../context/WebSocketContext';
 import { v4 as uuidv4 } from 'uuid';
 
-const TeamCanvas = () => {
+import LogoutConfirmModal from '../../components/auth/LogoutConfirmModal';
+
+const TeamCanvas = ({
+  openLoginModal,
+  openLogoutModal,
+  openAccountDeleteModal,
+  openNicknameModal,
+}) => {
   const { teamId } = useParams();
   const peerId = useRef(uuidv4()).current; // peerId를 useRef로 안정적으로 유지
   const [tool, setTool] = useState('pencil');
@@ -29,7 +39,8 @@ const TeamCanvas = () => {
   
   const { sendMessage, isConnected, connectionError, addMessageListener } = useWebSocket();
 
-  const [participants, setParticipants] = useState([]); // 컴포넌트 상태로 참여자 관리
+  const user = useRecoilValue(userState);
+  const [participants, setParticipants] = useState([]);
 
   const yDoc = useRef(new Y.Doc());
   const provider = useRef(null);
@@ -44,14 +55,14 @@ const TeamCanvas = () => {
 
     // WebRTC provider 설정
     provider.current = new WebrtcProvider(roomName, yDoc.current, {
-      signaling: [`ws://localhost:4444`],
+      signaling: [process.env.REACT_APP_SIGNALING_URL],
       awareness: awareness.current,
       iceServers: [
-        { urls: "stun:stun.l.google.com:19302" },
+        { urls: process.env.REACT_APP_STUN_SERVER },
         {
-          urls: "turn:127.0.0.1:3478",
-          username: "user",
-          credential: "pass",
+          urls: process.env.REACT_APP_TURN_SERVER,
+          username: process.env.REACT_APP_TURN_USERNAME,
+          credential: process.env.REACT_APP_TURN_CREDENTIAL,
         },
       ],
     });
@@ -239,33 +250,31 @@ const TeamCanvas = () => {
   };
 
   useEffect(() => {
-    if (isConnected) {
+    if (isConnected && user.isLogin) {
       const payload = {
         action: 'addParticipant',
-        team_id: teamId, 
+        team_id: teamId,
         kind: 'canvas',
-        participant: peerId, 
-        name: 'Your Name', // 실제 사용자 이름으로 변경
-        profilePicture: 'https://i.namu.wiki/i/qEQTv7w9d-OZ6l9g5pF87sgGMaXwjFaLecd_VeZef-L9jNn86zKPX8CwIhkyPKo4dAp-7f83ZT25fpJr-UeFk0bGyroMp0to_XgnsLD5UZLKDBnqlMuKsUtVctbNLGWYNAtWdJGs7gfN8SLMOnNeuw.webp', // 실제 프로필 사진 URL로 변경
-        color: '#FF0000', // 원하는 색상으로 변경
+        participant: user.email,
+        name: user.nickname, // Recoil에서 가져온 닉네임
+        profilePicture: user.profileImage, // Recoil에서 가져온 프로필 이미지
+        color: `#${Math.floor(Math.random() * 16777215).toString(16)}`, // 랜덤 색상 생성
       };
       console.log('Adding participant:', payload);
       sendMessage(JSON.stringify(payload));
-    }
 
-    return () => {
-      if (isConnected) {
+      return () => {
         const payload = {
           action: 'removeParticipant',
-          team_id: teamId, 
+          team_id: teamId,
           kind: 'canvas',
-          participant: peerId, 
+          participant: user.email,
         };
         console.log('Removing participant:', payload);
         sendMessage(JSON.stringify(payload));
-      }
-    };
-  }, [sendMessage, isConnected, teamId, peerId]);
+      };
+    }
+  }, [isConnected, sendMessage, teamId, peerId, user]);
 
   // 하트비트 구현 (30초마다 서버에 신호 전송)
   useEffect(() => {
@@ -288,12 +297,17 @@ const TeamCanvas = () => {
     <div className={`TeamCanvas ${isSidebarOpen ? 'sidebar-open' : ''}`}>
       {connectionError && <div className="error">{connectionError}</div>}
       <NoteHeader
+        teamId={teamId}
         participants={participants}
         onBack={() => {}}
         onShare={() => {}}
         onChat={() => {}}
         onMenu={handleMenuClick}
         onSave={handleSave}
+        onOpenLoginModal={openLoginModal}
+        onOpenLogoutModal={openLogoutModal}
+        onOpenAccountDeleteModal={openAccountDeleteModal}
+        onOpenNicknameModal={openNicknameModal}
       />
       <CanvasTabs 
         tabs={tabs} 
