@@ -79,5 +79,5 @@ class AudioSocketService {
   }
 }
 
-const audioSocketService = new AudioSocketService("ws://localhost:8082/go/webrtc/audio");
+const audioSocketService = new AudioSocketService(process.env.REACT_APP_WEBRTC_AUDIO_URL);
 export default audioSocketService;

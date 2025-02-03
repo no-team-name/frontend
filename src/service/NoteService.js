@@ -1,11 +1,8 @@
-import axios from 'axios';
-
-// const API_BASE_URL = 'http://localhost:4000';
-const API_BASE_URL = 'http://172.30.1.53:8082/go';
+import apiClient from '../utils/apiGo';
 
 const saveNote = async (note) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/note`, note, {
+    const response = await apiClient.post('/note', note, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -19,7 +16,7 @@ const saveNote = async (note) => {
 
 const getNotesByTeamID = async (teamId) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/notes/${teamId}`, {
+    const response = await apiClient.get(`/note/team/${teamId}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -33,7 +30,7 @@ const getNotesByTeamID = async (teamId) => {
 
 const getNoteByID = async (id) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/note/${id}`, {
+    const response = await apiClient.get(`/note/${id}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -47,7 +44,7 @@ const getNoteByID = async (id) => {
 
 const updateNoteTitle = async (id, newTitle) => {
   try {
-    const response = await axios.put(`${API_BASE_URL}/note/${id}/title`, { new_title: newTitle }, {
+    const response = await apiClient.put(`/note/${id}/title`, { new_title: newTitle }, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -61,7 +58,7 @@ const updateNoteTitle = async (id, newTitle) => {
 
 const deleteNoteByID = async (id) => {
   try {
-    const response = await axios.delete(`${API_BASE_URL}/note/${id}`, {
+    const response = await apiClient.delete(`/note/${id}`, {
       headers: {
         'Content-Type': 'application/json',
       },

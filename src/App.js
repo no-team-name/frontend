@@ -2,13 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import { useRecoilState } from 'recoil';
+
+import { userState } from './recoil/UserAtoms';
 
 import TeamNote from './pages/TeamNote/TeamNote';
 import TeamCanvas from './pages/TeamCanvas/TeamCanvas';
 import KanbanBoard from './pages/TeamKanbanBoard/KanbanBoard';
 import Card from "./pages/TeamKanbanBoard/Card";
+import AcceptInvitePage from './pages/team/AcceptInvitePage';
 import Main from './pages/Main';
 import { WebSocketProvider } from './context/WebSocketContext';
+import { AudioParticipantsProvider } from './context/AudioParticipantsContext';
 
 import LoginModal from './components/auth/LoginModal';
 import LogoutConfirmModal from './components/auth/LogoutConfirmModal';
@@ -17,57 +22,83 @@ import NicknameChangeModal from './components/auth/NicknameChangeModal';
 import TopPlate from "./pages/TeamKanbanBoard/TopPlate";
 
 
+import ChatButton from './components/ai/ChatButton';
+import ChatBox from './components/ai/ChatBox';
+
+import apiClient from './utils/apiSpring';
+
+import { authState } from './recoil/authAtoms';
+
+import JoinBoardMain from "./pages/joinBoard/JoinBoardMain";
+import JoinBoardDetail from "./pages/joinBoard/JoinBoardDetail";
+import CreateJoinBoard from "./pages/joinBoard/CreateJoinBoard";
+import EditJoinBoard from "./pages/joinBoard/EditJoinBoard";
+
 function App() {
+
+  const [user, setUser] = useRecoilState(userState);
   const [isLogin, setIsLogin] = useState(false);
   const [nickname, setNickname] = useState('');
+
+  const [auth, setAuth] = useRecoilState(authState);
+
 
   // 모달 open/close 관리
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showAccountDeleteModal, setShowAccountDeleteModal] = useState(false);
   const [showNicknameModal, setShowNicknameModal] = useState(false);
+  const [showChatBox, setShowChatBox] = useState(false);
 
   useEffect(() => {
     console.log('App.js useEeffect')
     const accessToken = Cookies.get('accessToken');
     if (accessToken) {
       console.log('accessToken 있음')
-      setIsLogin(true);
+      setAuth(prev => ({ ...prev, isLogin: true }));
 
       // 서버에서 닉네임 가져오기
-      axios.get('http://localhost:8080/api/member/profiles', {
+      apiClient.get('/api/member/userinfos', {
         headers: { Authorization: `Bearer ${accessToken}` },
         withCredentials: true,
       })
         .then((res) => {
-          setNickname(res.data.nickname);
+
+          console.log('조회 성공:', res);
+          const { memberId, email, nickname, profileImage } = res.data.memberInfo;
+          setUser({
+            isLogin: true,
+            memberId,
+            email,
+            nickname,
+            profileImage,
+          });
+
+          setAuth(prev => ({ ...prev, nickname: nickname }));
+
         })
         .catch((err) => {
           console.error('닉네임 조회 실패:', err);
-          setIsLogin(false);
-          setNickname('');
+          setAuth({ isLogin: false, nickname: '' });
         });
     } else {
-      setIsLogin(false);
-      setNickname('');
+      setAuth({ isLogin: false, nickname: '' });
     }
-  }, []);
+  }, [setAuth]);
 
   // 로그아웃 완료
   const handleLogoutSuccess = () => {
-    setIsLogin(false);
-    setNickname('');
+    setAuth({ isLogin: false, nickname: '' });
   };
 
   // 회원탈퇴 완료
   const handleDeleteSuccess = () => {
-    setIsLogin(false);
-    setNickname('');
+    setAuth({ isLogin: false, nickname: '' });
   };
 
   // 닉네임 변경
   const handleNicknameUpdate = (newNickname) => {
-    setNickname(newNickname);
+    setAuth(prev => ({ ...prev, nickname: newNickname }));
   };
 
   const sharedProps = {
@@ -81,16 +112,23 @@ function App() {
 
   return (
   <WebSocketProvider>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Main {...sharedProps} />} />
-        <Route path="/note/:team_id" element={<TeamNote {...sharedProps} />} />
-        <Route path="/canvas/:teamId" element={<TeamCanvas {...sharedProps} />} />
-        <Route path="/kanban-board" element={<KanbanBoard {...sharedProps}/>} />
-        <Route path="/kanban-board/TopPlate" element={<TopPlate {...sharedProps} />} />
+    <AudioParticipantsProvider>
+      <BrowserRouter>
+        <Routes>
+            <Route path="/" element={<Main {...sharedProps} />} />
+            <Route path="/note/:team_id" element={<TeamNote {...sharedProps} />} />
+            <Route path="/canvas/:teamId" element={<TeamCanvas {...sharedProps} />} />
+            <Route path="/accept-invite/:teamId" element={<AcceptInvitePage />} />
+            <Route path="/join-board" element={<JoinBoardMain />} />
+            <Route path="/join-board/:id" element={<JoinBoardDetail />} />
+            <Route path="/create-join-board" element={<CreateJoinBoard />} />
+            <Route path="/edit-join-board/:id" element={<EditJoinBoard />} />
+            <Route path="/kanban-board" element={<KanbanBoard {...sharedProps}/>} />
+            <Route path="/kanban-board/TopPlate" element={<TopPlate {...sharedProps} />} />
+        </Routes>
 
 
-      </Routes>
+
 
       {/* 모달들 */}
       <LoginModal
@@ -110,10 +148,13 @@ function App() {
       <NicknameChangeModal
         open={showNicknameModal}
         onClose={() => setShowNicknameModal(false)}
-        currentNickname={nickname}
+        currentNickname={auth.nickname}
         onNicknameUpdate={handleNicknameUpdate}
       />
+      <ChatButton onClick={() => setShowChatBox(true)} />
+      <ChatBox isOpen={showChatBox} onClose={() => setShowChatBox(false)} />
     </BrowserRouter>
+    </AudioParticipantsProvider>
   </WebSocketProvider>
 
   );
