@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Dropdown, Input, Button } from 'semantic-ui-react';
+import { Table, Dropdown, Input, Button, Divider, Message } from 'semantic-ui-react';
 import apiClient from '../../utils/apiSpring';
 import { useRecoilValue } from 'recoil';
 import { authState } from '../../recoil/authAtoms';
 import { Link } from 'react-router-dom';
-
+import Sidebar from '../../components/common/Sidebar';
 import MainHeader from '../../components/common/MainHeader';
 import "./AdminMemberPage.css";
 
@@ -20,9 +20,11 @@ const AdminMemberPage = ({
   openAccountDeleteModal,
   openNicknameModal,
 }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { role } = useRecoilValue(authState);
   const [members, setMembers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [toastMessage, setToastMessage] = useState(null);
 
   useEffect(() => {
     if (role === 'ADMIN') fetchMembers();
@@ -41,16 +43,19 @@ const AdminMemberPage = ({
     try {
       await apiClient.put(`/api/admin/members/${memberId}/status`, { status });
       fetchMembers();
+      setToastMessage({ type: 'success', content: '처리 완료!' });
+      setTimeout(() => setToastMessage(null), 2000);
     } catch (err) {
-      console.error('상태 변경 실패:', err);
+      setToastMessage({ type: 'error', content: '처리 실패' });
+      setTimeout(() => setToastMessage(null), 3000);
     }
   };
 
   if (role !== 'ADMIN') return <div>접근 권한이 없습니다</div>;
 
   return (
-    <div>
-      {/* 공통 헤더 (MainHeader) 삽입 */}
+    
+    <div className={`main-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
       <MainHeader
         onBack={() => console.log('Back button clicked')}
         logoSrc="/accord-removebg.png"
@@ -61,13 +66,43 @@ const AdminMemberPage = ({
       />
 
       <div className="admin-page" style={{ padding: '20px' }}>
+      <div class="ui secondary  menu">
+        <Link to={`/admin/members`} class="item">
+            회원관리
+        </Link>
+        <Link to={`/admin/dashboard`} class="item">
+            대시보드
+        </Link>
+      </div>
+
+      {toastMessage && (
+        <Message 
+          positive={toastMessage.type === 'success'}
+          negative={toastMessage.type === 'error'}
+          floating
+          style={{
+            position: 'fixed',
+            top: 150,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 9999
+          }}
+        >
+          {toastMessage.content}
+        </Message>
+      )}
+
+      <Divider section style={{ marginTop: 0 }}/>
+
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
         <Input
           placeholder="닉네임 검색..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           action={<Button onClick={fetchMembers}>검색</Button>}
-          style={{ marginBottom: '20px' }}
+          style={{ marginBottom: '10px' }}
         />
+      </div>
 
         <Table celled>
           <Table.Header>
@@ -80,9 +115,8 @@ const AdminMemberPage = ({
           </Table.Header>
 
           <Table.Body>
-  {members.map((member, i) => {
-    const rowZIndex = 9999 - i; // i=0이 가장 큰 zIndex
-
+            {members.map((member, i) => {
+              const rowZIndex = 999 - i;
     return (
       <Table.Row
         key={member.memberId}
