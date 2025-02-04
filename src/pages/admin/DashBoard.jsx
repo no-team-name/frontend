@@ -46,8 +46,8 @@ function Dashboard() {
 
   return (
     <div>
-      <MainHeader title="실시간 모니터링 대시보드" />
-      <div className="dashboard-container" onSidebarToggle={handleSidebarToggle} >
+      <MainHeader title="실시간 모니터링 대시보드" onSidebarToggle={handleSidebarToggle} />
+      <div className={`dashboard-container ${isSidebarOpen ? 'ml-64' : ''}`}>
         <ChartTab
           timeRangeOptions={timeRangeOptions}
         />

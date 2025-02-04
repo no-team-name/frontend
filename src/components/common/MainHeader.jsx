@@ -28,7 +28,9 @@ const MainHeader = ({
 
   const handleMenuClick = () => {
     setIsSidebarOpen(!isSidebarOpen);
-    onSidebarToggle(!isSidebarOpen);
+    if (onSidebarToggle) {
+      onSidebarToggle(!isSidebarOpen);
+    }
   };
 
   const openNewTeamModal = () => {
