@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import Sidebar from './Sidebar';
 import './MainHeader.css';
+import { useNavigate } from 'react-router-dom';
 
 // 버튼
 import LoginButton from '../auth/LoginButton';
@@ -25,6 +26,7 @@ const MainHeader = ({
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { isLogin, nickname } = useRecoilValue(authState);
+  const navigate = useNavigate();
 
   const handleMenuClick = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -45,7 +47,7 @@ const MainHeader = ({
     <div className={`main-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
       <div className="header flex items-center justify-between px-4 py-2 bg-white border-b border-gray-300">
         {/* 왼쪽 */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2" onClick={() => navigate('/')}>
           <img
             src={"/accord-removebg.png"}
             alt="Logo"

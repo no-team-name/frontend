@@ -50,6 +50,7 @@
 }
 
 .ProseMirror pre {
+    margin-left: 10px;
 }
 
 .editor {
@@ -104,6 +105,7 @@ pre code {
 /* 표 스타일 */
 table {
     border-collapse: collapse;
+    padding: 2px;
 }
 
 th,
@@ -168,7 +170,6 @@ td {
 }
 
 .ProseMirror>.ProseMirror-yjs-cursor:first-child {
-
 }
 
 .ProseMirror p:first-child,

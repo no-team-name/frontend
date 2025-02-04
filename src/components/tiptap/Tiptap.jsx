@@ -68,13 +68,6 @@ const Tiptap = forwardRef((props, ref) => {
         bulletList: false,
         listItem: false,
       }),
-      // CollaborationCursor.configure({
-      //   provider,
-      //   user: {
-      //     name: 'Cyndi Lauper',
-      //     color: '#f783ac',
-      //   },
-      // }),
       CodeBlockLowlight.configure({ lowlight }),
       Table.configure({
         resizable: true,
@@ -233,10 +226,6 @@ const Tiptap = forwardRef((props, ref) => {
     {
       label: "code block",
       action: (editor) => editor.chain().focus().toggleCodeBlock().run(),
-    },
-    {
-      label: "Set details",
-      action: (editor) => editor.chain().focus().setDetails().run(),
     },
   ];
   // slash 명령 실행
