@@ -279,6 +279,7 @@ const Tiptap = forwardRef((props, ref) => {
         className="editor-container border border-gray-300 rounded-md bg-white overflow-hidden no-tailwind"
         style={{ minHeight: "750px", padding: "20px", width: "100%" }}
       >
+        <div className="no-margin">
         <DragHandle editor={editor}>
           <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -290,6 +291,7 @@ const Tiptap = forwardRef((props, ref) => {
               <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
           </svg>
         </DragHandle>
+        </div>
         <EditorContent editor={editor} />
 
         {dropdownVisible && (

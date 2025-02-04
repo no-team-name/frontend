@@ -27,7 +27,9 @@ const Sidebar = ({ isOpen, onClose }) => {
       }
     };
 
-    fetchTeams();
+    if (user.isLogin) {
+      fetchTeams();
+    }
   }, [user.memberId]);
 
   const handleVoiceClick = (teamId) => {
