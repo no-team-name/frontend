@@ -20,6 +20,7 @@ const MainHeader = ({
   openLogoutModal,
   openAccountDeleteModal,
   openNicknameModal,
+  onSidebarToggle,
 }) => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,6 +28,7 @@ const MainHeader = ({
 
   const handleMenuClick = () => {
     setIsSidebarOpen(!isSidebarOpen);
+    onSidebarToggle(!isSidebarOpen);
   };
 
   const openNewTeamModal = () => {
