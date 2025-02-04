@@ -99,7 +99,7 @@ const TeamNote = ({
       }
       yDoc.current.destroy();
     };
-  }, [team_id, currentTitle, peerId]);
+  }, [team_id]);
 
   useEffect(() => {
     const fetchTitles = async () => {
@@ -168,12 +168,9 @@ const TeamNote = ({
     }
   };
 
-  const handleBack = () => {
-    console.log("Back button clicked!");
-  };
-
-  const handleShare = () => {
-    console.log("Share button clicked!");
+  const handleAddNewNote = () => {
+    tiptapRef.current?.handleGetNote({});
+    setCurrentTitle('');
   };
 
   const handleChat = () => {
@@ -262,8 +259,6 @@ const TeamNote = ({
       <NoteHeader
         teamId={team_id}
         participants={participants}
-        onBack={handleBack}
-        onShare={handleShare}
         onChat={handleChat}
         onMenu={handleMenuClick}
         onSave={() => tiptapRef.current?.handleSave()}
@@ -274,7 +269,7 @@ const TeamNote = ({
       />
 
       <main className="container">
-        <TitleButtons titles={titles} onTitleClick={handleTitleClick} onUpdateTitle={handleUpdateTitle} />
+        <TitleButtons titles={titles} onTitleClick={handleTitleClick} onUpdateTitle={handleUpdateTitle} onAddNewNote={handleAddNewNote} />
         <TitleInput title={currentTitle} onTitleChange={handleTitleChange} />
         {provider.current && awareness.current ? (
           <Tiptap

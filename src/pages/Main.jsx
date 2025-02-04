@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MainHeader from '../components/common/MainHeader';
 import Typing from 'react-typing-effect'; 
 
@@ -8,21 +8,24 @@ const Main = ({
   openAccountDeleteModal,
   openNicknameModal,
 }) => {
-  const handleBack = () => console.log('Back button clicked');
-  const handleMenu = () => console.log('Menu button clicked');
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const handleSidebarToggle = (isOpen) => {
+    setIsSidebarOpen(isOpen);
+  };
 
   return (
     <div>
       <MainHeader
-        onBack={handleBack}
-        onMenu={handleMenu}
         logoSrc="/path/to/your/logo.png"
         openLoginModal={openLoginModal}
         openLogoutModal={openLogoutModal}
         openAccountDeleteModal={openAccountDeleteModal}
         openNicknameModal={openNicknameModal}
+        onSidebarToggle={handleSidebarToggle}
       />
-    <div className="relative min-h-screen flex flex-col items-center justify-center bg-gray-50">
+    <div className={`main-container relative min-h-screen flex flex-col items-center justify-center bg-gray-50 ${isSidebarOpen ? 'ml-64' : ''}`}>
       {/* 헤더 */}
 
       {/* 배경 효과 */}
