@@ -61,7 +61,7 @@ function ProfileButton({
       open={open}
       onClick={() => setOpen(!open)}
       onClose={() => setOpen(false)}
-      style={{ marginLeft: '1rem' }}
+      style={{ marginLeft: '1rem', backgroundColor: 'transparent', boxShadow: 'none', border: 'none' }} 
     />
   );
 }
