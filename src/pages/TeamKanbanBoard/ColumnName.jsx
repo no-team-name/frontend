@@ -1,40 +1,48 @@
 import React, { useState } from "react";
+import { updateKanbanBoard } from "../../service/KanbanBoardService"; // API 함수 가져오기
 
-const ColumnName = () => {
-    const [name, setName] = useState("Column"); // 컬럼 이름 상태
-    const [isEditing, setIsEditing] = useState(false); // 수정 모드 여부
 
-    const handleEditClick = () => {
-        setIsEditing(true); // 수정 모드 활성화
+const ColumnName = ({ columnId, name }) => {
+    const [columnName, setColumnName] = useState(name);
+    const [isEditing, setIsEditing] = useState(false);
+
+    // 수정 완료 후 API 호출
+    const saveColumnName = async () => {
+        setIsEditing(false); // 수정 모드 종료
+        if (columnName !== name) { // 변경이 있을 때만 API 호출
+            await updateKanbanBoard(columnId, columnName);
+        }
     };
 
     const handleInputChange = (e) => {
-        setName(e.target.value); // 컬럼 이름 업데이트
+        setColumnName(e.target.value);
     };
 
     const handleInputBlur = () => {
-        setIsEditing(false); // 수정 모드 비활성화
+        saveColumnName();
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            saveColumnName();
+        }
     };
 
     return (
-        <div
-            className="flex justify-center items-center w-[90px] bg-cyan-200 rounded-2xl hover:ring-2 hover:ring-inset hover:ring-zinc-500"
-        >
+        <div className="flex justify-center items-center min-w-[90px] max-w-fit button text-gray-700 bg-gray-300  rounded-xl hover:ring-2 hover:ring-inset hover:bg-gray-400 hover:ring-zinc-500 px-2 py-1">
             {isEditing ? (
                 <input
                     type="text"
                     className="w-full text-center bg-white border border-gray-300 rounded px-2 py-1"
-                    value={name}
+                    value={columnName}
                     onChange={handleInputChange}
-                    onBlur={handleInputBlur} // 포커스가 벗어날 때 수정 모드 종료
-                    autoFocus // 자동 포커스
+                    onBlur={handleInputBlur}  // 포커스를 벗어나면 저장
+                    onKeyDown={handleKeyDown} // 엔터를 누르면 저장
+                    autoFocus
                 />
             ) : (
-                <p
-                    className="cursor-pointer text-sm font-medium"
-                    onClick={handleEditClick} // 클릭하면 수정 모드로 전환
-                >
-                    {name}
+                <p className="cursor-pointer text-sm font-medium whitespace-nowrap" onClick={() => setIsEditing(true)}>
+                    {columnName}
                 </p>
             )}
         </div>

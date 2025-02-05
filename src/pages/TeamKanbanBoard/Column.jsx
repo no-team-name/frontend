@@ -13,12 +13,17 @@ import TrashIcon from "./TrashIcon";
 const Column = ({
                     columnId,
                     name,
-                    cards,
+                    cards = [],
                     index,
                     onDeleteColumn,
                     onAddCard,
                     onDeleteCard,
                 }) => {
+
+    const sortedCards = React.useMemo(() => {
+        return [...cards].sort((a, b) => a.priority - b.priority)
+    }, [cards])
+
     return (
         // 컬럼 자체를 Draggable로 감쌈
         <Draggable draggableId={`column-${columnId}`} index={index}>
@@ -38,11 +43,11 @@ const Column = ({
                         // 컬럼을 드래그하기 위해 dragHandleProps를 헤더에 부여
                         {...provided.dragHandleProps}
                     >
-                        <ColumnName name={name} />
+                        <ColumnName columnId={columnId} name={name} />
                         <div className="flex justify-center items-center gap-5">
                             {/* 컬럼 삭제 버튼 */}
                             <button
-                                className="cursor-pointer text-gray-400"
+                                className="cursor-pointer text-gray-500 hover:text-gray-800"
                                 onClick={() => onDeleteColumn(columnId)}
                             >
                                 <TrashIcon />
@@ -50,7 +55,7 @@ const Column = ({
                             {/* 카드 추가 버튼 */}
                             <button
                                 onClick={() => onAddCard(columnId)}
-                                className="cursor-pointer"
+                                className="cursor-pointer text-gray-500 hover:text-gray-800"
                             >
                                 <PlusIcon />
                             </button>
@@ -70,14 +75,15 @@ const Column = ({
                                         : "inherit",
                                 }}
                             >
-                                {cards.map((card, cardIndex) => (
+                                {sortedCards.map((card, cardIndex) => (
                                     <Card
                                         key={card.id}
-                                        cardId={card.id}
-                                        title={card.title}
+                                        cardId={card.id} //
                                         index={cardIndex}
+                                        title={card.title}
+                                        membername={card.memberNickName}
                                         // 카드 삭제 시 상위로 이벤트 전달
-                                        onDelete={(cardId) => onDeleteCard(columnId, cardId)}
+                                        onDelete={(cardId) => onDeleteCard(cardId)}
                                     />
                                 ))}
                                 {provided.placeholder}

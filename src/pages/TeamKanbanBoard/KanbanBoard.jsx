@@ -5,10 +5,14 @@ import TopPlate from "./TopPlate";
 import NoteHeader from "../../components/common/NoteHeader";
 import {useParams} from "react-router-dom";
 import {
-    createKanbanBoardColumn,
+    changeKanbanBoardCardPriorty, changeKanbanBoardPriority,
+    createKanbanBoardCard,
+    createKanbanBoardColumn, deleteKanbanBoardCard,
     deleteKanbanBoardColumn,
-    getKanbanBoardByTeamId
+    getKanbanBoardByTeamId, getTeam
 } from "../../service/KanbanBoardService";
+import { useRecoilValue } from 'recoil';
+import {userState} from "../../recoil/UserAtoms";
 
 /**
  * KanbanBoard
@@ -20,22 +24,28 @@ import {
 
 const KanbanBoard = () => {
     const {teamId} = useParams();
+    const [teamInfo, setTeamInfo] = useState({});
     const [columns, setColumns] = useState([]);
-    // ID 자동 증가용
     const [nextColumnId, setNextColumnId] = useState(1);
     const [nextCardId, setNextCardId] = useState(1);
-
+    const user = useRecoilValue(userState);
+    const userId = user.memberId;
     /**
      * 컬럼 추가
      */
     const handleAddColumn = async () => {
         const newColumn = {
-            name: `untitled column`
+            id: nextColumnId,
+            name: `Column ${nextColumnId}`,
+            cards: []
         };
         const response = await createKanbanBoardColumn(teamId, newColumn.name);
-        // id, name, cards
-        //setColumns((prev) => [...prev, newColumn]);
-    };
+
+        if (response) {
+            window.location.reload()
+        }
+
+    }
 
     /**
      * 컬럼 삭제
@@ -46,8 +56,6 @@ const KanbanBoard = () => {
 
         if (response) { // 삭제 성공 시 상태 업데이트
             setColumns((prevColumns) => prevColumns.filter((col) => col.id !== id));
-        } else {
-            console.error("컬럼 삭제 실패");
         }
 
     };
@@ -55,124 +63,137 @@ const KanbanBoard = () => {
     /**
      * 카드 추가
      */
-    const handleAddCard = (columnId) => {
+    const handleAddCard = async (columnId) => {
         const newCard = {
             id: nextCardId,
-            title: `Card ${nextCardId}`,
+            title: `Card`,
         };
-        setColumns((prevColumns) =>
-            prevColumns.map((col) =>
-                col.id === columnId
-                    ? { ...col, cards: [...col.cards, newCard] }
-                    : col
-            )
-        );
-        setNextCardId((prev) => prev + 1);
-    };
+        const response = await createKanbanBoardCard(userId,teamId,newCard.title,columnId);
 
+        if (response) {
+            window.location.reload()
+        }
+
+
+    };
     /**
      * 카드 삭제
      */
-    const handleDeleteCard = (columnId, cardId) => {
-        setColumns((prevColumns) =>
-            prevColumns.map((col) =>
-                col.id === columnId
-                    ? { ...col, cards: col.cards.filter((card) => card.id !== cardId) }
-                    : col
-            )
-        );
-    };
 
+    const handleDeleteCard = async (cardId) => {
+
+        console.log(cardId);
+
+        const response = await deleteKanbanBoardCard(cardId);
+
+        if (response) {
+            window.location.reload()
+        }
+
+    };
     /**
      * 드래그 종료 시 처리
      * - type === 'column': 컬럼 순서 변경
      * - type === 'card': 카드 순서 변경(동일 컬럼 or 다른 컬럼)
      */
-    const onDragEnd = (result) => {
+    const onDragEnd = async (result) => {
         const { destination, source, draggableId, type } = result;
+
+        console.log("목적지", destination);
+        console.log("id", draggableId);
 
         // 목적지가 없으면 취소
         if (!destination) return;
 
         // 제자리에 떨어진 경우 취소
-        if (
-            destination.droppableId === source.droppableId &&
-            destination.index === source.index
-        ) {
+        if (destination.droppableId === source.droppableId && destination.index === source.index) {
             return;
         }
 
-        // 1) 컬럼 드래그 (type === 'column')
+        // 1) **컬럼 드래그 (type === "column")**
         if (type === "column") {
             const newColumns = Array.from(columns);
-            // source.index 위치에서 하나 제거
-            const [moved] = newColumns.splice(source.index, 1);
-            // destination.index 위치에 삽입
-            newColumns.splice(destination.index, 0, moved);
-            setColumns(newColumns);
+            const [movedColumn] = newColumns.splice(source.index, 1); // 기존 위치에서 제거
+            newColumns.splice(destination.index, 0, movedColumn); // 새로운 위치에 추가
+
+            setColumns(newColumns); // 상태 업데이트
+            const targetBoardId = draggableId.split("column-")
+            // 🚀 **API 호출 추가 (컬럼 이동 시)**
+            try {
+                await changeKanbanBoardPriority(Number(targetBoardId[1]), destination.index + 1, teamId);
+                console.log(`Move Board : ${targetBoardId} to ${destination.index + 1}`);
+            } catch (error) {
+                console.error("Failed to update column priority", error);
+            }
+
             return;
         }
-
-        // 2) 카드 드래그 (type === 'card')
-        const startColIndex = columns.findIndex(
-            (col) => String(col.id) === source.droppableId
-        );
-        const endColIndex = columns.findIndex(
-            (col) => String(col.id) === destination.droppableId
-        );
+        // 여기가 카드 드래그 도착 부분 !!!!!!!!!!!!!!!!!!
+        // 2) **카드 드래그 (type === "card")**
+        const startColIndex = columns.findIndex((col) => String(col.id) === source.droppableId);
+        const endColIndex = columns.findIndex((col) => String(col.id) === destination.droppableId);
 
         const startCol = columns[startColIndex];
         const endCol = columns[endColIndex];
 
-        // 출발/도착 컬럼이 같은 경우 => 순서만 변경
         if (startCol.id === endCol.id) {
-            const newCards = Array.from(startCol.cards);
-            // source.index에서 카드 꺼내기
-            const [movedCard] = newCards.splice(source.index, 1);
-            // destination.index에 삽입
-            newCards.splice(destination.index, 0, movedCard);
+            const targetCardId = draggableId.split("card-")
 
-            const updatedCol = { ...startCol, cards: newCards };
-            const newColumns = Array.from(columns);
-            newColumns[startColIndex] = updatedCol;
-            setColumns(newColumns);
+            try {
+                const response = await changeKanbanBoardCardPriorty(teamId, Number(targetCardId[1]), startCol.id, destination.index+1, endCol.id);
+                console.log(`Moved card: ${targetCardId} from ${startCol.id} to ${endCol.id}, position ${destination.index}`);
+                setColumns(response.data.kanbanBoards);
+            } catch (error) {
+                console.error("Failed to update card movement", error);
+            }
+
         } else {
-            // 다른 컬럼으로 이동
-            const startCards = Array.from(startCol.cards);
-            const [movedCard] = startCards.splice(source.index, 1);
+            const targetCardId = draggableId.split("card-")
 
-            const endCards = Array.from(endCol.cards);
-            endCards.splice(destination.index, 0, movedCard);
-
-            const newStartCol = { ...startCol, cards: startCards };
-            const newEndCol = { ...endCol, cards: endCards };
-
-            const newColumns = Array.from(columns);
-            newColumns[startColIndex] = newStartCol;
-            newColumns[endColIndex] = newEndCol;
-            setColumns(newColumns);
+            try {
+                const response = await changeKanbanBoardCardPriorty(teamId, Number(targetCardId[1]), startCol.id, destination.index+1, endCol.id);
+                console.log(`Moved card: ${targetCardId} from ${startCol.id} to ${endCol.id}, position ${destination.index}`);
+                setColumns(response.data.kanbanBoards);
+            } catch (error) {
+                console.error("Failed to update card movement", error);
+            }
         }
     };
+
+
+
+
     //
     //화면이 처음에 시작 되면 바로 작동 되는 함수
     useEffect(() => {
         async function fetchData() {
             const response = await getKanbanBoardByTeamId(teamId);
             console.log(response);
+
             setColumns(response.kanbanBoards);
         }
         fetchData();
 
     }, [teamId]);
 
+    useEffect(() => {
+        async function fetchData1() {
+            const team = await getTeam(teamId);
+            console.log(team);
+            console.log("이게 team 이름임",team.teamName);
+
+            setTeamInfo(team);
+        }
+        fetchData1();
+
+    }, [teamId]);
 
     return (
         <div className="flex justify-center items-center">
             <div className="flex flex-col justify-center w-full">
                 <NoteHeader />
                 {/* 컬럼 추가 버튼 */}
-                <TopPlate onAddColumn={handleAddColumn} />
-
+                <TopPlate teamInfo={teamInfo.teamName} onAddColumn={handleAddColumn} />
                 {/*
           DragDropContext: 전체 드래그 앤 드롭 컨텍스트
           Droppable: 컬럼들을 드롭할 공간 (direction="horizontal")
@@ -193,7 +214,7 @@ const KanbanBoard = () => {
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}
                             >
-                                {columns.map((column, index) => (
+                                {columns?.map((column, index) => (
                                     <Column
                                         key={column.id}
                                         columnId={column.id}

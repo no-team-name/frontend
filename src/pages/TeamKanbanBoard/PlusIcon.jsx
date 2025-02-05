@@ -1,6 +1,6 @@
 function PlusIcon() {
   return (
-      <div className=" hover:ring-1 hover:ring-inset hover:ring-zinc-500 rounded-full">
+      <div className=" hover:ring-1 hover:ring-inset  rounded-full">
           <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
