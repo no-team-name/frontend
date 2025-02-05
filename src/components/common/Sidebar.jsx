@@ -27,7 +27,9 @@ const Sidebar = ({ isOpen, onClose }) => {
       }
     };
 
-    fetchTeams();
+    if (user.isLogin) {
+      fetchTeams();
+    }
   }, [user.memberId]);
 
   const handleVoiceClick = (teamId) => {
@@ -64,21 +66,30 @@ const Sidebar = ({ isOpen, onClose }) => {
     onClose(); // 상위 컴포넌트의 토글 함수 호출
   };
 
+  const handleJoinBoard = () => {
+    navigate('/join-board');
+  };
+
   return (
     <>
       {/* 사이드바 */}
       <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
         {/* 사이드바 내용 */}
         <div className="sidebar-content p-4">
+          <h3>Boards</h3>
+          <p onClick={() => handleJoinBoard()}>JoinBoard</p>
+          <h3>Teams</h3>
           {teams.map((team) => (
             <div key={team.id}>
               <p onClick={() => handleTeamClick(team.id)} className="team-name">
                 {team.teamName}
               </p>
               <div className={`team-dropdown ${activeTeams.includes(team.id) ? 'open' : ''}`}>
-                <p onClick={() => handleNoteClick(team.id)}>TeamNote</p>
-                <p onClick={() => handleCanvasClick(team.id)}>TeamCanvas</p>
-                <p onClick={handleVoiceClick}>TeamVoice</p>
+                <p onClick={() => handleNoteClick(team.id)}>Note</p>
+                <p onClick={() => handleCanvasClick(team.id)}>Canvas</p>
+                <p>KanbanBoard</p>
+                <p onClick={handleVoiceClick}>Voice</p>
+
               </div>
             </div>
           ))}
