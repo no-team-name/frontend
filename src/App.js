@@ -6,6 +6,8 @@ import { useRecoilState } from 'recoil';
 
 import { userState } from './recoil/UserAtoms';
 
+import AdminMemberPage from './pages/admin/AdminMemberPage';
+import AdminMemberDetailPage from './pages/admin/AdminMemberDetailPage';
 import TeamNote from './pages/TeamNote/TeamNote';
 import TeamCanvas from './pages/TeamCanvas/TeamCanvas';
 import AcceptInvitePage from './pages/team/AcceptInvitePage';
@@ -21,14 +23,14 @@ import NicknameChangeModal from './components/auth/NicknameChangeModal';
 import ChatButton from './components/ai/ChatButton';
 import ChatBox from './components/ai/ChatBox';
 
-import apiClient from './utils/apiSpring';
-
 import { authState } from './recoil/authAtoms';
+
 
 import JoinBoardMain from "./pages/joinBoard/JoinBoardMain";
 import JoinBoardDetail from "./pages/joinBoard/JoinBoardDetail";
 import CreateJoinBoard from "./pages/joinBoard/CreateJoinBoard";
 import EditJoinBoard from "./pages/joinBoard/EditJoinBoard";
+import Dashboard from './pages/admin/DashBoard';
 
 function App() {
 
@@ -54,23 +56,24 @@ function App() {
       setAuth(prev => ({ ...prev, isLogin: true }));
 
       // 서버에서 닉네임 가져오기
-      apiClient.get('/api/member/userinfos', {
+      axios.get('http://localhost:8082/spring/api/member/userinfos', {
         headers: { Authorization: `Bearer ${accessToken}` },
         withCredentials: true,
       })
         .then((res) => {
 
           console.log('조회 성공:', res);
-          const { memberId, email, nickname, profileImage } = res.data.memberInfo;
+          const { memberId, email, nickname, profileImage, role } = res.data.memberInfo;
           setUser({
             isLogin: true,
             memberId,
             email,
             nickname,
             profileImage,
+            role
           });
 
-          setAuth(prev => ({ ...prev, nickname: nickname }));
+          setAuth(prev => ({ ...prev, nickname: nickname, role: role }));
 
         })
         .catch((err) => {
@@ -114,10 +117,16 @@ function App() {
           <Route path="/canvas/:teamId" element={<TeamCanvas {...sharedProps} />} />
           <Route path="/accept-invite/:teamId" element={<AcceptInvitePage />} />
 
+          <Route path="/admin/dashboard" element={<Dashboard />} />
+
           <Route path="/join-board" element={<JoinBoardMain />} />
           <Route path="/join-board/:id" element={<JoinBoardDetail />} />
           <Route path="/create-join-board" element={<CreateJoinBoard />} />
           <Route path="/edit-join-board/:id" element={<EditJoinBoard />} />
+
+          <Route path="/admin/members" element={<AdminMemberPage {...sharedProps} />} />
+          <Route path="/admin/members/:memberId" element={<AdminMemberDetailPage {...sharedProps} />} />
+
         </Routes>
 
 

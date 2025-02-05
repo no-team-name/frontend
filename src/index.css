@@ -9,7 +9,6 @@
       }
     }
   .no-tailwind * {
-    /* Tailwind 스타일의 일부만 초기화 */
     font-size: inherit;
     font-family: inherit;
     color: inherit;
@@ -22,8 +21,7 @@
     font-family: Arial, sans-serif;
     /* 기존 CSS 폰트 */
     line-height: 0.3;
-    padding-left: 0.7rem;
-    /* 기존 CSS 줄 높이 */
+    padding-left: 1rem;
   }
 
   .no-tailwind .editor-container {
@@ -44,58 +42,58 @@
   .no-tailwind h1 {
     font-size: 2rem;
     font-weight: bold;
-    margin-left: 1.4rem;
+    margin-left: 1rem;
   }
 
   .no-tailwind h2 {
     font-size: 1.75rem;
     font-weight: bold;
-    margin-left: 1.4rem;
+    margin-left: 1rem;
   }
 
   .no-tailwind h3 {
     font-size: 1.5rem;
     font-weight: bold;
-    margin-left: 1.4rem;
+    margin-left: 1rem;
   }
 
   .no-tailwind h4 {
     font-size: 1.25rem;
     font-weight: bold;
-    margin-left: 1.4rem;
+    margin-left: 1rem;
   }
 
   .no-tailwind h5 {
     font-size: 1rem;
     font-weight: bold;
-    margin-left: 1.4rem;
+    margin-left: 1rem;
   }
 
   .no-tailwind h6 {
     font-size: 0.875rem;
     font-weight: bold;
-    margin-left: 1.4rem;
+    margin-left: 1rem;
   }
 
   .no-tailwind .details {
-    margin-left: 2rem;
+    margin-left: 1rem;
   }
 
   .no-tailwind ul p {
-    margin-left: 0.5rem;
+    margin-left: 1rem;
   }
 
   .no-tailwind ol p {
-    margin-left: 0.5rem;
+    margin-left: 1rem;
   }
 
   /* Paragraph 스타일 */
   .no-tailwind table p {
-    margin-left: 0.5rem;
+    margin-left: 1rem;
   }
   .no-tailwind p {
     margin-bottom: 1rem;
-    margin-left: 1.4rem;
+    margin-left: 1rem;
   }
 
   /* 불릿 스타일 */
