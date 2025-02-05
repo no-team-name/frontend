@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import "./TitleButtons.css";
 
-const TitleButtons = ({ titles, onTitleClick, onUpdateTitle }) => {
+const TitleButtons = ({ titles, onTitleClick, onUpdateTitle, onAddNewNote }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedTitle, setSelectedTitle] = useState("");
   const [newTitle, setNewTitle] = useState("");
@@ -35,6 +35,9 @@ const TitleButtons = ({ titles, onTitleClick, onUpdateTitle }) => {
           {title}
         </button>
       ))}
+      <button className="title-button add-button" onClick={onAddNewNote}>
+        +
+      </button>
 
       <Modal
         isOpen={modalIsOpen}
