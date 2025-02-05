@@ -115,7 +115,7 @@ function JoinBoardDetail() {
             fetchComments();
         } catch (error) {
             console.error('댓글 작성 실패:', error);
-        }
+        } ;
     };
 
     // 댓글 삭제
