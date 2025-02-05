@@ -62,6 +62,7 @@ const Column = ({
                         </div>
                     </div>
 
+
                     {/* 카드 리스트 영역 (Droppable) */}
                     <Droppable droppableId={String(columnId)} type="card">
                         {(provided, snapshot) => (
