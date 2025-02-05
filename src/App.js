@@ -30,6 +30,7 @@ import JoinBoardDetail from "./pages/joinBoard/JoinBoardDetail";
 import CreateJoinBoard from "./pages/joinBoard/CreateJoinBoard";
 import EditJoinBoard from "./pages/joinBoard/EditJoinBoard";
 import Dashboard from './pages/admin/DashBoard';
+import ErrorPage from './pages/error/ErrorPage';
 
 function App() {
 
@@ -115,6 +116,7 @@ function App() {
           <Route path="/canvas/:teamId" element={<TeamCanvas {...sharedProps} />} />
           <Route path="/accept-invite/:teamId" element={<AcceptInvitePage />} />
           <Route path="/admin/dashboard" element={<Dashboard />} />
+          <Route path="/error" element={<ErrorPage />} />
 
           <Route path="/join-board" element={<JoinBoardMain />} />
           <Route path="/join-board/:id" element={<JoinBoardDetail />} />
