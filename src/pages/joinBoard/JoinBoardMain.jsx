@@ -150,7 +150,11 @@ function JoinBoardMain({
                     openNicknameModal={openNicknameModal}
                     onSidebarToggle={handleSidebarToggle}
                 />
-                <div className={`board-container ${isSidebarOpen ? 'ml-64' : ''}`}>
+                <div className={`board-container ${isSidebarOpen ? 'ml-64' : ''}`}> //
+
+
+
+
 
                     <Container maxWidth="lg" style={{padding: '20px'}}>
                         <br/>
@@ -375,6 +379,18 @@ function JoinBoardMain({
                         </div>
 
                     </Container>
+
+
+
+
+
+
+
+
+
+
+
+
                 </div>
             </div>
         </>

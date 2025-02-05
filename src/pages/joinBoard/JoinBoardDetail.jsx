@@ -33,14 +33,7 @@ import EditIcon from '@mui/icons-material/Edit'; // 수정 아이콘 추가
 import MainHeader from "../../components/common/MainHeader";
 import "./JoinBoardDetail.css";
 
-function JoinBoardDetail(
-    {
-        openLoginModal,
-        openLogoutModal,
-        openAccountDeleteModal,
-        openNicknameModal,
-      }
-) {
+function JoinBoardDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
@@ -216,13 +209,7 @@ function JoinBoardDetail(
 
     return (
         <>
-            <MainHeader 
-            logoSrc="/path/to/your/logo.png"
-            openLoginModal={openLoginModal}
-            openLogoutModal={openLogoutModal}
-            openAccountDeleteModal={openAccountDeleteModal}
-            openNicknameModal={openNicknameModal}
-            />
+            <MainHeader />
             <Container maxWidth="lg" sx={{ padding: '40px 20px', backgroundColor: '#fff', minHeight: '100vh' }}>
                 <Card sx={{
                     backgroundColor: '#fff',
@@ -442,7 +429,7 @@ function JoinBoardDetail(
                                     <strong>현재 팀 인원</strong>
                                 </Typography>
                                 <Typography sx={{ marginLeft: '10px', color: '#333', fontSize: '18px', padding: '0px' , marginBottom: '0px' }}>
-                                     {post.peopleNumber}명
+                                    {post.peopleNumber}명
                                 </Typography>
                             </Box>
 
@@ -450,7 +437,7 @@ function JoinBoardDetail(
 
                             {/* 내용 */}
                             <Box sx={{ display: 'flex', flexDirection: 'column', marginTop:'30px', boxSizing: 'border-box', paddingTop:'0px'
-                            , marginBottom: '350px'}}>
+                                , marginBottom: '350px'}}>
                                 <Typography sx={{ fontWeight: 600, color: '#999999' }}>
                                     <strong>내용</strong>
                                 </Typography>
