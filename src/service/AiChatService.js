@@ -32,7 +32,7 @@ class AiChatService {
   }
 
   subscribeToUserMessages(userId) {
-    this.client.subscribe(`/topic/messages/${userId}`, (msg) => {
+    this.client.subscribe(`/topic/messages.${userId}`, (msg) => {
       this.onMessageReceived(msg.body);
     });
   }

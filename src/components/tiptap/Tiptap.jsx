@@ -68,13 +68,6 @@ const Tiptap = forwardRef((props, ref) => {
         bulletList: false,
         listItem: false,
       }),
-      // CollaborationCursor.configure({
-      //   provider,
-      //   user: {
-      //     name: 'Cyndi Lauper',
-      //     color: '#f783ac',
-      //   },
-      // }),
       CodeBlockLowlight.configure({ lowlight }),
       Table.configure({
         resizable: true,
@@ -234,10 +227,6 @@ const Tiptap = forwardRef((props, ref) => {
       label: "code block",
       action: (editor) => editor.chain().focus().toggleCodeBlock().run(),
     },
-    {
-      label: "Set details",
-      action: (editor) => editor.chain().focus().setDetails().run(),
-    },
   ];
   // slash 명령 실행
   const handleCommandClick = (command) => {
@@ -279,6 +268,7 @@ const Tiptap = forwardRef((props, ref) => {
         className="editor-container border border-gray-300 rounded-md bg-white overflow-hidden no-tailwind"
         style={{ minHeight: "750px", padding: "20px", width: "100%" }}
       >
+        <div className="no-margin">
         <DragHandle editor={editor}>
           <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -290,6 +280,7 @@ const Tiptap = forwardRef((props, ref) => {
               <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
           </svg>
         </DragHandle>
+        </div>
         <EditorContent editor={editor} />
 
         {dropdownVisible && (
