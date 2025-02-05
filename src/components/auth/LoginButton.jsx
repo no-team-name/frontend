@@ -3,9 +3,9 @@ import { Button, Icon } from 'semantic-ui-react';
 
 function LoginButton({ onClick }) {
   return (
-    <Button primary onClick={onClick}>
+    <Button primary onClick={onClick} style={{ backgroundColor: '#494e5e' }}>
       <Icon name="sign in" />
-      로그인
+      Login
     </Button>
   );
 }

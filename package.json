@@ -53,6 +53,7 @@
     "js-cookie": "^3.0.5",
     "konva": "^8.4.3",
     "lowlight": "^3.3.0",
+    "lucide-react": "^0.474.0",
     "markdown-it": "^14.1.0",
     "marked": "^15.0.6",
     "prosemirror-markdown": "^1.13.1",
