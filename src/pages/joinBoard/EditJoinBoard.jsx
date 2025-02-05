@@ -44,7 +44,14 @@ const StyledTextField = styled(TextField)({
     }
 });
 
-function EditJoinBoard() {
+function EditJoinBoard(
+    {
+        openLoginModal,
+        openLogoutModal,
+        openAccountDeleteModal,
+        openNicknameModal,
+      }
+) {
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -112,7 +119,13 @@ function EditJoinBoard() {
 
     return (
         <>
-            <MainHeader />
+            <MainHeader 
+            logoSrc="/path/to/your/logo.png"
+            openLoginModal={openLoginModal}
+            openLogoutModal={openLogoutModal}
+            openAccountDeleteModal={openAccountDeleteModal}
+            openNicknameModal={openNicknameModal}
+            />
             <StyledContainer maxWidth="lg">
                 <FormBox>
                     <Typography fontWeight="bold" variant="h5" gutterBottom >게시글 수정</Typography> <br/>

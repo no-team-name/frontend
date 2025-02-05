@@ -131,6 +131,7 @@ function App() {
           <Route path="/join-board/:id" element={<JoinBoardDetail {...sharedProps} />} />
           <Route path="/create-join-board" element={<CreateJoinBoard {...sharedProps} />} />
           <Route path="/edit-join-board/:id" element={<EditJoinBoard {...sharedProps} />} />
+
             
           <Route path="/kanban-board/:teamId" element={<KanbanBoard {...sharedProps}/>} />
           <Route path="/kanban-board/TopPlate" element={<TopPlate {...sharedProps} />} />
