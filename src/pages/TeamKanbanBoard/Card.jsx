@@ -43,9 +43,9 @@ const Card = ({ cardId, title, index, user ,onDelete ,membername}) => {
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     className="
-                        bg-white w-[500px] flex items-center justify-between px-[40px]
-                        h-[110px] border-2 rounded-xl hover:ring-2 hover:ring-inset
-                        hover:ring-zinc-500
+                    bg-white w-[400px] flex items-center justify-between px-[20px]
+                    h-[80px] border-2 rounded-xl hover:ring-2 hover:ring-inset
+                    hover:ring-zinc-500
                     "
                     style={{
                         backgroundColor: snapshot.isDragging ? "lightgray" : "white",

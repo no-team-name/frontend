@@ -41,8 +41,8 @@ const ColumnName = ({ columnId, name }) => {
                     autoFocus
                 />
             ) : (
-                <p className="cursor-pointer text-sm font-medium whitespace-nowrap" onClick={() => setIsEditing(true)}>
-                    {columnName}
+                <p className="cursor-pointer text-lg font-semibold whitespace-nowrap" onClick={() => setIsEditing(true)}>
+                {columnName}
                 </p>
             )}
         </div>

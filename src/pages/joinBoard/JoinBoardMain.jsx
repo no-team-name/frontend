@@ -5,14 +5,12 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import MainHeader from '../../components/common/MainHeader.jsx';
 import './JoinBoardMain.css';
 
-function JoinBoardMain(
-    {
-        openLoginModal,
-        openLogoutModal,
-        openAccountDeleteModal,
-        openNicknameModal,
-      }
-) {
+function JoinBoardMain({
+  openLoginModal,
+  openLogoutModal,
+  openAccountDeleteModal,
+  openNicknameModal,
+}) {
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -24,13 +22,17 @@ function JoinBoardMain(
     const [isSearching, setIsSearching] = useState(false);
     const [sortOption, setSortOption] = useState('latest');
     const inputRef = useRef(null);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    // 페이지 상태를 localStorage에 저장
+    const handleSidebarToggle = (isOpen) => {
+        console.log('Sidebar toggle:', isOpen);
+        setIsSidebarOpen(isOpen);
+    };
+
     const savePageState = (state) => {
         localStorage.setItem('joinBoardState', JSON.stringify(state));
     };
 
-    // 데이터 로드 함수
     const loadData = async (page, searchQuery = '', isSearching = false, sortOption = 'latest') => {
         setLoading(true);
         try {
@@ -61,20 +63,17 @@ function JoinBoardMain(
         }
     };
 
-    // 초기 로드 및 뒤로가기 처리
     useEffect(() => {
         const savedState = localStorage.getItem('joinBoardState');
 
         if (savedState) {
             const parsedState = JSON.parse(savedState);
 
-            // 상태 복원
             setCurrentPage(parsedState.currentPage || 1);
             setSortOption(parsedState.sortOption || 'latest');
             setSearchQuery(parsedState.searchQuery || '');
             setIsSearching(parsedState.isSearching || false);
 
-            // 복원된 상태로 데이터 로드
             loadData(
                 parsedState.currentPage - 1,
                 parsedState.searchQuery,
@@ -82,7 +81,6 @@ function JoinBoardMain(
                 parsedState.sortOption
             );
         } else {
-            // 초기 데이터 로드
             loadData(0);
         }
     }, []);
@@ -143,12 +141,16 @@ function JoinBoardMain(
 
     return (
         <>
-            <MainHeader 
-            openLoginModal={openLoginModal}
-            openLogoutModal={openLogoutModal}
-            openAccountDeleteModal={openAccountDeleteModal}
-            openNicknameModal={openNicknameModal}
+        <div className={`board-container`}>
+            <MainHeader
+                logoSrc="/path/to/your/logo.png"
+                openLoginModal={openLoginModal}
+                openLogoutModal={openLogoutModal}
+                openAccountDeleteModal={openAccountDeleteModal}
+                openNicknameModal={openNicknameModal}
+                onSidebarToggle={handleSidebarToggle}
             />
+            <div className={`board-container ${isSidebarOpen ? 'ml-64' : ''}`}>
 
             <Container maxWidth="lg" style={{padding: '20px'}}>
                 <br/>
@@ -371,7 +373,10 @@ function JoinBoardMain(
                         }}
                     />
                 </div>
+            
             </Container>
+            </div>
+            </div>
         </>
     );
 }

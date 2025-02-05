@@ -13,6 +13,8 @@ import {
 } from "../../service/KanbanBoardService";
 import { useRecoilValue } from 'recoil';
 import {userState} from "../../recoil/UserAtoms";
+import Sidebar from "../../components/common/Sidebar";
+import "./KanbanBoard.css";
 
 /**
  * KanbanBoard
@@ -22,17 +24,25 @@ import {userState} from "../../recoil/UserAtoms";
  */
 
 
-const KanbanBoard = () => {
+const KanbanBoard = ({
+  openLoginModal,
+  openLogoutModal,
+  openAccountDeleteModal,
+  openNicknameModal,
+}) => {
     const {teamId} = useParams();
     const [teamInfo, setTeamInfo] = useState({});
     const [columns, setColumns] = useState([]);
     const [nextColumnId, setNextColumnId] = useState(1);
     const [nextCardId, setNextCardId] = useState(1);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const user = useRecoilValue(userState);
     const userId = user.memberId;
-    /**
-     * 컬럼 추가
-     */
+
+    const handleMenuClick = () => {
+        setIsSidebarOpen(!isSidebarOpen);
+    };
+
     const handleAddColumn = async () => {
         const newColumn = {
             id: nextColumnId,
@@ -189,9 +199,17 @@ const KanbanBoard = () => {
     }, [teamId]);
 
     return (
-        <div className="flex justify-center items-center">
-            <div className="flex flex-col justify-center w-full">
-                <NoteHeader />
+        <div className={`relative flex justify-center items-center ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+        <div className="flex flex-col justify-center w-full">
+                <NoteHeader
+                    teamId={teamId}
+                    onMenu={handleMenuClick}
+                    onOpenLoginModal={openLoginModal}
+                    onOpenLogoutModal={openLogoutModal}
+                    onOpenAccountDeleteModal={openAccountDeleteModal}
+                    onOpenNicknameModal={openNicknameModal}
+                />
+                <Sidebar isOpen={isSidebarOpen} onClose={handleMenuClick} />
                 {/* 컬럼 추가 버튼 */}
                 <TopPlate teamInfo={teamInfo.teamName} onAddColumn={handleAddColumn} />
                 {/*
@@ -208,9 +226,9 @@ const KanbanBoard = () => {
                         {(provided) => (
                             <div
                                 className="
-                  bg-white w-full flex justify-start items-start
-                  px-[40px] gap-5 h-[1000px] overflow-x-auto
-                "
+                                    bg-white w-full flex justify-start items-start
+                                    px-[40px] gap-5 h-[1200px] overflow-x-auto ml-6
+                                    "
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}
                             >

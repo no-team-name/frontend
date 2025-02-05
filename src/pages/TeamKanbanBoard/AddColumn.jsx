@@ -3,11 +3,12 @@ import Card from "./Card";
 const AddColumn = () => {
 
     return (
-        <div className="bg-gray-300  flex justify-center items-center
-        h-[40px] w-[100px] rounded-xl
-        hover:ring-2 hover:ring-inset hover:ring-zinc-500 hover:bg-gray-400">
-            Add Column
-        </div>
+        <button
+        className="bg-gray-500 text-white font-semibold flex justify-center items-center
+        h-10 w-32 rounded-lg shadow-md hover:bg-gray-600 hover:ring-2 hover:ring-inset hover:ring-gray-400 transition duration-200"
+        >
+        Add Column
+        </button>
     );
 
 
