@@ -1,11 +1,11 @@
 const KanbanProfile = ({member}) => {
 
     return (
-        <div className="flex justify-center items-center bg-pink-200 h-[40px] x-[40px] rounded-full">
-            <p className="text-xs">
-                {member}
-            </p>
-        </div>
+    <div className="flex justify-center items-center bg-gray-100 p-2 rounded-lg">
+      <p className="text-m font-semibold">
+        {member}
+      </p>
+    </div>
     )
 
 };

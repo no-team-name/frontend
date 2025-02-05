@@ -127,10 +127,10 @@ function App() {
           <Route path="/admin/dashboard" element={<Dashboard />} />
           <Route path="/error" element={<ErrorPage />} />
 
-          <Route path="/join-board" element={<JoinBoardMain />} />
-          <Route path="/join-board/:id" element={<JoinBoardDetail />} />
-          <Route path="/create-join-board" element={<CreateJoinBoard />} />
-          <Route path="/edit-join-board/:id" element={<EditJoinBoard />} />
+          <Route path="/join-board" element={<JoinBoardMain {...sharedProps} />} />
+          <Route path="/join-board/:id" element={<JoinBoardDetail {...sharedProps} />} />
+          <Route path="/create-join-board" element={<CreateJoinBoard {...sharedProps} />} />
+          <Route path="/edit-join-board/:id" element={<EditJoinBoard {...sharedProps} />} />
             
           <Route path="/kanban-board/:teamId" element={<KanbanBoard {...sharedProps}/>} />
           <Route path="/kanban-board/TopPlate" element={<TopPlate {...sharedProps} />} />

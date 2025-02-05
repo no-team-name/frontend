@@ -158,7 +158,6 @@ const TeamNote = ({
         const parsedNote = JSON.parse(noteData.note);
         setNote(noteData);
         handleTitleChange(noteData.title);
-        console.log(note.id);
         tiptapRef.current?.handleGetNote(parsedNote);
       } else {
         setNote({});

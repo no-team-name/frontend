@@ -58,6 +58,10 @@ const Sidebar = ({ isOpen, onClose }) => {
     navigate(`/canvas/${teamId}`);
   };
 
+  const handleKanbanBoardClick = (teamId) => {
+    navigate(`/kanban-board/${teamId}`);
+  };
+
   const handleCloseAudioChat = () => {
     setShowAudioChat(false);
   };
@@ -87,7 +91,7 @@ const Sidebar = ({ isOpen, onClose }) => {
               <div className={`team-dropdown ${activeTeams.includes(team.id) ? 'open' : ''}`}>
                 <p onClick={() => handleNoteClick(team.id)}>Note</p>
                 <p onClick={() => handleCanvasClick(team.id)}>Canvas</p>
-                <p>KanbanBoard</p>
+                <p onClick={() => handleKanbanBoardClick(team.id)}>KanbanBoard</p>
                 <p onClick={handleVoiceClick}>Voice</p>
 
               </div>
