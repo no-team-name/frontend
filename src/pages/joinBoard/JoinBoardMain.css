@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Rock+Salt&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Tiny5&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=42dot+Sans:wght@300..800&family=Gowun+Batang&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Pen+Script&family=Rock+Salt&display=swap');
 /**/
 .search {
     display: flex;
@@ -75,4 +76,11 @@
 .card-content {
     cursor: pointer; /* 마우스 커서를 손가락 모양으로 변경 */
     user-select: none; /* 텍스트 선택 방지 */
+}
+
+.member-nickname {
+    font-family: "42dot Sans", serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
 }

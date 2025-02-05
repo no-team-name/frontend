@@ -236,13 +236,15 @@ function JoinBoardDetail() {
                             <MenuItem onClick={handleDeleteClick}>삭제</MenuItem>
                         </Menu>
 
-                        {/* 메인 콘텐츠 컨테이너 */}
+                        {/* 프로필섹션, 제목, 작성, 수정일자 컨테이너 */}
                         <Box sx={{
                             display: 'flex',
                             alignItems: 'flex-start',
                             gap: '20px',
                             boxSizing: 'border-box',
-                            marginTop: '50px'
+                            marginTop: '50px',
+                            marginLeft: '20px'
+
                         }}>
                             {/* 프로필 섹션 */}
                             <Box sx={{
@@ -251,7 +253,7 @@ function JoinBoardDetail() {
                                 alignItems: 'center',
                                 width: '70px',
                                 boxSizing: 'border-box',
-                                marginTop: '15px'
+                                marginTop: '0px'
                             }}>
                                 <Box sx={{
                                     width: '70px',
@@ -272,11 +274,12 @@ function JoinBoardDetail() {
                                         }}
                                     />
                                 </Box>
-                                <Typography sx={{
+                                <Typography className="member-nickname" sx={{
                                     fontSize: '0.9rem',
                                     textAlign: 'center',
-                                    color: 'gray',
-                                    width: '100px'
+                                    color: '#333333',
+                                    width: '100px',
+                                    className: 'member-nickname' ,
                                 }}>
                                     {post.memberNickname}
                                 </Typography>
@@ -287,7 +290,9 @@ function JoinBoardDetail() {
                             {/* 타이틀 섹션 */}
                             <Box sx={{
                                 flexGrow: 1,
-                                boxSizing: 'border-box'
+                                boxSizing: 'border-box',
+                                marginLeft: '40px',
+                                marginTop: '5px'
                             }}>
                                 <Typography sx={{
                                     display: 'flex',
@@ -300,7 +305,7 @@ function JoinBoardDetail() {
                                     <Box sx={{
                                         display: 'flex',
                                         flexDirection: 'column',
-                                        alignItems: 'left',
+                                        alignItems: 'left'
                                     }}>
 
 
@@ -324,10 +329,11 @@ function JoinBoardDetail() {
                                             <Typography
                                                 variant="body2"
                                                 sx={{
-                                                    color: '#777',
+                                                    color: '#999999',
                                                     boxSizing: 'border-box',
                                                     paddingBottom: '3px',
-                                                    marginBottom: '0px'
+                                                    marginBottom: '0px',
+
                                                 }}
                                             >
                                                 작성: {post.createdAt}
@@ -336,7 +342,7 @@ function JoinBoardDetail() {
                                             <Typography
                                                 variant="body2"
                                                 sx={{
-                                                    color: '#777',
+                                                    color: '#999999',
                                                     boxSizing: 'border-box',
                                                     paddingTop: '3px',
                                                     marginTop: '0px'
@@ -348,20 +354,6 @@ function JoinBoardDetail() {
 
                                     </Box>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                 </Typography>
                             </Box>
 
@@ -370,19 +362,19 @@ function JoinBoardDetail() {
 
                         {/* 나머지 본문 섹션 */}
                         {/*<Divider sx={{ marginY: 2, backgroundColor: '#ddd' }} />*/}
-                        <Box sx={{ marginTop: '100px' }}>
+                        <Box sx={{ marginTop: '150px' }}>
                             {/* 주제 */}
-                            <Box sx={{ display: 'flex', alignItems:'center', boxSizing: 'border-box' , padding: '0px' , margin: '0px' }}>
+                            <Box sx={{ display: 'flex', alignItems:'center', boxSizing: 'border-box' , padding: '0px' , marginBottom: '40px', marginLeft: '50px' }}>
                                 <Typography sx={{ fontWeight: 600, color: '#999999'}}>
                                     <strong>주제</strong>
                                 </Typography>
-                                <Typography sx={{ marginLeft: '10px', color: '#333', fontSize: '18px' , display: 'inline', padding: '0px' , marginBottom: '0px'}}>
+                                <Typography sx={{ marginLeft: '10px', color: '#333', fontSize: '18px' , display: 'inline', padding: '0px' }}>
                                     {post.topic}
                                 </Typography>
                             </Box>
 
                             {/* 팀 이름 */}
-                            <Box sx={{ display: 'flex',  alignItems:'center', marginTop: 1 , boxSizing: 'border-box' , padding: '0px' , margin: '0px'}}>
+                            <Box sx={{ display: 'flex',  alignItems:'center', marginTop: 1 , boxSizing: 'border-box' , padding: '0px' , marginBottom: '40px', marginLeft: '50px'}}>
                                 <Typography sx={{ fontWeight: 600, color: '#999999' }}>
                                     <strong>팀 이름</strong>
                                 </Typography>
@@ -392,17 +384,17 @@ function JoinBoardDetail() {
                             </Box>
 
                             {/* 소개글 */}
-                            <Box sx={{ display: 'flex', alignItems:'center', marginTop: 1, boxSizing: 'border-box', padding: '0px' , margin: '0px' }}>
+                            <Box sx={{ display: 'flex', alignItems:'center', marginTop: 1, boxSizing: 'border-box', padding: '0px' , marginBottom: '40px', marginLeft: '50px' }}>
                                 <Typography sx={{ fontWeight: 600, color: '#999999' }}>
                                     <strong>소개글</strong>
                                 </Typography>
-                                <Typography sx={{ marginLeft: '10px', color: '#333', fontSize: '18px', padding: '0px' , marginBottom: '0px' }}>
+                                <Typography sx={{ marginLeft: '10px', color: '#333', fontSize: '18px', padding: '0px' , marginBottom: '20px' }}>
                                     {post.projectBio}
                                 </Typography>
                             </Box>
 
                             {/* 팀원 소개 */}
-                            <Box sx={{ display: 'flex', alignItems:'center', marginTop: 1,  boxSizing: 'border-box', padding: '0px' , margin: '0px'}}>
+                            <Box sx={{ display: 'flex', alignItems:'center', marginTop: 1,  boxSizing: 'border-box', padding: '0px'  , marginBottom: '40px', marginLeft: '50px'}}>
                                 <Typography sx={{ fontWeight: 600, color: '#999999' }}>
                                     <strong>팀원 소개</strong>
                                 </Typography>
@@ -413,7 +405,7 @@ function JoinBoardDetail() {
 
 
                             {/* 프로젝트 기간 (시작일~종료일) */}
-                            <Box sx={{ display: 'flex', alignItems:'center', marginTop: 1, boxSizing: 'border-box', padding: '0px' , margin: '0px' }}>
+                            <Box sx={{ display: 'flex', alignItems:'center', marginTop: 1, boxSizing: 'border-box', padding: '0px'  , marginBottom: '40px', marginLeft: '50px' }}>
                                 <Typography sx={{ fontWeight: 600, color: '#999999' }}>
                                     <strong> 프로젝트 기간 </strong>
                                 </Typography>
@@ -424,7 +416,7 @@ function JoinBoardDetail() {
 
 
 
-                            <Box sx={{ display: 'flex', alignItems:'center', marginTop: 1, boxSizing: 'border-box', padding: '0px' , margin: '0px' }}>
+                            <Box sx={{ display: 'flex', alignItems:'center', marginTop: 1, boxSizing: 'border-box', padding: '0px'  , marginBottom: '40px', marginLeft: '50px' }}>
                                 <Typography sx={{ fontWeight: 600, color: '#999999' }}>
                                     <strong>현재 팀 인원</strong>
                                 </Typography>
@@ -436,12 +428,12 @@ function JoinBoardDetail() {
 
 
                             {/* 내용 */}
-                            <Box sx={{ display: 'flex', flexDirection: 'column', marginTop:'30px', boxSizing: 'border-box', paddingTop:'0px'
-                                , marginBottom: '350px'}}>
-                                <Typography sx={{ fontWeight: 600, color: '#999999' }}>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', marginTop:'100px', boxSizing: 'border-box', paddingTop:'0px', marginBottom: '350px',
+                                marginLeft: '50px'}}>
+                                <Typography sx={{ fontWeight: 600, color: '#999999', boxSizing: 'border-box', marginBottom: '30px' }}>
                                     <strong>내용</strong>
                                 </Typography>
-                                <Typography sx={{ marginLeft: '10px', color: '#333', fontSize: '18px', whiteSpace: 'pre-line' }}>
+                                <Typography sx={{ boxSizing: 'border-box',  color: '#333', fontSize: '18px', whiteSpace: 'pre-line' }}>
                                     {post.content}
                                 </Typography>
                             </Box>
@@ -546,10 +538,9 @@ function JoinBoardDetail() {
                                                             </Box>
 
 
-                                                            <Typography sx={{
-                                                                // fontWeight: 'bold',
-                                                                fontSize: '0.9rem',
-                                                                color: 'gray' ,
+                                                            <Typography className="member-nickname"  sx={{
+                                                                fontSize: '0.8rem',
+                                                                color: '#333333' ,
                                                                 boxSizing: 'border-box' ,
                                                                 paddingTop: '3px',
                                                                 marginBottom: '0px'
@@ -573,7 +564,7 @@ function JoinBoardDetail() {
                                                                     marginBottom: '5px'
                                                                 },
                                                                 '& .MuiListItemText-secondary': {
-                                                                    color: '#777',
+                                                                    color: '#999999',
                                                                     fontSize: '0.8rem'
                                                                 }
                                                             }}

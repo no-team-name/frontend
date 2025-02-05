@@ -1,10 +1,25 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { getJoinBoardCard, searchJoinBoard, getJoinBoardCardByTitle } from '../../service/JoinBoardService';
-import { Card, CardContent, Typography, Pagination, Container, Box, Button, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, {useState, useEffect, useRef} from 'react';
+import {getJoinBoardCard, searchJoinBoard, getJoinBoardCardByTitle} from '../../service/JoinBoardService';
+import {
+    Card,
+    CardContent,
+    Typography,
+    Pagination,
+    Container,
+    Box,
+    Button,
+    Select,
+    MenuItem,
+    FormControl,
+    InputLabel
+} from '@mui/material';
+import {useNavigate, useLocation} from 'react-router-dom';
 import MainHeader from '../../components/common/MainHeader.jsx';
 import './JoinBoardMain.css';
-//
+
+
+
+
 function JoinBoardMain({
                            openLoginModal,
                            openLogoutModal,
@@ -150,10 +165,7 @@ function JoinBoardMain({
                     openNicknameModal={openNicknameModal}
                     onSidebarToggle={handleSidebarToggle}
                 />
-                <div className={`board-container ${isSidebarOpen ? 'ml-64' : ''}`}> //
-
-
-
+                <div className={`board-container ${isSidebarOpen ? 'ml-64' : ''}`}>
 
 
                     <Container maxWidth="lg" style={{padding: '20px'}}>
@@ -193,7 +205,7 @@ function JoinBoardMain({
                                 margin: '0 auto 20px',
                             }}
                         >
-                            <FormControl variant="outlined" style={{ minWidth: '120px', marginTop: '10px' }}>
+                            <FormControl variant="outlined" style={{minWidth: '120px', marginTop: '10px'}}>
                                 <InputLabel>정렬</InputLabel>
                                 <Select value={sortOption} onChange={handleSortChange} label="정렬">
                                     <MenuItem value="title">제목순</MenuItem>
@@ -207,7 +219,7 @@ function JoinBoardMain({
                                     type="text"
                                     value={searchQuery}
                                     onChange={handleSearchChange}
-                                    style={{maxWidth:'150px'}}
+                                    style={{maxWidth: '150px'}}
                                 />
                                 <button className="search-button" type="submit">검색</button>
                             </form>
@@ -228,7 +240,13 @@ function JoinBoardMain({
                                     }}
                                     onClick={() => handleCardClick(post.id)}
                                 >
-                                    <CardContent className='card-content' style={{display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'flex-start'}}>
+                                    <CardContent className='card-content' style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        width: '100%',
+                                        alignItems: 'flex-start',
+                                        marginTop: '25px'
+                                    }}>
                                         {/* 기존 카드 내용 그대로 유지 */}
                                         <Box style={{
                                             display: 'flex',
@@ -236,7 +254,11 @@ function JoinBoardMain({
                                             alignItems: 'center',
                                             marginRight: '20px',
                                             height: '85px',
-                                            justifyContent: 'space-between'
+                                            justifyContent: 'space-between',
+                                            boxSizing: "border-box",
+                                            paddingTop: '0px',
+                                            marginTop: '0px',
+
                                         }}>
                                             <div style={{
                                                 width: '55px',
@@ -256,19 +278,20 @@ function JoinBoardMain({
                                                     }}
                                                 />
                                             </div>
-                                            <Typography variant="body2" color="text.secondary" style={{marginBottom: '5px'}}>
+                                            <Typography className="member-nickname" variant="body2"
+                                                        color="text.secondary" style={{marginBottom: '5px'}}>
                                                 {post.memberNickname}
                                             </Typography>
                                         </Box>
 
                                         {/* 본문 섹션 */}
-                                        <Box style={{flex: 1}}>
+                                        <Box style={{flex: 1, boxSizing: 'border-box', marginTop: '7px', marginLeft: '15px'}}>
                                             <Typography variant="h5" component="div"
                                                         style={{fontWeight: 'bold', marginBottom: '10px'}}>
                                                 {post.title}
 
                                                 <Typography variant="body2" color="text.secondary"
-                                                            style={{marginBottom: '5px'}}>
+                                                            style={{marginBottom: '5px', color: '#999999'}}>
                                                     {post.createdAt}
                                                 </Typography>
                                             </Typography>
@@ -279,11 +302,16 @@ function JoinBoardMain({
                                                     color: '#a6a6a6',
                                                     marginBottom: '10px',
                                                     boxSizing: 'border-box',
-                                                    paddingBottom: '0px'
+                                                    paddingBottom: '0px',
+                                                    paddingTop: '35px'
                                                 }}
                                             >
                                                 <strong>주제</strong>
-                                                <span style={{ fontWeight: 'bold', marginLeft: '10px', color: '#595959' }}>{post.topic}</span>
+                                                <span style={{
+                                                    fontWeight: 'bold',
+                                                    marginLeft: '10px',
+                                                    color: '#595959'
+                                                }}>{post.topic}</span>
                                             </Typography>
 
 
@@ -323,23 +351,43 @@ function JoinBoardMain({
                                                     color: '#595959'
                                                 }}>{post.projectBio}</span>
                                             </Typography>
-
-
                                         </Box>
 
                                         {/* 날짜 및 인원 섹션 */}
-                                        <Box style={{textAlign: 'right', paddingRight: '20px'}}>
+                                        <Box style={{
+                                            textAlign: 'right', paddingRight: '20px',
+                                            boxSizing: 'border-box', marginTop: '93px',
+                                        }}>
                                             <Typography variant="body2" color="text.secondary"
-                                                        style={{marginBottom: '5px', boxSizing: 'border-box', paddingBottom: '3px'}}>
-                                                <strong>시작일</strong> {new Date(post.startDate).toLocaleDateString()}
+                                                        style={{
+                                                            marginBottom: '5px',
+                                                            boxSizing: 'border-box',
+                                                            paddingBottom: '3px',
+                                                            color: '#a6a6a6'
+                                                        }}>
+                                                <strong>프로젝트 기간</strong>
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary"
-                                                        style={{marginBottom: '5px', boxSizing: 'border-box', paddingTop: '0px', paddingBottom: '2px'}}>
-                                                <strong>종료일</strong> {new Date(post.endDate).toLocaleDateString()}
+                                                        style={{
+                                                            marginBottom: '5px',
+                                                            boxSizing: 'border-box',
+                                                            paddingTop: '0px',
+                                                            paddingBottom: '2px',
+                                                            color: '#595959'
+                                                        }}>
+                                                {new Date(post.startDate).toLocaleDateString()} ~ {new Date(post.endDate).toLocaleDateString()}
                                             </Typography>
                                             <Typography variant="body2" color="text.secondary"
-                                                        style={{marginBottom: '5px', boxSizing: 'border-box', paddingTop: '75px'}}>
-                                                <strong>현재 인원</strong> {post.peopleNumber} / 4
+                                                        style={{
+                                                            marginBottom: '5px',
+                                                            boxSizing: 'border-box',
+                                                            paddingTop: '7px',
+                                                            color: '#a6a6a6'
+                                                        }}>
+                                                <strong>현재 인원</strong> <span style={{
+                                                fontWeight: 'bold',
+                                                color: '#595959'
+                                            }}> {post.peopleNumber}명 </span>
                                             </Typography>
                                         </Box>
                                     </CardContent>
@@ -379,16 +427,6 @@ function JoinBoardMain({
                         </div>
 
                     </Container>
-
-
-
-
-
-
-
-
-
-
 
 
                 </div>
