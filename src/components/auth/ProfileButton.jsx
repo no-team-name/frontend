@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Dropdown, Icon } from 'semantic-ui-react';
 import { useRecoilValue } from 'recoil';
-import { authState } from '../../recoil/authAtoms';
+import { userState } from '../../recoil/UserAtoms';
 
 function ProfileButton({
   onOpenNicknameModal,
   onOpenAccountDeleteModal,
   onOpenLogoutConfirm,
 }) {
-  const { nickname } = useRecoilValue(authState);
+  const navigate = useNavigate();
+  const { nickname, role } = useRecoilValue(userState);
   const [open, setOpen] = useState(false);
 
   const trigger = (
@@ -22,6 +24,12 @@ function ProfileButton({
       key: 'welcome',
       text: `${nickname || '손님'} 님 안녕하세요!`,
       disabled: true,
+    },
+    role === 'ADMIN' && {
+      key: 'admin',
+      text: '관리페이지',
+      icon: 'shield',
+      onClick: () => navigate('/admin/members')
     },
     {
       key: 'nicknameChange',
@@ -50,7 +58,7 @@ function ProfileButton({
         onOpenAccountDeleteModal();
       },
     },
-  ];
+  ].filter(Boolean);
 
   return (
     <Dropdown

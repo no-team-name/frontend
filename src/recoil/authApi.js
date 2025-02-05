@@ -1,3 +1,4 @@
+// src/atoms/authApi.js
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
@@ -12,7 +13,7 @@ function getTokens() {
 export async function logoutUser() {
   const { accessToken, refreshToken } = getTokens();
 
-  const response = await axios.post('api/auth/logout', null, {
+  const response = await axios.post('/api/auth/logout', null, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
       'Refresh-Token': refreshToken,
@@ -30,7 +31,7 @@ export async function logoutUser() {
 export async function deleteUser() {
   const { accessToken } = getTokens();
 
-  const response = await axios.delete('api/auth', {
+  const response = await axios.delete('/api/auth', {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },

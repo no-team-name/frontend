@@ -6,5 +6,6 @@ export const authState = atom({
   default: {
     isLogin: false,
     nickname: '',
+    role: 'GUEST',
   },
 });
