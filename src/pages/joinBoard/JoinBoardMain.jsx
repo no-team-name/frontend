@@ -4,7 +4,7 @@ import { Card, CardContent, Typography, Pagination, Container, Box, Button, Sele
 import { useNavigate, useLocation } from 'react-router-dom';
 import MainHeader from '../../components/common/MainHeader.jsx';
 import './JoinBoardMain.css';
-
+//
 function JoinBoardMain({
                            openLoginModal,
                            openLogoutModal,
