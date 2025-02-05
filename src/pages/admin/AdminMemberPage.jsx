@@ -21,6 +21,10 @@ const AdminMemberPage = ({
   openNicknameModal,
 }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const handleSidebarToggle = (isOpen) => {
+    setIsSidebarOpen(isOpen);
+  };
   const { role } = useRecoilValue(authState);
   const [members, setMembers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -55,9 +59,9 @@ const AdminMemberPage = ({
 
   return (
     
-    <div className={`main-container ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+    <div className={`admin-container ${isSidebarOpen ? 'ml-64' : ''}`}>
       <MainHeader
-        onBack={() => console.log('Back button clicked')}
+        onSidebarToggle={handleSidebarToggle} 
         logoSrc="/accord-removebg.png"
         openLoginModal={openLoginModal}
         openLogoutModal={openLogoutModal}

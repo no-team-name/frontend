@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import MainHeader from '../components/common/MainHeader';
-import Typing from 'react-typing-effect'; 
+import Typing from 'react-typing-effect';
+import { Icon } from 'semantic-ui-react';
+import { AiFillRobot } from 'react-icons/ai';
+import LogoCarousel from '../components/common/LogoCarousel';
 
 const Main = ({
   openLoginModal,
@@ -66,7 +69,124 @@ const Main = ({
           </button>
         </div>
       </div>
-    </div>
+      </div>
+      <div className={`main-container relative bg-gray-50 ${isSidebarOpen ? 'ml-64' : ''}`}>
+      <LogoCarousel />
+      </div>
+      {/* 서비스 소개 섹션 */}
+      <section className={`main-container relative py-40 bg-gray-50 ${isSidebarOpen ? 'ml-64' : ''}`}>
+        <div className="container mx-auto px-4">
+          <h2 className="text-center mb-14">
+            <span
+              className="block font-extrabold text-black"
+              style={{ fontSize: '84px', lineHeight: '1', marginBottom: '0.2em' }}
+            >
+              Create your project
+            </span>
+            <span
+              className="block text-gray-700"
+              style={{ fontSize: '79.8px', lineHeight: '0.7', marginBottom: '0.2em' }}
+            >
+              with the features
+            </span>
+            <span
+              className="block text-gray-700"
+              style={{ fontSize: '79.8px', lineHeight: '0.3', marginBottom: '0.2em'}}
+            >
+              you want
+            </span>
+          </h2>
+          <p className="text-center text-[26px] text-gray-600 mb-12" style={{ lineHeight: '1.5' }}>
+            Accord empowers you to build and manage projects seamlessly using innovative tools like <br />AI Chat, design collaboration, team notes, kanban boards, voice chat, and live text chat.
+          </p>
+          <div className="flex flex-wrap justify-center gap-8">
+            {/* AI Chat Card */}
+            <div className="p-6 bg-white rounded-lg shadow-md hover:shadow-2xl transform hover:scale-105 transition duration-300 w-[367px] h-[451.5px]">
+              <div className="flex flex-col items-center justify-center h-full">
+                <div className="mb-4">
+                  <AiFillRobot style={{ color: 'black', fontSize: '3rem' }} />
+                </div>
+                <div className="w-[290px] h-[231px] flex flex-col items-center justify-center select-none">
+                  <h3 className="text-2xl font-semibold mb-3">AI Chat</h3>
+                  <p className="text-gray-700 text-center">
+                    Experience intelligent, AI-powered chat designed to streamline team collaboration and boost productivity.
+                  </p>
+                </div>
+              </div>
+            </div>
+            {/* Design Card */}
+            <div className="p-6 bg-white rounded-lg shadow-md hover:shadow-2xl transform hover:scale-105 transition duration-300 w-[367px] h-[451.5px]">
+              <div className="flex flex-col items-center justify-center h-full">
+                <div className="mb-4">
+                  <Icon name="paint brush" size="huge" color="black" />
+                </div>
+                <div className="w-[290px] h-[231px] flex flex-col items-center justify-center select-none">
+                  <h3 className="text-2xl font-semibold mb-3">Design</h3>
+                  <p className="text-gray-700 text-center">
+                    Collaborate in real-time to share and edit design files, ensuring a seamless creative workflow.
+                  </p>
+                </div>
+              </div>
+            </div>
+            {/* Team Notes Card */}
+            <div className="p-6 bg-white rounded-lg shadow-md hover:shadow-2xl transform hover:scale-105 transition duration-300 w-[367px] h-[451.5px]">
+              <div className="flex flex-col items-center justify-center h-full">
+                <div className="mb-4">
+                  <Icon name="sticky note" size="huge" color="black" />
+                </div>
+                <div className="w-[290px] h-[231px] flex flex-col items-center justify-center select-none">
+                  <h3 className="text-2xl font-semibold mb-3">Team Notes</h3>
+                  <p className="text-gray-700 text-center">
+                    Collaborate on documents and ideas seamlessly with interactive team notes that keep everyone aligned.
+                  </p>
+                </div>
+              </div>
+            </div>
+            {/* Kanban Board Card */}
+            <div className="p-6 bg-white rounded-lg shadow-md hover:shadow-2xl transform hover:scale-105 transition duration-300 w-[367px] h-[451.5px]">
+              <div className="flex flex-col items-center justify-center h-full">
+                <div className="mb-4">
+                  <Icon name="tasks" size="huge" color="black" />
+                </div>
+                <div className="w-[290px] h-[231px] flex flex-col items-center justify-center select-none">
+                  <h3 className="text-2xl font-semibold mb-3">Kanban Board</h3>
+                  <p className="text-gray-700 text-center">
+                    Visualize and manage your project workflow effortlessly with our intuitive kanban board.
+                  </p>
+                </div>
+              </div>
+            </div>
+            {/* Voice Chat Card */}
+            <div className="p-6 bg-white rounded-lg shadow-md hover:shadow-2xl transform hover:scale-105 transition duration-300 w-[367px] h-[451.5px]">
+              <div className="flex flex-col items-center justify-center h-full">
+                <div className="mb-4">
+                  <Icon name="headphones" size="huge" color="black" />
+                </div>
+                <div className="w-[290px] h-[231px] flex flex-col items-center justify-center select-none">
+                  <h3 className="text-2xl font-semibold mb-3">Voice Chat</h3>
+                  <p className="text-gray-700 text-center">
+                    Engage in real-time voice conversations for smooth and efficient team communication.
+                  </p>
+                </div>
+              </div>
+            </div>
+            {/* Chat Card */}
+            <div className="p-6 bg-white rounded-lg shadow-md hover:shadow-2xl transform hover:scale-105 transition duration-300 w-[367px] h-[451.5px]">
+              <div className="flex flex-col items-center justify-center h-full">
+                <div className="mb-4">
+                  <Icon name="chat" size="huge" color="black" />
+                </div>
+                <div className="w-[290px] h-[231px] flex flex-col items-center justify-center select-none">
+                  <h3 className="text-2xl font-semibold mb-3">Chat</h3>
+                  <p className="text-gray-700 text-center">
+                    Communicate instantly through our streamlined text chat for effortless information exchange.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
