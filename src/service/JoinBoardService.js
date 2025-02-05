@@ -118,8 +118,8 @@ export const deleteJoinBoard = async (id) => {
 // 특정 게시글의 댓글 가져오기
 export const getAllCommentByJoinBoardId = async (joinBoardId) => {
     try {
-        const response = await apiClient.get(`/api/join-board/${joinBoardId}`);
-        return response.data;
+        const response = await apiClient.get(`/api/comment/${joinBoardId}`);
+        return response.data.data;
     } catch (error) {
         console.error("댓글 가져오기 실패:", error);
         throw error;
@@ -129,9 +129,11 @@ export const getAllCommentByJoinBoardId = async (joinBoardId) => {
 // 댓글 작성
 export const createComment = async (joinBoardId, commentData) => {
     try {
-        const response = await apiClient.post(`/api/join-board/${joinBoardId}/comments`, commentData);
+        const response = await apiClient.post(`/api/comment/${joinBoardId}`, commentData);
+        console.log(response.data);
         return response.data;
     } catch (error) {
+        alert('댓글 작성에 실패하였습니다.');
         console.error("댓글 작성 실패:", error);
         throw error;
     }
@@ -140,7 +142,7 @@ export const createComment = async (joinBoardId, commentData) => {
 // 댓글 수정
 export const updateComment = async (commentId, commentData) => {
     try {
-        const response = await apiClient.put(`/api/comments/${commentId}`, commentData);
+        const response = await apiClient.put(`/api/comment/${commentId}`, commentData);
         return response.data;
     } catch (error) {
         console.error("댓글 수정 실패:", error);
@@ -151,9 +153,10 @@ export const updateComment = async (commentId, commentData) => {
 // 댓글 삭제
 export const deleteComment = async (commentId) => {
     try {
-        const response = await apiClient.delete(`/api/comments/${commentId}`);
+        const response = await apiClient.delete(`/api/comment/${commentId}`);
         return response.data;
     } catch (error) {
+        alert('댓글 삭제에 실패하였습니다.');
         console.error("댓글 삭제 실패:", error);
         throw error;
     }

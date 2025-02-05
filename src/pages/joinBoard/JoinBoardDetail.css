@@ -1,0 +1,27 @@
+.comment-create-button {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.comment-create-button:hover {
+    background-color: black;  /* 배경색을 검정색으로 설정 */
+    color: white;  /* 글자색을 흰색으로 설정 */
+}
+
+.comment-cancel-update-button {
+    background-color: white;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.comment-cancel-update-button:hover {
+    background-color: black;  /* 배경색을 검정색으로 설정 */
+    color: white;  /* 글자색을 흰색으로 설정 */
+}
+
+.comment-update-button {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.comment-update-button:hover {
+    background-color: black;  /* 배경색을 검정색으로 설정 */
+    color: white;  /* 글자색을 흰색으로 설정 */
+}
