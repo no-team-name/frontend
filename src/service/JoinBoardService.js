@@ -4,7 +4,7 @@ import apiClient from "../utils/apiSpring";
 
 // const API_BASE_URL = "http://localhost:8080";
 
-// 게시판 목록 가져오기 (페이지 번호를 파라미터로 전달)
+// 게시판 목록 최신순으로 가져오기 (페이지 번호를 파라미터로 전달)
 export const getJoinBoardCard = async (page = 0) => {
     try {
         const response = await apiClient.get(`/api/join-board?page=${page}`);
@@ -16,7 +16,7 @@ export const getJoinBoardCard = async (page = 0) => {
     }
 }
 
-// 게시판 목록 가져오기 (페이지 번호를 파라미터로 전달)
+// 게시판 제목순으로 가져오기 (페이지 번호를 파라미터로 전달)
 export const getJoinBoardCardByTitle = async (page = 0) => {
     try {
         const response = await apiClient.get(`/api/join-board/sort-by-title?page=${page}`);
@@ -106,4 +106,59 @@ export const deleteJoinBoard = async (id) => {
         throw error;
     }
 };
+
+
+
+
+
+
+
+
+
+// 특정 게시글의 댓글 가져오기
+export const getAllCommentByJoinBoardId = async (joinBoardId) => {
+    try {
+        const response = await apiClient.get(`/api/join-board/${joinBoardId}`);
+        return response.data;
+    } catch (error) {
+        console.error("댓글 가져오기 실패:", error);
+        throw error;
+    }
+};
+
+// 댓글 작성
+export const createComment = async (joinBoardId, commentData) => {
+    try {
+        const response = await apiClient.post(`/api/join-board/${joinBoardId}/comments`, commentData);
+        return response.data;
+    } catch (error) {
+        console.error("댓글 작성 실패:", error);
+        throw error;
+    }
+};
+
+// 댓글 수정
+export const updateComment = async (commentId, commentData) => {
+    try {
+        const response = await apiClient.put(`/api/comments/${commentId}`, commentData);
+        return response.data;
+    } catch (error) {
+        console.error("댓글 수정 실패:", error);
+        throw error;
+    }
+};
+
+// 댓글 삭제
+export const deleteComment = async (commentId) => {
+    try {
+        const response = await apiClient.delete(`/api/comments/${commentId}`);
+        return response.data;
+    } catch (error) {
+        console.error("댓글 삭제 실패:", error);
+        throw error;
+    }
+};
+
+
+
 

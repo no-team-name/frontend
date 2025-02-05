@@ -5,10 +5,29 @@ import {
     getJoinBoard,
     getJoinBoardCard,
     getJoinBoardCardByTitle,
-    searchJoinBoard
+    searchJoinBoard,
+    getAllCommentByJoinBoardId,
+    createComment,
+    deleteComment
 } from '../../service/JoinBoardService';
-import { Container, Typography, Box, Card, CardContent, Divider, IconButton, Menu, MenuItem } from '@mui/material';
+import {
+    Container,
+    Typography,
+    Box,
+    Card,
+    CardContent,
+    Divider,
+    IconButton,
+    Menu,
+    MenuItem,
+    List,
+    ListItem,
+    ListItemText,
+    TextField,
+    Button
+} from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DeleteIcon from '@mui/icons-material/Delete';
 import MainHeader from "../../components/common/MainHeader";
 import "./JoinBoardDetail.css";
 
@@ -19,7 +38,9 @@ function JoinBoardDetail() {
     const [post, setPost] = useState(null);
     const [loading, setLoading] = useState(true);
     const [anchorEl, setAnchorEl] = useState(null);
-    const [page, setPage] = useState(1);  // 페이지 상태
+    const [page, setPage] = useState(1);
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState('');
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -65,29 +86,60 @@ function JoinBoardDetail() {
         const savedPage = localStorage.getItem('currentPage');
         const pageNum = savedPage ? parseInt(savedPage) : 1;
         try {
-            const data = await getJoinBoardCard(pageNum - 1);  // 페이지 번호는 0부터 시작하므로
-            setPage(pageNum); // 현재 페이지 설정
+            const data = await getJoinBoardCard(pageNum - 1);
+            setPage(pageNum);
         } catch (error) {
             console.error("게시판 목록을 가져오는 데 실패했습니다.", error);
         }
     };
 
-    useEffect(() => {
-        // 첫 번째 게시글 상세 정보 로딩
-        fetchPostDetail();
+    // 댓글 불러오기
+    const fetchComments = async () => {
+        try {
+            const data = await getAllCommentByJoinBoardId(id);
+            console.log("댓글 데이터:", data);
 
-        // 페이지 상태 복원
+            setComments(data);
+        } catch (error) {
+            console.error('댓글을 불러오는 데 실패했습니다.', error);
+        }
+    };
+
+    // 댓글 작성
+    const handleCommentSubmit = async () => {
+        if (!newComment.trim()) return;
+
+        try {
+            await createComment(id, { content: newComment });
+            setNewComment('');
+            fetchComments();
+        } catch (error) {
+            console.error('댓글 작성 실패:', error);
+        }
+    };
+
+    // 댓글 삭제
+    const handleDeleteComment = async (commentId) => {
+        try {
+            await deleteComment(commentId);
+            fetchComments();
+        } catch (error) {
+            console.error('댓글 삭제 실패:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchPostDetail();
+        fetchComments();
+
         const savedState = localStorage.getItem('joinBoardState');
         if (savedState) {
             const parsedState = JSON.parse(savedState);
-
-            // 현재 페이지와 정렬 상태 복원
             setPage(parsedState.currentPage || 1);
         } else {
             setPage(1);
         }
 
-        // 뒤로가기 이벤트 리스너 추가
         const handlePopState = () => {
             const savedState = localStorage.getItem('joinBoardState');
             if (savedState) {
@@ -162,7 +214,7 @@ function JoinBoardDetail() {
                                     height: '70px',
                                     borderRadius: '50%',
                                     overflow: 'hidden',
-                                    marginBottom: '10px'  // 이미지와 닉네임 사이 간격
+                                    marginBottom: '10px'
                                 }}>
                                     <img
                                         src={post.memberProfileUrl || 'https://www.cheonyu.com/_DATA/product/63900/63992_1672648178.jpg'}
@@ -194,14 +246,12 @@ function JoinBoardDetail() {
                                     gap: '10px',
                                     marginBottom: '10px'
                                 }}>
-
                                     <Box sx={{
                                         display: 'flex',
                                         flexDirection: 'column',
                                         alignItems: 'center',
-
                                     }}>
-                                        <box>
+                                        <Box>
                                             <Typography sx={{
                                                 fontWeight: 'bold',
                                                 fontSize: '2rem',
@@ -210,9 +260,9 @@ function JoinBoardDetail() {
                                             }}>
                                                 {post.title}
                                             </Typography>
-                                        </box>
+                                        </Box>
 
-                                        <box  sx={{
+                                        <Box sx={{
                                             boxSizing: 'border-box'
                                         }}>
                                             <Typography
@@ -238,7 +288,7 @@ function JoinBoardDetail() {
                                             >
                                                 수정: {post.updatedAt}
                                             </Typography>
-                                        </box>
+                                        </Box>
                                     </Box>
                                 </Typography>
                             </Box>
@@ -310,6 +360,71 @@ function JoinBoardDetail() {
                                 <Typography sx={{ marginLeft: '10px', color: '#333', fontSize: '18px' }}>
                                     {post.content}
                                 </Typography>
+                            </Box>
+                        </Box>
+
+                        {/* 댓글 섹션 */}
+                        <Box sx={{ marginTop: '40px' }}>
+                            <Typography variant="h6" sx={{ color: '#333' }}>댓글</Typography>
+                            <Divider sx={{ marginY: 2, backgroundColor: '#ddd' }} />
+
+                            <List>
+                                {comments.length > 0 ? (
+                                    comments.map((comment) => (
+                                        <ListItem
+                                            key={comment.id}
+                                            sx={{
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                borderBottom: '1px solid #eee',
+                                                paddingY: 2
+                                            }}
+                                        >
+                                            <ListItemText
+                                                primary={comment.content}
+                                                secondary={`작성자: ${comment.author} | ${comment.createdAt}`}
+                                                sx={{
+                                                    '& .MuiListItemText-primary': {
+                                                        color: '#333',
+                                                        fontSize: '1rem',
+                                                        marginBottom: '5px'
+                                                    },
+                                                    '& .MuiListItemText-secondary': {
+                                                        color: '#777',
+                                                        fontSize: '0.8rem'
+                                                    }
+                                                }}
+                                            />
+                                            <IconButton
+                                                edge="end"
+                                                onClick={() => handleDeleteComment(comment.id)}
+                                                sx={{ color: '#999' }}
+                                            >
+                                                <DeleteIcon /> </IconButton>
+                                        </ListItem>
+                                    ))
+                                ) : (
+                                    <Typography variant="body2" sx={{ color: '#777' }}>댓글이 없습니다.</Typography>
+                                )}
+                            </List>
+
+                            {/* 댓글 입력란 */}
+                            <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: '20px' }}>
+                                <TextField
+                                    variant="outlined"
+                                    label="댓글을 작성하세요"
+                                    value={newComment}
+                                    onChange={(e) => setNewComment(e.target.value)}
+                                    sx={{ marginBottom: '10px' }}
+                                />
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleCommentSubmit}
+                                    sx={{ alignSelf: 'flex-end' }}
+                                >
+                                    댓글 작성
+                                </Button>
                             </Box>
                         </Box>
                     </CardContent>
