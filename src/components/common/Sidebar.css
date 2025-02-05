@@ -41,6 +41,15 @@
 .sidebar-content {
     flex-grow: 1;
     color: black;
+    cursor: pointer; /* 마우스 커서를 손가락 모양으로 변경 */
+    user-select: none; /* 텍스트 선택 방지 */
+}
+
+.sidebar-content p:hover {
+    background-color: #e0e0e0; /* 호버 시 배경색 변경 */
+    color: #333; /* 호버 시 텍스트 색상 변경 */
+    transform: scale(1.02); /* 약간 확대하여 강조 */
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.5s ease;
 }
 
 .sidebar-footer {
@@ -69,8 +78,8 @@
 
 .team-dropdown p {
     margin: 5px 0;
-    cursor: pointer; /* 마우스 커서를 손가락 모양으로 변경 */
     transition: background-color 0.2s ease, color 0.2s ease, transform 0.5s ease;
+    cursor: pointer; /* 마우스 커서를 손가락 모양으로 변경 */
     user-select: none; /* 텍스트 선택 방지 */
 }
 

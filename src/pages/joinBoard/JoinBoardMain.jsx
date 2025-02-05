@@ -5,7 +5,14 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import MainHeader from '../../components/common/MainHeader.jsx';
 import './JoinBoardMain.css';
 
-function JoinBoardMain() {
+function JoinBoardMain(
+    {
+        openLoginModal,
+        openLogoutModal,
+        openAccountDeleteModal,
+        openNicknameModal,
+      }
+) {
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -136,7 +143,12 @@ function JoinBoardMain() {
 
     return (
         <>
-            <MainHeader />
+            <MainHeader 
+            openLoginModal={openLoginModal}
+            openLogoutModal={openLogoutModal}
+            openAccountDeleteModal={openAccountDeleteModal}
+            openNicknameModal={openNicknameModal}
+            />
 
             <Container maxWidth="lg" style={{padding: '20px'}}>
                 <br/>
@@ -147,49 +159,52 @@ function JoinBoardMain() {
 
                 <br/>
 
-                <div className="search">
-                    <form onSubmit={handleSearchSubmit} style={{display: 'flex', gap: '10px'}}>
+                <div className="search"
+                    style={{
+                        maxWidth: '900px',
+                        margin: '0 auto 0',
+                        justifyContent: 'right'
+                    }}
+                >
+                <Button
+                    className="create-post-button"
+                    variant="contained"
+                    color="black"
+                    onClick={() => navigate('/create-join-board')}
+                >
+                    글 작성
+                </Button>
+                </div>
+
+                <br/>
+
+                <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    maxWidth: '900px',
+                    margin: '0 auto 20px',
+                }}
+                >
+                <FormControl variant="outlined" style={{ minWidth: '120px', marginTop: '10px' }}>
+                    <InputLabel>정렬</InputLabel>
+                    <Select value={sortOption} onChange={handleSortChange} label="정렬">
+                    <MenuItem value="title">제목순</MenuItem>
+                    <MenuItem value="latest">최신순</MenuItem>
+                    </Select>
+                </FormControl>
+                <form onSubmit={handleSearchSubmit} style={{display: 'flex', gap: '10px'}}>
                         <input
                             ref={inputRef}
                             className="search-input"
                             type="text"
                             value={searchQuery}
                             onChange={handleSearchChange}
+                            style={{maxWidth:'150px'}}
                         />
                         <button className="search-button" type="submit">검색</button>
                     </form>
-                </div>
-
-                <br/>
-
-                <FormControl
-                    variant="outlined"
-                    style={{
-                        minWidth: '120px',
-                        marginTop: '10px',
-                        marginLeft: 'calc(100px + 20px)',
-                    }}
-                >
-                    <InputLabel>정렬</InputLabel>
-                    <Select
-                        value={sortOption}
-                        onChange={handleSortChange}
-                        label="정렬"
-                    >
-                        <MenuItem value="title">제목순</MenuItem>
-                        <MenuItem value="latest">최신순</MenuItem>
-                    </Select>
-                </FormControl>
-
-                <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: '20px'}}>
-                    <Button
-                        className="create-post-button"
-                        variant="contained"
-                        color="black"
-                        onClick={() => navigate('/create-join-board')}
-                    >
-                        글 작성
-                    </Button>
                 </div>
 
                 <div style={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
@@ -207,7 +222,7 @@ function JoinBoardMain() {
                             }}
                             onClick={() => handleCardClick(post.id)}
                         >
-                            <CardContent style={{display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'flex-start'}}>
+                            <CardContent className='card-content' style={{display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'flex-start'}}>
                                 {/* 기존 카드 내용 그대로 유지 */}
                                 <Box style={{
                                     display: 'flex',
