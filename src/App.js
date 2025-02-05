@@ -10,6 +10,8 @@ import AdminMemberPage from './pages/admin/AdminMemberPage';
 import AdminMemberDetailPage from './pages/admin/AdminMemberDetailPage';
 import TeamNote from './pages/TeamNote/TeamNote';
 import TeamCanvas from './pages/TeamCanvas/TeamCanvas';
+import KanbanBoard from './pages/TeamKanbanBoard/KanbanBoard';
+import Card from "./pages/TeamKanbanBoard/Card";
 import AcceptInvitePage from './pages/team/AcceptInvitePage';
 import Main from './pages/Main';
 import { WebSocketProvider } from './context/WebSocketContext';
@@ -19,6 +21,8 @@ import LoginModal from './components/auth/LoginModal';
 import LogoutConfirmModal from './components/auth/LogoutConfirmModal';
 import AccountDeleteModal from './components/auth/AccountDeleteModal';
 import NicknameChangeModal from './components/auth/NicknameChangeModal';
+import TopPlate from "./pages/TeamKanbanBoard/TopPlate";
+
 
 import ChatButton from './components/ai/ChatButton';
 import ChatBox from './components/ai/ChatBox';
@@ -31,6 +35,7 @@ import JoinBoardDetail from "./pages/joinBoard/JoinBoardDetail";
 import CreateJoinBoard from "./pages/joinBoard/CreateJoinBoard";
 import EditJoinBoard from "./pages/joinBoard/EditJoinBoard";
 import Dashboard from './pages/admin/DashBoard';
+import ErrorPage from './pages/error/ErrorPage';
 
 function App() {
 
@@ -101,6 +106,8 @@ function App() {
   };
 
   const sharedProps = {
+    isLogin,
+    nickname,
     openLoginModal: () => setShowLoginModal(true),
     openLogoutModal: () => setShowLogoutModal(true),
     openAccountDeleteModal: () => setShowAccountDeleteModal(true),
@@ -111,24 +118,27 @@ function App() {
   <WebSocketProvider>
     <AudioParticipantsProvider>
       <BrowserRouter>
-        <Routes> 
+        <Routes>
           <Route path="/" element={<Main {...sharedProps} />} />
           <Route path="/note/:team_id" element={<TeamNote {...sharedProps} />} />
           <Route path="/canvas/:teamId" element={<TeamCanvas {...sharedProps} />} />
           <Route path="/accept-invite/:teamId" element={<AcceptInvitePage />} />
 
           <Route path="/admin/dashboard" element={<Dashboard />} />
+          <Route path="/error" element={<ErrorPage />} />
 
-          <Route path="/join-board" element={<JoinBoardMain />} />
-          <Route path="/join-board/:id" element={<JoinBoardDetail />} />
-          <Route path="/create-join-board" element={<CreateJoinBoard />} />
-          <Route path="/edit-join-board/:id" element={<EditJoinBoard />} />
+          <Route path="/join-board" element={<JoinBoardMain {...sharedProps}/>} />
+          <Route path="/join-board/:id" element={<JoinBoardDetail {...sharedProps}/>} />
+          <Route path="/create-join-board" element={<CreateJoinBoard {...sharedProps}/>} />
+          <Route path="/edit-join-board/:id" element={<EditJoinBoard {...sharedProps}/>} />
+            
+          <Route path="/kanban-board/:teamId" element={<KanbanBoard {...sharedProps}/>} />
+          <Route path="/kanban-board/TopPlate" element={<TopPlate {...sharedProps} />} />
 
           <Route path="/admin/members" element={<AdminMemberPage {...sharedProps} />} />
           <Route path="/admin/members/:memberId" element={<AdminMemberDetailPage {...sharedProps} />} />
 
         </Routes>
-
 
 
       {/* 모달들 */}

@@ -1,0 +1,37 @@
+.logo-carousel {
+  overflow: hidden;
+  width: 100%;
+  background-color: #F9FAFB; /* Tailwind CSS gray-50 */
+  padding: 20px 0;
+}
+
+.logo-track {
+  display: flex;
+  animation: scroll 45s linear infinite; /* 45초 동안 부드럽게 이동 */
+  will-change: transform; /* GPU 가속으로 부드러운 애니메이션 */
+}
+
+.logo-item {
+  flex: 0 0 auto;
+  margin: 0 20px; /* 각 로고 좌우에 20px 간격 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-image {
+  height: 50px;
+  width: auto;
+  filter: grayscale(100%);
+}
+
+/* 애니메이션: 로고 목록 한 세트 만큼 이동 */
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* 호버 효과 추가 */
+.logo-item:hover .logo-image {
+  filter: grayscale(0);
+}
