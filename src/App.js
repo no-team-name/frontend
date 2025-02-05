@@ -104,7 +104,7 @@ function App() {
   <WebSocketProvider>
     <AudioParticipantsProvider>
       <BrowserRouter>
-        <Routes>
+        <Routes> 
           <Route path="/" element={<Main {...sharedProps} />} />
           <Route path="/note/:team_id" element={<TeamNote {...sharedProps} />} />
           <Route path="/canvas/:teamId" element={<TeamCanvas {...sharedProps} />} />

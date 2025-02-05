@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Button, Icon, Header } from 'semantic-ui-react';
 
+
 // 필요하다면 SVG 아이콘 경로를 실제로 교체
 import GoogleIcon from '../../assets/google.svg';
 import KakaoIcon from '../../assets/kakao.svg';

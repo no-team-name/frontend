@@ -90,12 +90,14 @@ function EditJoinBoard() {
         e.preventDefault();
 
         try {
-            await updateJoinBoard(id, post);
+            const result = await updateJoinBoard(id, post);
+            console.log(result);
             alert('게시글이 수정되었습니다.');
             navigate(`/join-board/${id}`, {
                 state: { fromEdit: true }
             });
         } catch (error) {
+            alert('게시글 수정에 실패하였습니다.');
             console.error('게시글 수정 실패:', error);
         }
     };
