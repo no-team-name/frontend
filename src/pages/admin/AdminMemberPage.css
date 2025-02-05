@@ -9,9 +9,8 @@
   box-shadow: none !important;             /* 그림자 제거 */
 }
 
-.main-container.sidebar-open {
-  margin-left: 250px;
-  /* 사이드바 너비만큼 오른쪽으로 밀림 */
+.admin-container {
+  transition: margin-left 0.3s ease;
 }
 
 .ui.secondary.menu .item {

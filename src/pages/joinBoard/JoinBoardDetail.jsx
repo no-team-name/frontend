@@ -33,7 +33,14 @@ import EditIcon from '@mui/icons-material/Edit'; // 수정 아이콘 추가
 import MainHeader from "../../components/common/MainHeader";
 import "./JoinBoardDetail.css";
 
-function JoinBoardDetail() {
+function JoinBoardDetail(
+    {
+        openLoginModal,
+        openLogoutModal,
+        openAccountDeleteModal,
+        openNicknameModal,
+      }
+) {
     const { id } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
@@ -209,7 +216,13 @@ function JoinBoardDetail() {
 
     return (
         <>
-            <MainHeader />
+            <MainHeader 
+            logoSrc="/path/to/your/logo.png"
+            openLoginModal={openLoginModal}
+            openLogoutModal={openLogoutModal}
+            openAccountDeleteModal={openAccountDeleteModal}
+            openNicknameModal={openNicknameModal}
+            />
             <Container maxWidth="lg" sx={{ padding: '40px 20px', backgroundColor: '#fff', minHeight: '100vh' }}>
                 <Card sx={{
                     backgroundColor: '#fff',

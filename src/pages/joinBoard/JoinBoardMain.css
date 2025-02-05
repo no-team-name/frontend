@@ -67,7 +67,12 @@
     background-color: #efefef;
 }
 
-.test {
-
+.board-container {
+    transition: margin-left 0.3s ease;
 }
 
+
+.card-content {
+    cursor: pointer; /* 마우스 커서를 손가락 모양으로 변경 */
+    user-select: none; /* 텍스트 선택 방지 */
+}

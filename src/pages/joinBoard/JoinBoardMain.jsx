@@ -5,7 +5,12 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import MainHeader from '../../components/common/MainHeader.jsx';
 import './JoinBoardMain.css';
 
-function JoinBoardMain() {
+function JoinBoardMain({
+                           openLoginModal,
+                           openLogoutModal,
+                           openAccountDeleteModal,
+                           openNicknameModal,
+                       }) {
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -17,13 +22,17 @@ function JoinBoardMain() {
     const [isSearching, setIsSearching] = useState(false);
     const [sortOption, setSortOption] = useState('latest');
     const inputRef = useRef(null);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    // 페이지 상태를 localStorage에 저장
+    const handleSidebarToggle = (isOpen) => {
+        console.log('Sidebar toggle:', isOpen);
+        setIsSidebarOpen(isOpen);
+    };
+
     const savePageState = (state) => {
         localStorage.setItem('joinBoardState', JSON.stringify(state));
     };
 
-    // 데이터 로드 함수
     const loadData = async (page, searchQuery = '', isSearching = false, sortOption = 'latest') => {
         setLoading(true);
         try {
@@ -54,20 +63,17 @@ function JoinBoardMain() {
         }
     };
 
-    // 초기 로드 및 뒤로가기 처리
     useEffect(() => {
         const savedState = localStorage.getItem('joinBoardState');
 
         if (savedState) {
             const parsedState = JSON.parse(savedState);
 
-            // 상태 복원
             setCurrentPage(parsedState.currentPage || 1);
             setSortOption(parsedState.sortOption || 'latest');
             setSearchQuery(parsedState.searchQuery || '');
             setIsSearching(parsedState.isSearching || false);
 
-            // 복원된 상태로 데이터 로드
             loadData(
                 parsedState.currentPage - 1,
                 parsedState.searchQuery,
@@ -75,7 +81,6 @@ function JoinBoardMain() {
                 parsedState.sortOption
             );
         } else {
-            // 초기 데이터 로드
             loadData(0);
         }
     }, []);
@@ -136,236 +141,242 @@ function JoinBoardMain() {
 
     return (
         <>
-            <MainHeader />
+            <div className={`board-container`}>
+                <MainHeader
+                    logoSrc="/path/to/your/logo.png"
+                    openLoginModal={openLoginModal}
+                    openLogoutModal={openLogoutModal}
+                    openAccountDeleteModal={openAccountDeleteModal}
+                    openNicknameModal={openNicknameModal}
+                    onSidebarToggle={handleSidebarToggle}
+                />
+                <div className={`board-container ${isSidebarOpen ? 'ml-64' : ''}`}>
 
-            <Container maxWidth="lg" style={{padding: '20px'}}>
-                <br/>
-                <Typography variant="h3" component="div" align="center"
-                            style={{fontWeight: 'bold', marginBottom: '20px', color: 'black'}}>
-                    <span className="home-title" onClick={homeClick}>Join Board</span>
-                </Typography>
+                    <Container maxWidth="lg" style={{padding: '20px'}}>
+                        <br/>
+                        <Typography variant="h3" component="div" align="center"
+                                    style={{fontWeight: 'bold', marginBottom: '20px', color: 'black'}}>
+                            <span className="home-title" onClick={homeClick}>Join Board</span>
+                        </Typography>
 
-                <br/>
+                        <br/>
 
-                <div className="search">
-                    <form onSubmit={handleSearchSubmit} style={{display: 'flex', gap: '10px'}}>
-                        <input
-                            ref={inputRef}
-                            className="search-input"
-                            type="text"
-                            value={searchQuery}
-                            onChange={handleSearchChange}
-                        />
-                        <button className="search-button" type="submit">검색</button>
-                    </form>
-                </div>
-
-                <br/>
-
-                <FormControl
-                    variant="outlined"
-                    style={{
-                        minWidth: '120px',
-                        marginTop: '10px',
-                        marginLeft: 'calc(100px + 20px)',
-                    }}
-                >
-                    <InputLabel>정렬</InputLabel>
-                    <Select
-                        value={sortOption}
-                        onChange={handleSortChange}
-                        label="정렬"
-                    >
-                        <MenuItem value="title">제목순</MenuItem>
-                        <MenuItem value="latest">최신순</MenuItem>
-                    </Select>
-                </FormControl>
-
-                <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: '20px'}}>
-                    <Button
-                        className="create-post-button"
-                        variant="contained"
-                        color="black"
-                        onClick={() => navigate('/create-join-board')}
-                    >
-                        글 작성
-                    </Button>
-                </div>
-
-                <div style={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
-                    {posts.map(post => (
-                        <Card
-                            className="card"
-                            key={post.id}
-                            style={{
-                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                                padding: '20px',
-                                width: '100%',
-                                maxWidth: '900px',
-                                margin: '0 auto',
-                                borderRadius: '10px'
-                            }}
-                            onClick={() => handleCardClick(post.id)}
+                        <div className="search"
+                             style={{
+                                 maxWidth: '900px',
+                                 margin: '0 auto 0',
+                                 justifyContent: 'right'
+                             }}
                         >
-                            <CardContent style={{display: 'flex', justifyContent: 'space-between', width: '100%'
-                                , alignItems: 'flex-start' , boxSizing: 'border-box', marginTop:'30px'}}>
-                                {/* 기존 카드 내용 그대로 유지 */}
-                                <Box style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    marginRight: '20px',
-                                    height: '85px',
-                                    justifyContent: 'space-between'
-                                }}>
-                                    <div style={{
-                                        width: '55px',
-                                        height: '55px',
-                                        borderRadius: '50%',
-                                        overflow: 'hidden'
-                                    }}>
-                                        <img
-                                            src={post.memberProfileUrl || 'https://www.cheonyu.com/_DATA/product/63900/63992_1672648178.jpg'}
-                                            alt={post.memberNickname}
-                                            style={{
-                                                width: '100%',
-                                                height: '100%',
-                                                objectFit: 'cover',
-                                                aspectRatio: '1/1',
-                                                borderRadius: '50%'
-                                            }}
-                                        />
-                                    </div>
-                                    <Typography variant="body2" color="text.secondary" style={{marginBottom: '5px', fontSize: '16px'}}>
-                                        {post.memberNickname}
-                                    </Typography>
-                                </Box>
+                            <Button
+                                className="create-post-button"
+                                variant="contained"
+                                color="black"
+                                onClick={() => navigate('/create-join-board')}
+                            >
+                                글 작성
+                            </Button>
+                        </div>
 
-                                {/* 본문 섹션 */}
-                                <Box style={{flex: 1 }} >
-                                    <Typography variant="h5" component="div"
-                                                style={{fontWeight: 'bold', marginBottom: '10px', fontSize: '25px'}}>
-                                        {post.title}
+                        <br/>
 
-                                        <Typography variant="body2" color="text.secondary"
-                                                    style={{marginBottom: '5px', color:'#a6a6a6',
-                                                        fontSize: '15px'
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                maxWidth: '900px',
+                                margin: '0 auto 20px',
+                            }}
+                        >
+                            <FormControl variant="outlined" style={{ minWidth: '120px', marginTop: '10px' }}>
+                                <InputLabel>정렬</InputLabel>
+                                <Select value={sortOption} onChange={handleSortChange} label="정렬">
+                                    <MenuItem value="title">제목순</MenuItem>
+                                    <MenuItem value="latest">최신순</MenuItem>
+                                </Select>
+                            </FormControl>
+                            <form onSubmit={handleSearchSubmit} style={{display: 'flex', gap: '10px'}}>
+                                <input
+                                    ref={inputRef}
+                                    className="search-input"
+                                    type="text"
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
+                                    style={{maxWidth:'150px'}}
+                                />
+                                <button className="search-button" type="submit">검색</button>
+                            </form>
+                        </div>
+
+                        <div style={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
+                            {posts.map(post => (
+                                <Card
+                                    className="card"
+                                    key={post.id}
+                                    style={{
+                                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                                        padding: '20px',
+                                        width: '100%',
+                                        maxWidth: '900px',
+                                        margin: '0 auto',
+                                        borderRadius: '10px'
+                                    }}
+                                    onClick={() => handleCardClick(post.id)}
+                                >
+                                    <CardContent className='card-content' style={{display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'flex-start'}}>
+                                        {/* 기존 카드 내용 그대로 유지 */}
+                                        <Box style={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'center',
+                                            marginRight: '20px',
+                                            height: '85px',
+                                            justifyContent: 'space-between'
                                         }}>
-                                            {post.createdAt}
-                                        </Typography>
-                                    </Typography>
+                                            <div style={{
+                                                width: '55px',
+                                                height: '55px',
+                                                borderRadius: '50%',
+                                                overflow: 'hidden'
+                                            }}>
+                                                <img
+                                                    src={post.memberProfileUrl || 'https://www.cheonyu.com/_DATA/product/63900/63992_1672648178.jpg'}
+                                                    alt={post.memberNickname}
+                                                    style={{
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        objectFit: 'cover',
+                                                        aspectRatio: '1/1',
+                                                        borderRadius: '50%'
+                                                    }}
+                                                />
+                                            </div>
+                                            <Typography variant="body2" color="text.secondary" style={{marginBottom: '5px'}}>
+                                                {post.memberNickname}
+                                            </Typography>
+                                        </Box>
 
-                                    <Typography
-                                        variant="body2"
-                                        sx={{
-                                            color: '#a6a6a6',
-                                            marginTop: '30px',
-                                            marginBottom: '10px',
-                                            boxSizing: 'border-box',
-                                            paddingBottom: '0px',
-                                            fontSize: '15px'
-                                        }}
-                                    >
-                                        주제
-                                        <span style={{ fontWeight: 'bold', marginLeft: '10px', color: '#595959',  fontSize: '17px' }}>{post.topic}</span>
-                                    </Typography>
+                                        {/* 본문 섹션 */}
+                                        <Box style={{flex: 1}}>
+                                            <Typography variant="h5" component="div"
+                                                        style={{fontWeight: 'bold', marginBottom: '10px'}}>
+                                                {post.title}
 
+                                                <Typography variant="body2" color="text.secondary"
+                                                            style={{marginBottom: '5px'}}>
+                                                    {post.createdAt}
+                                                </Typography>
+                                            </Typography>
 
-                                    <Typography
-                                        variant="body2"
-                                        sx={{
-                                            color: '#a6a6a6',
-                                            marginBottom: '10px',
-                                            boxSizing: 'border-box',
-                                            paddingTop: '0px',
-                                            paddingBottom: '0px',
-                                            fontSize: '15px'
-                                        }}
-                                    >
-                                        팀 이름
-                                        <span style={{
-                                            fontWeight: 'bold',
-                                            marginLeft: '10px',
-                                            color: '#595959',
-                                            fontSize: '17px',
-                                        }}>{post.teamName}</span>
-                                    </Typography>
-
-
-                                    <Typography
-                                        variant="body2"
-                                        sx={{
-                                            color: '#a6a6a6',
-                                            marginTop: '10px',
-                                            boxSizing: 'border-box',
-                                            paddingTop: '0px',
-                                            paddingBottom: '0px',
-                                            fontSize: '15px'
-                                        }}
-                                    >
-                                        소개글
-                                        <span style={{
-                                            fontWeight: 'bold',
-                                            fontSize: '17px',
-                                            marginLeft: '10px',
-                                            color: '#595959'
-                                        }}>{post.projectBio}</span>
-                                    </Typography>
+                                            <Typography
+                                                variant="body2"
+                                                sx={{
+                                                    color: '#a6a6a6',
+                                                    marginBottom: '10px',
+                                                    boxSizing: 'border-box',
+                                                    paddingBottom: '0px'
+                                                }}
+                                            >
+                                                <strong>주제</strong>
+                                                <span style={{ fontWeight: 'bold', marginLeft: '10px', color: '#595959' }}>{post.topic}</span>
+                                            </Typography>
 
 
-                                </Box>
+                                            <Typography
+                                                variant="body2"
+                                                sx={{
+                                                    color: '#a6a6a6',
+                                                    marginBottom: '10px',
+                                                    boxSizing: 'border-box',
+                                                    paddingTop: '0px',
+                                                    paddingBottom: '0px'
+                                                }}
+                                            >
+                                                <strong>팀 이름</strong>
+                                                <span style={{
+                                                    fontWeight: 'bold',
+                                                    marginLeft: '10px',
+                                                    color: '#595959'
+                                                }}>{post.teamName}</span>
+                                            </Typography>
 
-                                {/* 날짜 및 인원 섹션 */}
-                                <Box style={{textAlign: 'right', paddingRight: '20px', boxSizing: 'border-box' , marginTop: '103px' }}>
-                                    <Typography variant="body2" color="text.secondary"
-                                                style={{marginBottom: '5px', boxSizing: 'border-box', paddingBottom: '3px', color:'#a6a6a6', fontSize: '15px'}}>
-                                        프로젝트 기간
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary"
-                                                style={{marginBottom: '5px', boxSizing: 'border-box', paddingTop: '0px', paddingBottom: '2px', color: '#595959', fontSize: '15px'}}>
-                                        {new Date(post.startDate).toLocaleDateString()} ~ {new Date(post.endDate).toLocaleDateString()}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary"
-                                                style={{marginBottom: '5px', boxSizing: 'border-box', paddingTop: '7px', color:'#a6a6a6', fontSize: '15px'}}>
-                                        현재 인원 <span style={{  color: '#595959', fontSize: '17px' }}> {post.peopleNumber}명</span>
-                                    </Typography>
-                                </Box>
-                            </CardContent>
-                        </Card>
-                    ))}
+
+                                            <Typography
+                                                variant="body2"
+                                                sx={{
+                                                    color: '#a6a6a6',
+                                                    marginTop: '10px',
+                                                    boxSizing: 'border-box',
+                                                    paddingTop: '0px',
+                                                    paddingBottom: '0px'
+                                                }}
+                                            >
+                                                <strong>소개글</strong>
+                                                <span style={{
+                                                    fontWeight: 'bold',
+                                                    marginLeft: '10px',
+                                                    color: '#595959'
+                                                }}>{post.projectBio}</span>
+                                            </Typography>
+
+
+                                        </Box>
+
+                                        {/* 날짜 및 인원 섹션 */}
+                                        <Box style={{textAlign: 'right', paddingRight: '20px'}}>
+                                            <Typography variant="body2" color="text.secondary"
+                                                        style={{marginBottom: '5px', boxSizing: 'border-box', paddingBottom: '3px'}}>
+                                                <strong>시작일</strong> {new Date(post.startDate).toLocaleDateString()}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary"
+                                                        style={{marginBottom: '5px', boxSizing: 'border-box', paddingTop: '0px', paddingBottom: '2px'}}>
+                                                <strong>종료일</strong> {new Date(post.endDate).toLocaleDateString()}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary"
+                                                        style={{marginBottom: '5px', boxSizing: 'border-box', paddingTop: '75px'}}>
+                                                <strong>현재 인원</strong> {post.peopleNumber} / 4
+                                            </Typography>
+                                        </Box>
+                                    </CardContent>
+                                </Card>
+                            ))}
+                        </div>
+
+                        {/* 페이지네이션 섹션 */}
+                        <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
+                            <Pagination
+                                count={totalPages}
+                                page={currentPage}
+                                onChange={handlePageChange}
+                                size="large"
+                                sx={{
+                                    "& .MuiPaginationItem-root": {
+                                        backgroundColor: "white",
+                                        color: "black",
+                                        borderRadius: '50%',
+                                        "&:hover": {
+                                            backgroundColor: "lightgray",
+                                            color: "black",
+                                        },
+                                    },
+                                    "& .MuiPaginationItem-root.selected": {
+                                        backgroundColor: "gray !important",
+                                        color: "white !important",
+                                        fontWeight: 'bold',
+                                        borderRadius: '50%',
+                                    },
+                                    "& .MuiPaginationItem-previousNext": {
+                                        backgroundColor: "transparent",
+                                        color: "black",
+                                    },
+                                }}
+                            />
+                        </div>
+
+                    </Container>
                 </div>
-
-                {/* 페이지네이션 섹션 */}
-                <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
-                    <Pagination
-                        count={totalPages}
-                        page={currentPage}
-                        onChange={handlePageChange}
-                        size="large"
-                        sx={{
-                            "& .MuiPaginationItem-root": {
-                                backgroundColor: "white",
-                                color: "black",
-                                borderRadius: '50%',
-                                "&:hover": {
-                                    backgroundColor: "lightgray",
-                                    color: "black",
-                                },
-                            },
-                            "& .MuiPaginationItem-root.selected": {
-                                backgroundColor: "gray !important",
-                                color: "white !important",
-                                fontWeight: 'bold',
-                                borderRadius: '50%',
-                            },
-                            "& .MuiPaginationItem-previousNext": {
-                                backgroundColor: "transparent",
-                                color: "black",
-                            },
-                        }}
-                    />
-                </div>
-            </Container>
+            </div>
         </>
     );
 }
