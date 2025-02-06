@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import MainHeader from '../components/common/MainHeader';
 import TeamMemberCard from '../components/common/TeamMemberCard';
-import yubinemonImg from '../assets/park.png';
-import choijinguImg from '../assets/choi.png';
-import simjinguImg from '../assets/sim.png';
-import jungjinguImg from '../assets/jung.png';
-import leejinguImg from '../assets/lee.png';
+import yubinemonImg from '../assets/park.jpg';
+import choijinguImg from '../assets/choi.jpg';
+import simjinguImg from '../assets/sim.jpg';
+import jungjinguImg from '../assets/jung.jpg';
+import leejinguImg from '../assets/lee.jpg';
 
 const AboutUs = ({
   openLoginModal,
@@ -46,7 +46,7 @@ const AboutUs = ({
           {/* 팀원 카드 (3개 + 2개) */}
           <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
             <TeamMemberCard
-              imageUrl={leejinguImg}
+              imageUrl={choijinguImg}
               memberName="최요셉"
               github="https://github.com/yoda-yoda/yoda-yoda"
               email="aslopeys941@gmail.com"
@@ -66,13 +66,13 @@ const AboutUs = ({
           </div>
           <div style={{ display: 'flex', gap: '20px' }}>
             <TeamMemberCard
-              imageUrl={simjinguImg}
+              imageUrl={leejinguImg}
               memberName="이시현"
               github="https://github.com/Philo-LEE"
               email="tlgus7777@gmail.com"
             />
             <TeamMemberCard
-              imageUrl={choijinguImg}
+              imageUrl={simjinguImg}
               memberName="심윤보"
               github="https://github.com/Waffle-ens/Project_Repository1"
               email="ensoary@gmail.com"
