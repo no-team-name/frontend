@@ -26,7 +26,12 @@ Chart.register(
   Legend
 );
 
-function Dashboard() {
+function Dashboard({
+  openLoginModal,
+  openLogoutModal,
+  openAccountDeleteModal,
+  openNicknameModal,
+}) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleSidebarToggle = (isOpen) => {
@@ -46,7 +51,14 @@ function Dashboard() {
 
   return (
     <div>
-      <MainHeader title="실시간 모니터링 대시보드"onSidebarToggle={handleSidebarToggle} />
+      <MainHeader
+       logoSrc="/path/to/your/logo.png"
+       openLoginModal={openLoginModal}
+       openLogoutModal={openLogoutModal}
+       openAccountDeleteModal={openAccountDeleteModal}
+       openNicknameModal={openNicknameModal}
+       onSidebarToggle={handleSidebarToggle}
+      />
       <div className={`dashboard-container ${isSidebarOpen ? 'ml-64' : ''}`}>
         <ChartTab
           timeRangeOptions={timeRangeOptions}

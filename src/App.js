@@ -31,8 +31,6 @@ import ProfileImageChangeModal from './components/auth/ProfileImageChangeModal';
 import ChatButton from './components/ai/ChatButton';
 import ChatBox from './components/ai/ChatBox';
 
-import { authState } from './recoil/authAtoms';
-
 import JoinBoardMain from "./pages/joinBoard/JoinBoardMain";
 import JoinBoardDetail from "./pages/joinBoard/JoinBoardDetail";
 import CreateJoinBoard from "./pages/joinBoard/CreateJoinBoard";

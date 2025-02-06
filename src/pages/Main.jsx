@@ -10,7 +10,6 @@ const Main = ({
   openLogoutModal,
   openAccountDeleteModal,
   openNicknameModal,
-  openProfileImageChangeModal
 }) => {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -27,7 +26,7 @@ const Main = ({
         openLogoutModal={openLogoutModal}
         openAccountDeleteModal={openAccountDeleteModal}
         openNicknameModal={openNicknameModal}
-        openProfileImageChangeModal={openProfileImageChangeModal}
+        onSidebarToggle={handleSidebarToggle}
       />
     <div className={`main-container relative min-h-screen flex flex-col items-center justify-center bg-gray-50 ${isSidebarOpen ? 'ml-64' : ''}`}>
       {/* 헤더 */}

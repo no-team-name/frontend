@@ -7,6 +7,7 @@ import {
   AiOutlineSave,
 } from "react-icons/ai";
 
+import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from 'recoil';
 import { authState } from '../../recoil/authAtoms';
 
@@ -32,6 +33,7 @@ const NoteHeader = ({
   const { isLogin, nickname } = useRecoilValue(authState);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleShareClick = () => {
     setIsShareModalOpen(true);
@@ -53,7 +55,7 @@ const NoteHeader = ({
   return (
     <div className="flex items-center justify-between px-4 py-2 bg-white border-b border-gray-300">
       {/* 왼쪽 */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2" onClick={() => navigate('/')}>
         <img
           src="/accord-removebg.png"
           alt="Logo"
