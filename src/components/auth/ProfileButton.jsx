@@ -7,6 +7,7 @@ import { userState } from '../../recoil/UserAtoms';
 function ProfileButton({
   onOpenNicknameModal,
   onOpenAccountDeleteModal,
+  onOpenProfileImageModal,
   onOpenLogoutConfirm,
 }) {
   const navigate = useNavigate();
@@ -38,6 +39,15 @@ function ProfileButton({
       onClick: () => {
         setOpen(false);
         onOpenNicknameModal();
+      },
+    },
+    {
+      key: 'changeProfileImg',
+      text: '프로필 이미지 변경',
+      icon: 'images',
+      onClick: () => {
+        setOpen(false);
+        onOpenProfileImageModal();
       },
     },
     {
