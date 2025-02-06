@@ -48,8 +48,8 @@ function JoinBoardDetail() {
     const [editCommentContent, setEditCommentContent] = useState('');
     const [replyToId, setReplyToId] = useState(null);
     const [replyContent, setReplyContent] = useState('');
-
     const inputRef = useRef(null);
+
     const [isComposing, setIsComposing] = useState(false);
 
 
@@ -168,16 +168,14 @@ function JoinBoardDetail() {
         }
     };
 
-    const handleEditStart = (comment) => {
-        setEditingCommentId(comment.id);
-        setEditCommentContent(comment.content);
-    };
 
+    // 댓글 수정 취소 함수 수정
     const handleEditCancel = () => {
         setEditingCommentId(null);
         setEditCommentContent('');
     };
 
+    // 댓글 수정 제출 함수 수정
     const handleEditSubmit = async (commentId) => {
         if (!editCommentContent.trim()) {
             alert('댓글 내용을 입력해주세요.');
@@ -195,12 +193,7 @@ function JoinBoardDetail() {
         }
     };
 
-    // 대댓글 작성 시작
-    const handleReplyStart = (commentId) => {
-        console.log("handleReplyStart - 대댓글 부모 ID 설정:", commentId); // 여기서 commentId가 제대로 전달되는지 확인
-        setReplyToId(commentId);  // 대댓글 작성할 때 부모 댓글 ID를 설정
-        setReplyContent(''); // 대댓글 내용 초기화
-    };
+
 
     // 대댓글 작성 취소
     const handleReplyCancel = () => {
@@ -274,6 +267,7 @@ function JoinBoardDetail() {
 
     // 댓글 아이템 렌더링 컴포넌트
     const CommentItem = ({ comment, depth = 0 }) => {
+
         return (
             <>
                 <ListItem
@@ -282,13 +276,12 @@ function JoinBoardDetail() {
                         justifyContent: 'space-between',
                         borderBottom: '1px solid #eee',
                         paddingY: 2,
-                        marginLeft: `${depth * 40}px`,  // 대댓글일 경우 들여쓰기
+                        marginLeft: `${depth * 40}px`,
                         flexDirection: editingCommentId === comment.id ? 'column' : 'row',
-                        backgroundColor: depth > 0 ? '#f9f9f9' : 'transparent', // 대댓글 배경 색상 변경
+                        backgroundColor: depth > 0 ? '#f9f9f9' : 'transparent',
                     }}
                 >
                     {editingCommentId === comment.id ? (
-                        // 댓글 수정 모드
                         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 2 }}>
                             <TextField
                                 fullWidth
@@ -296,6 +289,10 @@ function JoinBoardDetail() {
                                 onChange={(e) => setEditCommentContent(e.target.value)}
                                 variant="outlined"
                                 multiline
+                                autoFocus
+                                inputProps={{
+                                    style: { caretPosition: 'end' }
+                                }}
                                 InputProps={{
                                     sx: {
                                         "&:hover .MuiOutlinedInput-notchedOutline": {
@@ -374,10 +371,10 @@ function JoinBoardDetail() {
                     )}
                 </ListItem>
 
-                {/* 대댓글 작성 폼 */}
+                {/* 대댓글 작성 폼 수정 */}
                 {replyToId === comment.id && (
                     <Box sx={{
-                        marginLeft: `${(depth + 1) * 40}px`,  // 대댓글이 있을 경우 들여쓰기
+                        marginLeft: `${(depth + 1) * 40}px`,
                         marginTop: 2,
                         marginBottom: 2,
                         display: 'flex',
@@ -386,13 +383,12 @@ function JoinBoardDetail() {
                     }}>
                         <TextField
                             fullWidth
-                            inputRef={inputRef}
                             value={replyContent}
                             onChange={(e) => setReplyContent(e.target.value)}
-                            onCompositionEnd={(e) => setReplyContent(e.target.value)}
                             placeholder="답글을 입력하세요"
                             variant="outlined"
                             size="small"
+                            autoFocus
                             InputProps={{
                                 sx: {
                                     "&:hover .MuiOutlinedInput-notchedOutline": {
@@ -415,12 +411,29 @@ function JoinBoardDetail() {
                     </Box>
                 )}
 
+
                 {/* 대댓글 렌더링 */}
                 {comment.replies?.map(reply => (
                     <CommentItem key={reply.id} comment={reply} depth={depth + 1} />
                 ))}
             </>
         );
+    };
+
+
+    // 댓글 수정 시작 함수 수정
+    const handleEditStart = (comment) => {
+        setEditingCommentId(comment.id);
+        // setTimeout을 사용하여 비동기적으로 상태 업데이트
+        setTimeout(() => {
+            setEditCommentContent(comment.content);
+        }, 0);
+    };
+
+    // 대댓글 작성 시작
+    const handleReplyStart = (commentId) => {
+        setReplyToId(commentId);
+        setReplyContent('');
     };
 
 
