@@ -1,6 +1,6 @@
 import axios from "axios";
 import apiClient from "../utils/apiSpring";
-//
+
 
 // const API_BASE_URL = "http://localhost:8080";
 
@@ -126,10 +126,10 @@ export const getAllCommentByJoinBoardId = async (joinBoardId) => {
     }
 };
 
-// 댓글 작성
+// 댓글 작성 (parentCommentId 에 값이 전달안되면 기본값이 null)
 export const createComment = async (joinBoardId, commentData, parentCommentId = null) => {
 
-    console.log(' parentCommentId:', parentCommentId);  // parentCommentId가 올바르게 출력되는지 확인
+    console.log(' createComment- parentCommentId:', parentCommentId);  // parentCommentId가 올바르게 출력되는지 확인
 
     try {
         // parentCommentId가 있으면 쿼리 파라미터로 추가

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import {
     deleteJoinBoard,
@@ -48,6 +48,15 @@ function JoinBoardDetail() {
     const [editCommentContent, setEditCommentContent] = useState('');
     const [replyToId, setReplyToId] = useState(null);
     const [replyContent, setReplyContent] = useState('');
+
+    const inputRef = useRef(null);
+    const [isComposing, setIsComposing] = useState(false);
+
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [replyContent]);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -135,9 +144,8 @@ function JoinBoardDetail() {
             return;
         }
 
-        // console.log("부모 댓글 ID:", parentCommentId);
-        console.log("제출된 댓글글글글:", newComment);
-        console.log("ID 값값값:", id); // 여기서 id가 undefined거나 null이면 문제 발생 가능
+        console.log("제출된 댓글:", newComment);
+        console.log("ID 값:", id); // 여기서 id가 undefined거나 null이면 문제 발생 가능
 
 
         try {
@@ -188,7 +196,7 @@ function JoinBoardDetail() {
 
     // 대댓글 작성 시작
     const handleReplyStart = (commentId) => {
-        console.log("대댓글 부모 ID 설정:", commentId); // 여기서 commentId가 제대로 전달되는지 확인
+        console.log("handleReplyStart - 대댓글 부모 ID 설정:", commentId); // 여기서 commentId가 제대로 전달되는지 확인
         setReplyToId(commentId);  // 대댓글 작성할 때 부모 댓글 ID를 설정
         setReplyContent(''); // 대댓글 내용 초기화
     };
@@ -256,6 +264,13 @@ function JoinBoardDetail() {
         }
     }, [id]);
 
+
+
+
+
+
+
+
     // 댓글 아이템 렌더링 컴포넌트
     const CommentItem = ({ comment, depth = 0 }) => {
         return (
@@ -280,15 +295,15 @@ function JoinBoardDetail() {
                                 onChange={(e) => setEditCommentContent(e.target.value)}
                                 variant="outlined"
                                 multiline
-                                sx={{
-                                    "& .MuiOutlinedInput-root": {
+                                InputProps={{
+                                    sx: {
                                         "&:hover .MuiOutlinedInput-notchedOutline": {
                                             borderColor: "black",
                                         },
                                         "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                                             borderColor: "black",
                                         },
-                                    },
+                                    }
                                 }}
                             />
                             <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
@@ -342,9 +357,11 @@ function JoinBoardDetail() {
                             />
 
                             <Box sx={{ display: 'flex', gap: 1, ml: 'auto' }}>
+                                {depth < 1 && (    // 대댓글을, 1개까지만(depth < 1 로만) 제한
                                 <IconButton onClick={() => handleReplyStart(comment.id)} sx={{ color: '#999' }}>
                                     <ReplyIcon />
                                 </IconButton>
+                                ) }
                                 <IconButton onClick={() => handleEditStart(comment)} sx={{ color: '#999' }}>
                                     <EditIcon />
                                 </IconButton>
@@ -368,21 +385,17 @@ function JoinBoardDetail() {
                     }}>
                         <TextField
                             fullWidth
+                            inputRef={inputRef}
                             value={replyContent}
                             onChange={(e) => setReplyContent(e.target.value)}
+                            onBlur={() => {
+                                setTimeout(() => {
+                                    if (inputRef.current) inputRef.current.focus();
+                                }, 10);
+                            }}
                             placeholder="답글을 입력하세요"
                             variant="outlined"
                             size="small"
-                            sx={{
-                                "& .MuiOutlinedInput-root": {
-                                    "&:hover .MuiOutlinedInput-notchedOutline": {
-                                        borderColor: "black",
-                                    },
-                                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                                        borderColor: "black",
-                                    },
-                                },
-                            }}
                         />
                         <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
                             <Button className='comment-cancel-update-button' variant="contained" onClick={handleReplyCancel}>
@@ -576,7 +589,7 @@ function JoinBoardDetail() {
 
                         {/* 나머지 본문 섹션 */}
                         {/*<Divider sx={{ marginY: 2, backgroundColor: '#ddd' }} />*/}
-                        <Box sx={{ marginTop: '150px' }}>
+                        <Box sx={{ marginTop: '100px' }}>
                             {/* 주제 */}
                             <Box sx={{ display: 'flex', alignItems:'center', boxSizing: 'border-box' , padding: '0px' , marginBottom: '40px', marginLeft: '50px' }}>
                                 <Typography sx={{ fontWeight: 600, color: '#999999'}}>
@@ -642,11 +655,9 @@ function JoinBoardDetail() {
 
 
                             {/* 내용 */}
-                            <Box sx={{ display: 'flex', flexDirection: 'column', marginTop:'100px', boxSizing: 'border-box', paddingTop:'0px', marginBottom: '350px',
+                            <Box sx={{ display: 'flex', flexDirection: 'column', marginTop:'200px', boxSizing: 'border-box', paddingTop:'0px', marginBottom: '350px',
                                 marginLeft: '50px'}}>
-                                <Typography sx={{ fontWeight: 600, color: '#999999', boxSizing: 'border-box', marginBottom: '30px' }}>
-                                    <strong>내용</strong>
-                                </Typography>
+
                                 <Typography sx={{ boxSizing: 'border-box',  color: '#333', fontSize: '18px', whiteSpace: 'pre-line' }}>
                                     {post.content}
                                 </Typography>
