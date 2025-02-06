@@ -80,6 +80,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       <div className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
         {/* 사이드바 내용 */}
         <div className="sidebar-content p-4">
+          {/* <h2 onClick={() => navigate('/')}>ACCORD</h2> */}
           <h3>Boards</h3>
           <p onClick={() => handleJoinBoard()}>JoinBoard</p>
           <h3>Teams</h3>

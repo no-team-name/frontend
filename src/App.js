@@ -127,6 +127,7 @@ function App() {
     <AudioParticipantsProvider>
       <BrowserRouter>
         <Routes>
+
             {/* ✅ 메인 페이지 (모든 사용자 접근 가능) */}
             <Route path="/" element={<Main {...sharedProps} />} />
 

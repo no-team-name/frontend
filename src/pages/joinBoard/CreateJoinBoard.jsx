@@ -49,7 +49,14 @@ const StyledTextField = styled(TextField)({
     }
 });
 
-const CreateJoinBoard = () => {
+const CreateJoinBoard = (
+    {
+        openLoginModal,
+        openLogoutModal,
+        openAccountDeleteModal,
+        openNicknameModal,
+      }
+) => {
     const [formData, setFormData] = useState({
         title: '',
         topic: '',
@@ -91,7 +98,13 @@ const CreateJoinBoard = () => {
 
     return (
         <>
-            <MainHeader />
+            <MainHeader 
+            logoSrc="/path/to/your/logo.png"
+            openLoginModal={openLoginModal}
+            openLogoutModal={openLogoutModal}
+            openAccountDeleteModal={openAccountDeleteModal}
+            openNicknameModal={openNicknameModal}
+            />
             <StyledContainer maxWidth="lg"> {/* sm에서 lg로 변경 */}
                 <StyledCard>
                     <CardContent sx={{ padding: '40px' }}> {/* 내부 여백 증가 */}
