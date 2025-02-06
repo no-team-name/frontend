@@ -66,7 +66,7 @@ class AiChatService {
   }
 
   removeOnMessageReceived() {
-    this.onMessageReceived = () => {}; 
+    this.onMessageReceived = () => {};
   }
 }
 

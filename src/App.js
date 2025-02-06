@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useRecoilState } from 'recoil';
 
 import { userState } from './recoil/UserAtoms';
+import { authState } from './recoil/authAtoms';
 
 import apiClient from './utils/apiSpring';
 
@@ -16,6 +17,7 @@ import KanbanBoard from './pages/TeamKanbanBoard/KanbanBoard';
 import Card from "./pages/TeamKanbanBoard/Card";
 import AcceptInvitePage from './pages/team/AcceptInvitePage';
 import Main from './pages/Main';
+
 import { WebSocketProvider } from './context/WebSocketContext';
 import { AudioParticipantsProvider } from './context/AudioParticipantsContext';
 
@@ -24,13 +26,12 @@ import LogoutConfirmModal from './components/auth/LogoutConfirmModal';
 import AccountDeleteModal from './components/auth/AccountDeleteModal';
 import NicknameChangeModal from './components/auth/NicknameChangeModal';
 import TopPlate from "./pages/TeamKanbanBoard/TopPlate";
-
+import ProfileImageChangeModal from './components/auth/ProfileImageChangeModal';
 
 import ChatButton from './components/ai/ChatButton';
 import ChatBox from './components/ai/ChatBox';
 
 import { authState } from './recoil/authAtoms';
-
 
 import JoinBoardMain from "./pages/joinBoard/JoinBoardMain";
 import JoinBoardDetail from "./pages/joinBoard/JoinBoardDetail";
@@ -49,7 +50,6 @@ function App() {
   const [user, setUser] = useRecoilState(userState);
   const [isLogin, setIsLogin] = useState(false);
   const [nickname, setNickname] = useState('');
-
   const [auth, setAuth] = useRecoilState(authState);
 
 
@@ -59,6 +59,7 @@ function App() {
   const [showAccountDeleteModal, setShowAccountDeleteModal] = useState(false);
   const [showNicknameModal, setShowNicknameModal] = useState(false);
   const [showChatBox, setShowChatBox] = useState(false);
+  const [showProfileImageChangeModal, setShowProfileImageChangeModal] = useState(false);
 
   useEffect(() => {
     console.log('App.js useEeffect')
@@ -86,7 +87,7 @@ function App() {
             teams
           });
 
-          setAuth(prev => ({ ...prev, nickname: nickname, role: role }));
+          setAuth(prev => ({ ...prev, nickname: nickname, role: role, profileImage: profileImage }));
 
         })
         .catch((err) => {
@@ -113,6 +114,12 @@ function App() {
     setAuth(prev => ({ ...prev, nickname: newNickname }));
   };
 
+  // 프로필 이미지 변경
+  const handleProfileImageUrlUpdate = (newProfileUrl) =>{
+    setUser(prev => ({...prev, profileImage: newProfileUrl}))
+  };
+  
+
   const sharedProps = {
     isLogin,
     nickname,
@@ -120,6 +127,7 @@ function App() {
     openLogoutModal: () => setShowLogoutModal(true),
     openAccountDeleteModal: () => setShowAccountDeleteModal(true),
     openNicknameModal: () => setShowNicknameModal(true),
+    openProfileImageChangeModal: () => setShowProfileImageChangeModal(true),
   };
 
   return (
@@ -157,6 +165,7 @@ function App() {
         </Routes>
 
 
+
       {/* 모달들 */}
       <LoginModal
         open={showLoginModal}
@@ -177,6 +186,12 @@ function App() {
         onClose={() => setShowNicknameModal(false)}
         currentNickname={auth.nickname}
         onNicknameUpdate={handleNicknameUpdate}
+      />
+      <ProfileImageChangeModal
+        open={showProfileImageChangeModal}
+        onClose={() => setShowProfileImageChangeModal(false)}
+        currentprofileImageUrl={user.profileImage}
+        onProfileUrlUpdate={handleProfileImageUrlUpdate}
       />
       <ChatButton onClick={() => setShowChatBox(true)} />
       <ChatBox isOpen={showChatBox} onClose={() => setShowChatBox(false)} />
