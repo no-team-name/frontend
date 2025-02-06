@@ -20,6 +20,7 @@ import Main from './pages/Main';
 
 import { WebSocketProvider } from './context/WebSocketContext';
 import { AudioParticipantsProvider } from './context/AudioParticipantsContext';
+import AboutUs from './pages/AboutUs';
 
 import LoginModal from './components/auth/LoginModal';
 import LogoutConfirmModal from './components/auth/LogoutConfirmModal';
@@ -42,6 +43,9 @@ import UnauthorizedPage from './pages/error/UnauthorizedPage';
 import Footer from './components/common/Footer';
 
 import WithAuthComponent from './hoc/WithAuthComponent';
+
+import apiClient from './utils/apiSpring';
+
 
 function App() {
 
@@ -68,6 +72,7 @@ function App() {
 
       // 서버에서 닉네임 가져오기
       apiClient.get('/api/member/userinfos', {
+
         headers: { Authorization: `Bearer ${accessToken}` },
         withCredentials: true,
       })
@@ -151,6 +156,8 @@ function App() {
             <Route path="/admin/members" element={<WithAuthComponent component={AdminMemberPage} requiredRole="ADMIN" {...sharedProps} />} />
             <Route path="/admin/members/:memberId" element={<WithAuthComponent component={AdminMemberDetailPage} requiredRole="ADMIN" {...sharedProps} />} />
 
+          <Route path="/about-us" element={<AboutUs {...sharedProps} />} />
+
             {/* ✅ 가입 게시판 관련 (로그인 필요) */}
             <Route path="/join-board" element={<WithAuthComponent component={JoinBoardMain} {...sharedProps} />} />
             <Route path="/join-board/:id" element={<WithAuthComponent component={JoinBoardDetail} {...sharedProps} />} />
@@ -160,6 +167,7 @@ function App() {
             {/* ✅ 에러 페이지 (모든 사용자 접근 가능) */}
             <Route path="/error" element={<ErrorPage {...sharedProps} />} />
             <Route path="/unauthorized" element={<UnauthorizedPage {...sharedProps} />} />
+
         </Routes>
 
 

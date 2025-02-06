@@ -98,6 +98,7 @@ const Sidebar = ({ isOpen, onClose }) => {
               </div>
             </div>
           ))}
+          <p onClick={() => navigate('/about-us')}>About us</p>
         </div>
 
         <div className="sidebar-footer">
