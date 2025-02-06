@@ -13,6 +13,7 @@ import { authState } from '../../recoil/authAtoms';
 import LoginButton from "../auth/LoginButton";
 import ProfileButton from "../auth/ProfileButton";
 import ShareModal from './ShareModal';
+import TeamChat from "../teamChat/TeamChat";
 
 const NoteHeader = ({
   teamId,
@@ -30,6 +31,7 @@ const NoteHeader = ({
 }) => {
   const { isLogin, nickname } = useRecoilValue(authState);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const handleShareClick = () => {
     setIsShareModalOpen(true);
@@ -38,6 +40,15 @@ const NoteHeader = ({
   const handleCloseShareModal = () => {
     setIsShareModalOpen(false);
   };
+
+  const handleChatClick = () => {
+    setIsChatOpen(true);
+  };
+
+  const handleCloseChat = () => {
+    setIsChatOpen(false);
+  };
+
 
   return (
     <div className="flex items-center justify-between px-4 py-2 bg-white border-b border-gray-300">
@@ -69,7 +80,7 @@ const NoteHeader = ({
           className="flex items-center justify-center w-8 h-8 rounded-md border 
                      border-gray-300 bg-gray-100 text-gray-600 
                      hover:text-gray-900 hover:bg-gray-200"
-          onClick={onChat}
+          onClick={handleChatClick}
         >
           <AiOutlineMessage size={18} />
         </button>
@@ -104,6 +115,7 @@ const NoteHeader = ({
         )}
       </div>
       <ShareModal isOpen={isShareModalOpen} onClose={handleCloseShareModal} teamId={teamId} />
+      {isChatOpen && <TeamChat teamId={teamId} onClose={handleCloseChat} />}
     </div>
   );
 };

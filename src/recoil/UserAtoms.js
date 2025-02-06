@@ -10,5 +10,6 @@ export const userState = atom({
     nickname: '',
     profileImage: '',
     role:'GUEST',
+    teams: [],
   },
 });

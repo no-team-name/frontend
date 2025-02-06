@@ -6,6 +6,8 @@ import { useRecoilState } from 'recoil';
 
 import { userState } from './recoil/UserAtoms';
 
+import apiClient from './utils/apiSpring';
+
 import AdminMemberPage from './pages/admin/AdminMemberPage';
 import AdminMemberDetailPage from './pages/admin/AdminMemberDetailPage';
 import TeamNote from './pages/TeamNote/TeamNote';
@@ -37,6 +39,8 @@ import EditJoinBoard from "./pages/joinBoard/EditJoinBoard";
 import Dashboard from './pages/admin/DashBoard';
 import ErrorPage from './pages/error/ErrorPage';
 
+import Footer from './components/common/Footer';
+
 function App() {
 
   const [user, setUser] = useRecoilState(userState);
@@ -61,7 +65,7 @@ function App() {
       setAuth(prev => ({ ...prev, isLogin: true }));
 
       // 서버에서 닉네임 가져오기
-      axios.get('http://localhost:8082/spring/api/member/userinfos', {
+      apiClient.get('/api/member/userinfos', {
         headers: { Authorization: `Bearer ${accessToken}` },
         withCredentials: true,
       })
@@ -164,6 +168,8 @@ function App() {
       />
       <ChatButton onClick={() => setShowChatBox(true)} />
       <ChatBox isOpen={showChatBox} onClose={() => setShowChatBox(false)} />
+
+      <Footer />
     </BrowserRouter>
     </AudioParticipantsProvider>
   </WebSocketProvider>
