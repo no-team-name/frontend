@@ -127,9 +127,17 @@ export const getAllCommentByJoinBoardId = async (joinBoardId) => {
 };
 
 // 댓글 작성
-export const createComment = async (joinBoardId, commentData) => {
+export const createComment = async (joinBoardId, commentData, parentCommentId = null) => {
+
+    console.log(' parentCommentId:', parentCommentId);  // parentCommentId가 올바르게 출력되는지 확인
+
     try {
-        const response = await apiClient.post(`/api/comment/${joinBoardId}`, commentData);
+        // parentCommentId가 있으면 쿼리 파라미터로 추가
+        const response = await apiClient.post(`/api/comment/${joinBoardId}`, commentData, {
+            params: {
+                parentCommentId: parentCommentId
+            }
+        });
         console.log(response.data);
         return response.data;
     } catch (error) {

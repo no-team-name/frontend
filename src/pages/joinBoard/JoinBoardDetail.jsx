@@ -9,7 +9,7 @@ import {
     getAllCommentByJoinBoardId,
     createComment,
     deleteComment,
-    updateComment // 댓글 수정 API 추가
+    updateComment
 } from '../../service/JoinBoardService';
 import {
     Container,
@@ -29,7 +29,8 @@ import {
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit'; // 수정 아이콘 추가
+import EditIcon from '@mui/icons-material/Edit';
+import ReplyIcon from '@mui/icons-material/Reply';
 import MainHeader from "../../components/common/MainHeader";
 import "./JoinBoardDetail.css";
 
@@ -43,9 +44,10 @@ function JoinBoardDetail() {
     const [page, setPage] = useState(1);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
-    const [editingCommentId, setEditingCommentId] = useState(null); // 수정 중인 댓글 ID
-    const [editCommentContent, setEditCommentContent] = useState(''); // 수정 중인 댓글 내용
-
+    const [editingCommentId, setEditingCommentId] = useState(null);
+    const [editCommentContent, setEditCommentContent] = useState('');
+    const [replyToId, setReplyToId] = useState(null);
+    const [replyContent, setReplyContent] = useState('');
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -98,26 +100,49 @@ function JoinBoardDetail() {
         }
     };
 
-    // 댓글 불러오기
+    // 댓글을 계층 구조로 정리하는 함수
+    const organizeComments = (comments) => {
+        const commentMap = {};
+        const rootComments = [];
+
+        comments.forEach(comment => {
+            commentMap[comment.id] = { ...comment, replies: [] };
+        });
+
+        comments.forEach(comment => {
+            if (comment.parentCommentId) {
+                commentMap[comment.parentCommentId]?.replies.push(commentMap[comment.id]);
+            } else {
+                rootComments.push(commentMap[comment.id]);
+            }
+        });
+
+        return rootComments;
+    };
+
     const fetchComments = async () => {
         try {
             const data = await getAllCommentByJoinBoardId(id);
-            console.log("댓글 data:", data);
-
             setComments(data);
         } catch (error) {
             console.error('댓글을 불러오는 데 실패했습니다.', error);
         }
     };
 
-    // 댓글 작성
     const handleCommentSubmit = async () => {
-        if (!newComment.trim())
-        { alert('댓글 내용을 입력해주세요.');
-            return };
+        if (!newComment.trim()) {
+            alert('댓글 내용을 입력해주세요.');
+            return;
+        }
+
+        // console.log("부모 댓글 ID:", parentCommentId);
+        console.log("제출된 댓글글글글:", newComment);
+        console.log("ID 값값값:", id); // 여기서 id가 undefined거나 null이면 문제 발생 가능
+
 
         try {
-            await createComment(id, { content: newComment });
+            const response = await createComment(id, { content: newComment });
+
             setNewComment('');
             fetchComments();
         } catch (error) {
@@ -125,7 +150,6 @@ function JoinBoardDetail() {
         }
     };
 
-    // 댓글 삭제
     const handleDeleteComment = async (commentId) => {
         try {
             await deleteComment(commentId);
@@ -135,19 +159,16 @@ function JoinBoardDetail() {
         }
     };
 
-    // 댓글 수정 모드 시작
     const handleEditStart = (comment) => {
         setEditingCommentId(comment.id);
         setEditCommentContent(comment.content);
     };
 
-    // 댓글 수정 취소
     const handleEditCancel = () => {
         setEditingCommentId(null);
         setEditCommentContent('');
     };
 
-    // 댓글 수정 제출
     const handleEditSubmit = async (commentId) => {
         if (!editCommentContent.trim()) {
             alert('댓글 내용을 입력해주세요.');
@@ -158,10 +179,43 @@ function JoinBoardDetail() {
             await updateComment(commentId, { content: editCommentContent });
             setEditingCommentId(null);
             setEditCommentContent('');
-            fetchComments(); // 댓글 목록 새로고침
+            fetchComments();
         } catch (error) {
             console.error('댓글 수정 실패:', error);
             alert('댓글 수정에 실패했습니다.');
+        }
+    };
+
+    // 대댓글 작성 시작
+    const handleReplyStart = (commentId) => {
+        console.log("대댓글 부모 ID 설정:", commentId); // 여기서 commentId가 제대로 전달되는지 확인
+        setReplyToId(commentId);  // 대댓글 작성할 때 부모 댓글 ID를 설정
+        setReplyContent(''); // 대댓글 내용 초기화
+    };
+
+    // 대댓글 작성 취소
+    const handleReplyCancel = () => {
+        setReplyToId(null);
+        setReplyContent('');
+    };
+
+    // 대댓글 제출
+    const handleReplySubmit = async (parentCommentId) => {
+        console.log("handleReplySubmit  - 대댓글 제출 시 부모 댓글 ID:", parentCommentId); // 부모 댓글 ID가 제대로 출력되는지 확인
+        if (!replyContent.trim()) {
+            alert('댓글 내용을 입력해주세요.');
+            return;
+        }
+
+        try {
+            await createComment(id, {
+                content: replyContent
+            },  parentCommentId);
+            setReplyToId(null);
+            setReplyContent('');
+            fetchComments();
+        } catch (error) {
+            console.error('댓글 작성 실패:', error);
         }
     };
 
@@ -192,8 +246,6 @@ function JoinBoardDetail() {
         };
     }, [id]);
 
-
-
     useEffect(() => {
         const savedDetail = localStorage.getItem('currentJoinBoardDetail');
         if (savedDetail) {
@@ -204,8 +256,170 @@ function JoinBoardDetail() {
         }
     }, [id]);
 
+    // 댓글 아이템 렌더링 컴포넌트
+    const CommentItem = ({ comment, depth = 0 }) => {
+        return (
+            <>
+                <ListItem
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        borderBottom: '1px solid #eee',
+                        paddingY: 2,
+                        marginLeft: `${depth * 40}px`,  // 대댓글일 경우 들여쓰기
+                        flexDirection: editingCommentId === comment.id ? 'column' : 'row',
+                        backgroundColor: depth > 0 ? '#f9f9f9' : 'transparent', // 대댓글 배경 색상 변경
+                    }}
+                >
+                    {editingCommentId === comment.id ? (
+                        // 댓글 수정 모드
+                        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 2 }}>
+                            <TextField
+                                fullWidth
+                                value={editCommentContent}
+                                onChange={(e) => setEditCommentContent(e.target.value)}
+                                variant="outlined"
+                                multiline
+                                sx={{
+                                    "& .MuiOutlinedInput-root": {
+                                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                                            borderColor: "black",
+                                        },
+                                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                            borderColor: "black",
+                                        },
+                                    },
+                                }}
+                            />
+                            <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
+                                <Button className='comment-cancel-update-button' variant="contained" onClick={handleEditCancel}>
+                                    취소
+                                </Button>
+                                <Button className='comment-update-button' variant="contained" onClick={() => handleEditSubmit(comment.id)}>
+                                    수정 완료
+                                </Button>
+                            </Box>
+                        </Box>
+                    ) : (
+                        // 일반 댓글 모드
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, minWidth: '100px' }}>
+                                <Box sx={{
+                                    width: '40px',
+                                    height: '40px',
+                                    borderRadius: '50%',
+                                    overflow: 'hidden'
+                                }}>
+                                    <img
+                                        src={comment.memberProfileUrl || 'https://www.cheonyu.com/_DATA/product/63900/63992_1672648178.jpg'}
+                                        alt={`${comment.memberNickname}의 프로필`}
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'cover'
+                                        }}
+                                    />
+                                </Box>
+                                <Typography className="member-nickname" sx={{ fontSize: '0.8rem', color: '#333333' }}>
+                                    {comment.memberNickname}
+                                </Typography>
+                            </Box>
+
+                            <ListItemText
+                                primary={comment.content}
+                                secondary={`${comment.createdAt}`}
+                                sx={{
+                                    '& .MuiListItemText-primary': {
+                                        color: '#333',
+                                        fontSize: '1rem',
+                                        marginBottom: '5px'
+                                    },
+                                    '& .MuiListItemText-secondary': {
+                                        color: '#999999',
+                                        fontSize: '0.8rem'
+                                    }
+                                }}
+                            />
+
+                            <Box sx={{ display: 'flex', gap: 1, ml: 'auto' }}>
+                                <IconButton onClick={() => handleReplyStart(comment.id)} sx={{ color: '#999' }}>
+                                    <ReplyIcon />
+                                </IconButton>
+                                <IconButton onClick={() => handleEditStart(comment)} sx={{ color: '#999' }}>
+                                    <EditIcon />
+                                </IconButton>
+                                <IconButton edge="end" onClick={() => handleDeleteComment(comment.id)} sx={{ color: '#999' }}>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </Box>
+                        </Box>
+                    )}
+                </ListItem>
+
+                {/* 대댓글 작성 폼 */}
+                {replyToId === comment.id && (
+                    <Box sx={{
+                        marginLeft: `${(depth + 1) * 40}px`,  // 대댓글이 있을 경우 들여쓰기
+                        marginTop: 2,
+                        marginBottom: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 1
+                    }}>
+                        <TextField
+                            fullWidth
+                            value={replyContent}
+                            onChange={(e) => setReplyContent(e.target.value)}
+                            placeholder="답글을 입력하세요"
+                            variant="outlined"
+                            size="small"
+                            sx={{
+                                "& .MuiOutlinedInput-root": {
+                                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                                        borderColor: "black",
+                                    },
+                                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                        borderColor: "black",
+                                    },
+                                },
+                            }}
+                        />
+                        <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
+                            <Button className='comment-cancel-update-button' variant="contained" onClick={handleReplyCancel}>
+                                취소
+                            </Button>
+                            <Button className='comment-update-button' variant="contained" onClick={() => handleReplySubmit(comment.id)}>
+                                답글 작성
+                            </Button>
+                        </Box>
+                    </Box>
+                )}
+
+                {/* 대댓글 렌더링 */}
+                {comment.replies?.map(reply => (
+                    <CommentItem key={reply.id} comment={reply} depth={depth + 1} />
+                ))}
+            </>
+        );
+    };
+
+
     if (loading) return <p>Loading...</p>;
     if (!post) return <p>게시글을 찾을 수 없습니다.</p>;
+
+    // 댓글 목록 렌더링 수정
+    const renderComments = () => {
+        const organizedComments = organizeComments(comments);
+
+        return organizedComments.length > 0 ? (
+            organizedComments.map(comment => (
+                <CommentItem key={comment.id} comment={comment} />
+            ))
+        ) : (
+            <Typography variant="body2" sx={{ color: '#777' }}>댓글이 없습니다.</Typography>
+        );
+    };
+
 
     return (
         <>
@@ -448,160 +662,10 @@ function JoinBoardDetail() {
                             <Divider sx={{ marginY: 2, backgroundColor: '#ddd' }} />
                             <Typography variant="h6" sx={{ color: '#333' }}></Typography>
 
-
                             <List>
-                                {comments.length > 0 ? (
-                                    comments.map((comment) => (
-                                        <ListItem
-                                            key={comment.id}
-                                            sx={{
-                                                display: 'flex',
-                                                justifyContent: 'space-between',
-                                                borderBottom: '1px solid #eee',
-                                                paddingY: 2,
-                                                flexDirection: editingCommentId === comment.id ? 'column' : 'row'
-                                            }}
-                                        >
-                                            {editingCommentId === comment.id ? (
-                                                // 수정 모드
-                                                <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 2}}>
-                                                    <TextField
-                                                        fullWidth
-                                                        value={editCommentContent}
-                                                        onChange={(e) => setEditCommentContent(e.target.value)}
-                                                        variant="outlined"
-                                                        multiline
-                                                        sx={{
-                                                            "& .MuiOutlinedInput-root": {
-                                                                "&:hover .MuiOutlinedInput-notchedOutline": {
-                                                                    borderColor: "black", // 마우스 호버 시 테두리 검정색
-                                                                },
-                                                                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                                                                    borderColor: "black", // 클릭(포커스) 시 테두리 검정색
-                                                                },
-                                                            },
-                                                        }}
-                                                    />
-                                                    <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
-                                                        <Button
-                                                            className='comment-cancel-update-button'
-                                                            variant="contained"
-                                                            color="black"
-                                                            onClick={handleEditCancel}
-                                                        >
-                                                            취소
-                                                        </Button>
-                                                        <Button
-                                                            className='comment-update-button'
-                                                            variant="contained"
-                                                            color="black"
-                                                            onClick={() => handleEditSubmit(comment.id)}
-                                                        >
-                                                            수정 완료
-                                                        </Button>
-                                                    </Box>
-                                                </Box>
-                                            ) : (
-
-
-
-
-
-
-
-                                                // 일반 모드
-                                                <>
-                                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%'  }}>
-
-
-                                                        {/* 프로필 이미지와 닉네임을 포함하는 Box */}
-                                                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, minWidth: '100px',
-                                                            boxSizing: 'border-box', padding: '0px', marginTop: '5px', marginLeft: '0px' }}>
-                                                            <Box sx={{
-                                                                width: '40px',
-                                                                height: '40px',
-                                                                borderRadius: '50%',
-                                                                overflow: 'hidden' ,
-                                                                boxSizing: 'border-box' ,
-                                                                paddingBottom: '0px' ,
-                                                                marginBottom: '0px'
-                                                            }}>
-                                                                <img
-                                                                    src={'https://cdn.goodnews1.com/news/photo/201907/89251_22763_3813.JPG' || 'https://www.cheonyu.com/_DATA/product/63900/63992_1672648178.jpg'}
-                                                                    alt={`${comment.memberNickname}의 프로필`}
-                                                                    style={{
-                                                                        width: '100%',
-                                                                        height: '100%',
-                                                                        objectFit: 'cover'
-                                                                    }}
-                                                                />
-                                                            </Box>
-
-
-                                                            <Typography className="member-nickname"  sx={{
-                                                                fontSize: '0.8rem',
-                                                                color: '#333333' ,
-                                                                boxSizing: 'border-box' ,
-                                                                paddingTop: '3px',
-                                                                marginBottom: '0px'
-                                                            }}>
-                                                                {comment.memberNickname}
-                                                            </Typography>
-
-                                                        </Box>
-
-
-
-
-                                                        {/* 댓글 내용과 시간 */}
-                                                        <ListItemText
-                                                            primary={comment.content}
-                                                            secondary={`${comment.createdAt}`}
-                                                            sx={{
-                                                                '& .MuiListItemText-primary': {
-                                                                    color: '#333',
-                                                                    fontSize: '1rem',
-                                                                    marginBottom: '5px'
-                                                                },
-                                                                '& .MuiListItemText-secondary': {
-                                                                    color: '#999999',
-                                                                    fontSize: '0.8rem'
-                                                                }
-                                                            }}
-                                                        />
-
-                                                        {/* 수정/삭제 버튼 */}
-                                                        <Box sx={{ display: 'flex', gap: 1, ml: 'auto' }}>
-                                                            <IconButton
-                                                                onClick={() => handleEditStart(comment)}
-                                                                sx={{ color: '#999' }}
-                                                            >
-                                                                <EditIcon />
-                                                            </IconButton>
-                                                            <IconButton
-                                                                edge="end"
-                                                                onClick={() => handleDeleteComment(comment.id)}
-                                                                sx={{ color: '#999' }}
-                                                            >
-                                                                <DeleteIcon />
-                                                            </IconButton>
-                                                        </Box>
-                                                    </Box>
-                                                </>
-
-
-
-
-
-
-
-                                            )}
-                                        </ListItem>
-                                    ))
-                                ) : (
-                                    <Typography variant="body2" sx={{ color: '#777' }}>댓글이 없습니다.</Typography>
-                                )}
+                                {renderComments()}
                             </List>
+
 
                             {/* 댓글 입력란 */}
                             <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: '20px' }}>
