@@ -16,6 +16,7 @@ import AcceptInvitePage from './pages/team/AcceptInvitePage';
 import Main from './pages/Main';
 import { WebSocketProvider } from './context/WebSocketContext';
 import { AudioParticipantsProvider } from './context/AudioParticipantsContext';
+import AboutUs from './pages/AboutUs';
 
 import LoginModal from './components/auth/LoginModal';
 import LogoutConfirmModal from './components/auth/LogoutConfirmModal';
@@ -36,6 +37,9 @@ import CreateJoinBoard from "./pages/joinBoard/CreateJoinBoard";
 import EditJoinBoard from "./pages/joinBoard/EditJoinBoard";
 import Dashboard from './pages/admin/DashBoard';
 import ErrorPage from './pages/error/ErrorPage';
+
+import apiClient from './utils/apiSpring';
+
 
 function App() {
 
@@ -61,7 +65,7 @@ function App() {
       setAuth(prev => ({ ...prev, isLogin: true }));
 
       // 서버에서 닉네임 가져오기
-      axios.get('http://localhost:8082/spring/api/member/userinfos', {
+      apiClient.get('http://localhost:8082/spring/api/member/userinfos', {
         headers: { Authorization: `Bearer ${accessToken}` },
         withCredentials: true,
       })
@@ -138,6 +142,8 @@ function App() {
 
           <Route path="/admin/members" element={<AdminMemberPage {...sharedProps} />} />
           <Route path="/admin/members/:memberId" element={<AdminMemberDetailPage {...sharedProps} />} />
+
+          <Route path="/about-us" element={<AboutUs {...sharedProps} />} />
 
         </Routes>
 
