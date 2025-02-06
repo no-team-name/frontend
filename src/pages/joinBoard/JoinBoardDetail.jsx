@@ -52,6 +52,7 @@ function JoinBoardDetail() {
     const inputRef = useRef(null);
     const [isComposing, setIsComposing] = useState(false);
 
+
     useEffect(() => {
         if (inputRef.current) {
             inputRef.current.focus();
@@ -388,14 +389,20 @@ function JoinBoardDetail() {
                             inputRef={inputRef}
                             value={replyContent}
                             onChange={(e) => setReplyContent(e.target.value)}
-                            onBlur={() => {
-                                setTimeout(() => {
-                                    if (inputRef.current) inputRef.current.focus();
-                                }, 10);
-                            }}
+                            onCompositionEnd={(e) => setReplyContent(e.target.value)}
                             placeholder="답글을 입력하세요"
                             variant="outlined"
                             size="small"
+                            InputProps={{
+                                sx: {
+                                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                                        borderColor: "black"
+                                    },
+                                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                        borderColor: "black"
+                                    },
+                                },
+                            }}
                         />
                         <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
                             <Button className='comment-cancel-update-button' variant="contained" onClick={handleReplyCancel}>
