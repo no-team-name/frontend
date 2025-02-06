@@ -1,16 +1,14 @@
 import React from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AiOutlineHome } from "react-icons/ai";
 import MainHeader from "../../components/common/MainHeader";
 
-const ErrorPage = ({
+const UnauthorizedPage = ({
   openLoginModal,
   openLogoutModal,
   openAccountDeleteModal,
   openNicknameModal,
 }) => {
-  const [searchParams] = useSearchParams();
-  const service = searchParams.get("service") || "Unknown";
   const navigate = useNavigate();
 
   return (
@@ -22,14 +20,12 @@ const ErrorPage = ({
         openNicknameModal={openNicknameModal}
       />
       <div className="flex flex-col items-center justify-center min-h-screen">
-        <h1 className="text-6xl font-bold" style={{ color: '#494e5e' }}>503</h1>
-        <h2 className="text-2xl font-semibold text-gray-700 mt-2">Service Unavailable</h2>
+        <h1 className="text-6xl font-bold" style={{ color: '#494e5e' }}>401</h1>
+        <h2 className="text-2xl font-semibold text-gray-700 mt-2">Unauthorized</h2>
         <p className="text-gray-500 mt-2 text-center">
-          {service !== "Unknown"
-            ? `${service} 서비스가 현재 사용할 수 없습니다.`
-            : "서버에서 문제가 발생했습니다."}
+          You do not have permission to access this page.
           <br />
-          Please try again later or contact support if the issue persists.
+          Please login with appropriate credentials or contact support if the issue persists.
         </p>
 
         <div className="mt-6">
@@ -52,4 +48,4 @@ const ErrorPage = ({
   );
 };
 
-export default ErrorPage;
+export default UnauthorizedPage;
