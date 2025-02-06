@@ -23,6 +23,7 @@ const ChatBox = ({ isOpen, onClose }) => {
       const handleMessage = (msgBody) => {
       try {
         const data = JSON.parse(msgBody);
+        console.log("AI 메세지 받음:", data);
         if (data.type === "continue") {
           setIsLoading(false);
           setCurrentBotMessage((prev) => prev + data.text);

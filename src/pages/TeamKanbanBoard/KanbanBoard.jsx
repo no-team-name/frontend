@@ -38,6 +38,7 @@ const KanbanBoard = ({
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const user = useRecoilValue(userState);
     const userId = user.memberId;
+    const userNickname = user.nickname;
 
     const handleMenuClick = () => {
         setIsSidebarOpen(!isSidebarOpen);
@@ -50,11 +51,15 @@ const KanbanBoard = ({
             cards: []
         };
         const response = await createKanbanBoardColumn(teamId, newColumn.name);
-
         if (response) {
-            window.location.reload()
+            const responseColumn = {
+                id: response.data.columnId,
+                name: response.data.title,
+                cards: []
+            }
+            setColumns((prevColumns) => [...prevColumns, responseColumn]);
+            setNextColumnId(nextColumnId + 1);
         }
-
     }
 
     /**
@@ -77,11 +82,25 @@ const KanbanBoard = ({
         const newCard = {
             id: nextCardId,
             title: `Card`,
+            membername: userNickname,
         };
         const response = await createKanbanBoardCard(userId,teamId,newCard.title,columnId);
 
         if (response) {
-            window.location.reload()
+            console.log(response);
+            const responesCard = {
+                id: response.data.cardId,
+                title: response.data.title,
+                memberNickName: response.data.memberNickname
+            }
+            setColumns((prevColumns) =>
+                prevColumns.map((column) =>
+                    column.id === columnId
+                    ? { ...column, cards: [...column.cards, responesCard] }
+                    : column
+                )
+            );
+            setNextCardId(nextCardId + 1);
         }
 
 
@@ -91,13 +110,15 @@ const KanbanBoard = ({
      */
 
     const handleDeleteCard = async (cardId) => {
-
         console.log(cardId);
-
         const response = await deleteKanbanBoardCard(cardId);
-
         if (response) {
-            window.location.reload()
+            setColumns((prevColumns) =>
+                prevColumns.map((column) => ({
+                    ...column,
+                    cards: column.cards.filter((card) => card.id !== cardId)
+                }))
+            );
         }
 
     };

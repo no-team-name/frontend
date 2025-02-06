@@ -1,15 +1,15 @@
-// src/services/AiChatService.js
+// src/services/TeamChatService.js
 import { Client } from '@stomp/stompjs';
 
-class AiChatService {
+class TeamChatService {
   constructor() {
     this.client = new Client({
-      brokerURL: process.env.REACT_APP_AI_CHATBOT_SOCKET_URL,
+      brokerURL: process.env.REACT_APP_TEAM_CHAT_SOCKET_URL,
       reconnectDelay: 5000,
       onConnect: () => {
         console.log("✅ WebSocket 연결 성공 (순수 WS)");
         if (this.userId) {
-          this.subscribeToUserMessages(this.userId);
+          this.subscribeTeamMessages(this.userId);
         }
       },
       onDisconnect: () => {
@@ -21,18 +21,24 @@ class AiChatService {
     });
 
     this.onMessageReceived = () => {};
+    this.teamId = null;
     this.userId = null;
   }
 
   setUserId(userId) {
     this.userId = userId;
+  }
+
+  setTeamId(teamId) {
+    this.teamId = teamId;
     if (this.client.connected) {
-      this.subscribeToUserMessages(userId);
+      this.subscribeTeamMessages(teamId);
     }
   }
 
-  subscribeToUserMessages(userId) {
-    this.client.subscribe(`/topic/messages.${userId}`, (msg) => {
+  subscribeTeamMessages() {
+    console.log(`🔔 구독: /topic/room.${this.teamId}`);
+    this.client.subscribe(`/topic/room.${this.teamId}`, (msg) => {
       this.onMessageReceived(msg.body);
     });
   }
@@ -52,10 +58,11 @@ class AiChatService {
   sendMessage(message) {
     if (this.client.connected) {
       const payload = JSON.stringify({
-        memberId: this.userId,
+        senderId: this.userId,
         message: message,
+        teamId: this.teamId,
       });
-      this.client.publish({ destination: "/app/chat", body: payload });
+      this.client.publish({ destination: `/publish/room/${this.teamId}`, body: payload });
     } else {
       console.error("⚠️ WebSocket이 연결되지 않았습니다.");
     }
@@ -66,9 +73,9 @@ class AiChatService {
   }
 
   removeOnMessageReceived() {
-    this.onMessageReceived = () => {};
+    this.onMessageReceived = () => {}; 
   }
 }
 
-const aiChatService = new AiChatService();
-export default aiChatService;
+const teamChatService = new TeamChatService();
+export default teamChatService;
