@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import MainHeader from '../components/common/MainHeader';
 import TeamMemberCard from '../components/common/TeamMemberCard';
-import yubinemonImg from '../assets/park.jpg';
-import choijinguImg from '../assets/choi.jpg';
-import simjinguImg from '../assets/sim.jpg';
-import jungjinguImg from '../assets/jung.jpg';
-import leejinguImg from '../assets/lee.jpg';
+import parkImg from '../assets/park.png';
+import choiImg from '../assets/choi.png';
+import simImg from '../assets/sim.png';
+import jungImg from '../assets/jung.png';
+import leeImg from '../assets/lee.png';
 
 const AboutUs = ({
   openLoginModal,
@@ -46,19 +46,19 @@ const AboutUs = ({
           {/* 팀원 카드 (3개 + 2개) */}
           <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
             <TeamMemberCard
-              imageUrl={choijinguImg}
+              imageUrl={choiImg}
               memberName="최요셉"
               github="https://github.com/yoda-yoda/yoda-yoda"
               email="aslopeys941@gmail.com"
             />
             <TeamMemberCard
-              imageUrl={yubinemonImg}
+              imageUrl={parkImg}
               memberName="박유빈"
               github="https://github.com/yyubin"
               email="hazing0910@gmail.com"
             />
             <TeamMemberCard
-              imageUrl={jungjinguImg}
+              imageUrl={jungImg}
               memberName="정석환"
               github="https://github.com/SeokHwanJeongKR"
               email="jsver12@gmail.com"
@@ -66,13 +66,13 @@ const AboutUs = ({
           </div>
           <div style={{ display: 'flex', gap: '20px' }}>
             <TeamMemberCard
-              imageUrl={leejinguImg}
+              imageUrl={leeImg}
               memberName="이시현"
               github="https://github.com/Philo-LEE"
               email="tlgus7777@gmail.com"
             />
             <TeamMemberCard
-              imageUrl={simjinguImg}
+              imageUrl={simImg}
               memberName="심윤보"
               github="https://github.com/Waffle-ens/Project_Repository1"
               email="ensoary@gmail.com"
