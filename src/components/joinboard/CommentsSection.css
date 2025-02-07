@@ -1,0 +1,14 @@
+
+.comment-input-button {
+
+    box-sizing: border-box;
+    transition: background-color 0.3s, color 0.3s;
+    width: 100px;
+    margin-top: 15px;
+
+}
+
+.comment-input-button:hover {
+    background-color: black;  /* 배경색을 검정색으로 설정 */
+    color: white;  /* 글자색을 흰색으로 설정 */
+}

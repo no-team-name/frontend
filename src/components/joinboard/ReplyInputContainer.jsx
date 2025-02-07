@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Box, Button } from '@mui/material';
 import ReplyInput from './ReplyInput';
+import './ReplyInputContainer.css'
 
 const ReplyInputContainer = ({ onSubmit, onCancel, initialValue = '' }) => {
   const [replyText, setReplyText] = useState(initialValue);
@@ -41,11 +42,11 @@ const ReplyInputContainer = ({ onSubmit, onCancel, initialValue = '' }) => {
         placeholder="답글을 입력하세요"
       />
       <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
-        <Button variant="contained" onClick={onCancel}>
+        <Button className="coment-coment-cancel-button" color="black" variant="contained" onClick={onCancel}>
           취소
         </Button>
-        <Button variant="contained" onClick={() => onSubmit(replyText)}>
-          답글 작성
+        <Button className="coment-coment-input-button" color="black" variant="contained" onClick={() => onSubmit(replyText)}>
+          등록
         </Button>
       </Box>
     </Box>

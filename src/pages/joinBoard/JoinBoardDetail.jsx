@@ -262,7 +262,7 @@ function JoinBoardDetail() {
                 <Box sx={{ display: 'flex', alignItems: 'center'
                 ,boxSizing: 'border-box',marginBottom: '15px'}}>
                     <Typography variant="h6" sx={{ color: '#a6a6a6' ,fontSize: '16px',marginRight: '15px'}}>
-                        개요
+                        소개글
                     </Typography>
                     <Typography variant="h6" sx={{ color: '#a6a6a6', ml: 1 }}>
                         <span style={{ color: '#595959' }}>{post.projectBio}</span>

@@ -1,6 +1,8 @@
 // src/components/joinboard/EditCommentInput.jsx
 import React, { useState, useRef, useEffect } from 'react';
 import { Box, Button, TextField } from '@mui/material';
+import './EditCommentInput.css'
+
 
 const EditCommentInput = ({ onSubmit, onCancel, initialValue = '' }) => {
   const [text, setText] = useState(initialValue);
@@ -52,10 +54,10 @@ const EditCommentInput = ({ onSubmit, onCancel, initialValue = '' }) => {
         }}
       />
       <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
-        <Button variant="contained" onClick={onCancel}>
+        <Button className="coment-edit-cancel-button" color="black" variant="contained" onClick={onCancel}>
           취소
         </Button>
-        <Button variant="contained" onClick={() => onSubmit(text)}>
+        <Button className="coment-edit-input-button" color="black" variant="contained" onClick={() => onSubmit(text)}>
           수정 완료
         </Button>
       </Box>

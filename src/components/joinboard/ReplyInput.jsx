@@ -13,7 +13,7 @@ const ReplyInput = forwardRef(({ value, onChange, onCompositionStart, onComposit
       onCompositionEnd={onCompositionEnd}
       placeholder={placeholder}
       variant="outlined"
-      size="small"
+      size="large"
       InputProps={{
         sx: {
           '&:hover .MuiOutlinedInput-notchedOutline': {

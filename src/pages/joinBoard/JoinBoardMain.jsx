@@ -189,8 +189,13 @@ function JoinBoardMain({
                                 variant="contained"
                                 color="black"
                                 onClick={() => navigate('/create-join-board')}
+                                sx={{
+                                    height: '40px',
+                                    width: '80px'
+                                }}
                             >
-                                글 작성
+                                <span style={{fontSize: '14px'}}>글 작성</span>
+
                             </Button>
                         </div>
 
@@ -245,7 +250,7 @@ function JoinBoardMain({
                                         justifyContent: 'space-between',
                                         width: '100%',
                                         alignItems: 'flex-start',
-                                        marginTop: '25px'
+                                        marginTop: '13px'
                                     }}>
                                         {/* 기존 카드 내용 그대로 유지 */}
                                         <Box style={{
@@ -287,11 +292,12 @@ function JoinBoardMain({
                                         {/* 본문 섹션 */}
                                         <Box style={{flex: 1, boxSizing: 'border-box', marginTop: '7px', marginLeft: '15px'}}>
                                             <Typography variant="h5" component="div"
-                                                        style={{fontWeight: 'bold', marginBottom: '10px'}}>
+                                                        style={{fontSize:'26px' , fontWeight: 'bold', marginBottom: '10px'}}>
                                                 {post.title}
 
                                                 <Typography variant="body2" color="text.secondary"
-                                                            style={{marginBottom: '5px', color: '#999999'}}>
+                                                            style={{marginBottom: '5px', color: '#999999',
+                                                                fontSize:'14px'}}>
                                                     {post.createdAt}
                                                 </Typography>
                                             </Typography>
@@ -306,9 +312,12 @@ function JoinBoardMain({
                                                     paddingTop: '35px'
                                                 }}
                                             >
-                                                <strong>주제</strong>
+                                               <span style={{
+                                                   fontSize: '14px',
+                                               }}>주제</span>
+
                                                 <span style={{
-                                                    fontWeight: 'bold',
+                                                    fontSize: '16px',
                                                     marginLeft: '10px',
                                                     color: '#595959'
                                                 }}>{post.topic}</span>
@@ -325,9 +334,11 @@ function JoinBoardMain({
                                                     paddingBottom: '0px'
                                                 }}
                                             >
-                                                <strong>팀 이름</strong>
+                                               <span style={{
+                                                   fontSize: '14px',
+                                               }}>팀이름</span>
                                                 <span style={{
-                                                    fontWeight: 'bold',
+                                                    fontSize: '16px',
                                                     marginLeft: '10px',
                                                     color: '#595959'
                                                 }}>{post.teamName}</span>
@@ -344,9 +355,11 @@ function JoinBoardMain({
                                                     paddingBottom: '0px'
                                                 }}
                                             >
-                                                <strong>소개글</strong>
                                                 <span style={{
-                                                    fontWeight: 'bold',
+                                                    fontSize: '14px',
+                                                }}  >소개글</span>
+                                                <span style={{
+                                                    fontSize: '16px',
                                                     marginLeft: '10px',
                                                     color: '#595959'
                                                 }}>{post.projectBio}</span>
@@ -356,7 +369,7 @@ function JoinBoardMain({
                                         {/* 날짜 및 인원 섹션 */}
                                         <Box style={{
                                             textAlign: 'right', paddingRight: '20px',
-                                            boxSizing: 'border-box', marginTop: '93px',
+                                            boxSizing: 'border-box', marginTop: '103px',
                                         }}>
                                             <Typography variant="body2" color="text.secondary"
                                                         style={{
@@ -365,15 +378,21 @@ function JoinBoardMain({
                                                             paddingBottom: '3px',
                                                             color: '#a6a6a6'
                                                         }}>
-                                                <strong>프로젝트 기간</strong>
+                                                <span style={{
+                                                    fontSize: '14px',
+                                                }}>프로젝트 기간</span>
                                             </Typography>
+
+
+
                                             <Typography variant="body2" color="text.secondary"
                                                         style={{
                                                             marginBottom: '5px',
                                                             boxSizing: 'border-box',
+                                                            fontSize: '13px',
                                                             paddingTop: '0px',
                                                             paddingBottom: '2px',
-                                                            color: '#595959'
+                                                            color: '#595959',
                                                         }}>
                                                 {new Date(post.startDate).toLocaleDateString()} ~ {new Date(post.endDate).toLocaleDateString()}
                                             </Typography>
@@ -384,7 +403,10 @@ function JoinBoardMain({
                                                             paddingTop: '7px',
                                                             color: '#a6a6a6'
                                                         }}>
-                                                <strong>현재 인원</strong> <span style={{
+                                                <span style={{
+                                                    fontSize: '14px',
+                                                }}>현재 인원</span> <span style={{
+                                                fontSize: '13px',
                                                 fontWeight: 'bold',
                                                 color: '#595959'
                                             }}> {post.peopleNumber}명 </span>

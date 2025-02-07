@@ -1,0 +1,31 @@
+.coment-coment-cancel-button {
+    box-sizing: border-box;
+    transition: background-color 0.3s, color 0.3s;
+    width: 50px;
+    padding: 0px;
+    height: 30px;
+
+
+}
+
+.coment-coment-cancel-button:hover {
+    background-color: black;  /* 배경색을 검정색으로 설정 */
+    color: white;  /* 글자색을 흰색으로 설정 */
+
+}
+
+.coment-coment-input-button {
+    box-sizing: border-box;
+    transition: background-color 0.3s, color 0.3s;
+    width: 70px;
+    padding: 0px;
+    height: 30px;
+
+
+}
+
+.coment-coment-input-button:hover {
+    background-color: black;  /* 배경색을 검정색으로 설정 */
+    color: white;  /* 글자색을 흰색으로 설정 */
+
+}

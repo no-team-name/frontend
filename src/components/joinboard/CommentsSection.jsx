@@ -22,6 +22,7 @@ import {
 } from '../../service/JoinBoardService';
 import ReplyInputContainer from './ReplyInputContainer';
 import EditCommentInput from './EditCommentInput';
+import './CommentsSection.css';
 
 const CommentsSection = ({ joinBoardId }) => {
   const [comments, setComments] = useState([]);
@@ -261,7 +262,10 @@ const CommentsSection = ({ joinBoardId }) => {
             },
           }}
         />
-        <Button variant="contained" onClick={handleCommentSubmit} sx={{ alignSelf: 'flex-end' }}>
+        <Button className="comment-input-button"
+                color="black"
+                variant="contained" onClick={handleCommentSubmit} sx={{ alignSelf: 'flex-end' }}
+        >
           댓글 작성
         </Button>
       </Box>
