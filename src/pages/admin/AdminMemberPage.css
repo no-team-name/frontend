@@ -11,6 +11,7 @@
 
 .admin-container {
   transition: margin-left 0.3s ease;
+  min-height: 850px;
 }
 
 .ui.secondary.menu .item {

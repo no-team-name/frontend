@@ -58,16 +58,17 @@ const AdminMemberPage = ({
   if (role !== 'ADMIN') return <div>접근 권한이 없습니다</div>;
 
   return (
-    
-    <div className={`admin-container ${isSidebarOpen ? 'ml-64' : ''}`}>
+    <div> 
       <MainHeader
-        onSidebarToggle={handleSidebarToggle} 
-        logoSrc="/accord-removebg.png"
-        openLoginModal={openLoginModal}
-        openLogoutModal={openLogoutModal}
-        openAccountDeleteModal={openAccountDeleteModal}
-        openNicknameModal={openNicknameModal}
+       logoSrc="/path/to/your/logo.png"
+       openLoginModal={openLoginModal}
+       openLogoutModal={openLogoutModal}
+       openAccountDeleteModal={openAccountDeleteModal}
+       openNicknameModal={openNicknameModal}
+       onSidebarToggle={handleSidebarToggle}
       />
+    <div className={`admin-container ${isSidebarOpen ? 'ml-64' : ''}`}>
+
 
       <div className="admin-page" style={{ padding: '20px' }}>
       <div class="ui secondary  menu">
@@ -151,6 +152,7 @@ const AdminMemberPage = ({
 </Table.Body>
         </Table>
       </div>
+    </div>
     </div>
   );
 };
