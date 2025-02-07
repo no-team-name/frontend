@@ -1,0 +1,26 @@
+.admin-page {
+  overflow: visible !important;
+  position: static !important;
+}
+
+.ui.dropdown .icon.dropdown {
+  background-color: transparent !important; /* 배경 제거 */
+  border: none !important;                 /* 테두리 제거 */
+  box-shadow: none !important;             /* 그림자 제거 */
+}
+
+.admin-container {
+  transition: margin-left 0.3s ease;
+  min-height: 850px;
+}
+
+.ui.secondary.menu .item {
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  padding: 14px 20px !important;
+  transition: color 0.3s ease !important;
+}
+
+.ui.secondary.menu .item:hover {
+  color: #2185d0 !important;
+}

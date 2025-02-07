@@ -1,0 +1,249 @@
+.container {
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.ProseMirror {
+    width: 100%;
+    height: 100%;
+    outline: none;
+
+    > * + * {
+        margin-top: 0em;
+    }
+    
+    [data-id] {
+        border: 3px solid #0D0D0D;
+        border-radius: 0.5rem;
+        position: relative;
+    
+        &::before {
+            content: attr(data-id);
+            background-color: #0D0D0D;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #fff;
+            position: absolute;
+            top: 0;
+            border-radius: 0 0 0.5rem 0.5rem;
+        }
+    }
+
+}
+
+.ProseMirror h1,
+.ProseMirror h2,
+.ProseMirror h3,
+.ProseMirror h4,
+.ProseMirror h5,
+.ProseMirror h6 {
+
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+}
+
+.ProseMirror li {
+}
+
+.ProseMirror pre {
+    margin-left: 10px;
+}
+
+.editor {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+pre {
+    background-color: #2d2d2d;
+    color: #f8f8f2;
+    border-radius: 5px;
+    overflow-x: auto;
+    font-family: "Fira Code", monospace;
+}
+
+p {
+}
+
+pre code {
+    background-color: #2d2d2d;
+    color: #f8f8f2;
+    display: block;
+    font-family: "Fira Code", monospace;
+    white-space: pre;
+    padding-left: 1.4rem;
+}
+
+.markdown-output {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    padding: 16px;
+    border-radius: 5px;
+}
+
+.btn {
+    margin: 16px 0;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+/* 표 스타일 */
+table {
+    border-collapse: collapse;
+    padding: 2px;
+}
+
+th,
+td {
+    border: 1.3px solid #ddd;
+    text-align: left;
+}
+
+.ProseMirror pre code {
+    background-color: #2d2d2d;
+    display: block;
+    font-family: "Fira Code", monospace;
+    white-space: pre;
+    color: #f8f8f2;
+    padding: 32px;
+}
+
+.drag-handle {
+    align-items: center;
+    background: #f0f0f0;
+    border-radius: .25rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: grab;
+    display: flex;
+    height: 1.5rem;
+    justify-content: center;
+    width: 1.5rem;
+
+    svg {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+}
+
+.y-cursor {
+    position: absolute;
+    pointer-events: none;
+    z-index: 10;
+    width: 2px;
+    height: 20px;
+    background-color: red;
+    /* 기본 커서 색상 */
+}
+
+.y-cursor-label {
+    position: absolute;
+    pointer-events: none;
+    z-index: 10;
+    background-color: white;
+    color: black;
+    font-size: 12px;
+    border-radius: 3px;
+    padding: 2px 5px;
+}
+
+.drag-handle {
+    cursor: grab;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.ProseMirror>.ProseMirror-yjs-cursor:first-child {
+}
+
+.ProseMirror p:first-child,
+.ProseMirror h1:first-child,
+.ProseMirror h2:first-child,
+.ProseMirror h3:first-child,
+.ProseMirror h4:first-child,
+.ProseMirror h5:first-child,
+.ProseMirror h6:first-child {
+
+}
+
+/* This gives the remote user caret. The colors are automatically overwritten*/
+.ProseMirror-yjs-cursor {
+    position: relative;
+    margin-left: -1px;
+    margin-right: -1px;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-color: orange;
+    word-break: normal;
+    pointer-events: none;
+}
+
+/* This renders the username above the caret */
+.ProseMirror-yjs-cursor>div {
+    position: absolute;
+    top: -1.05em;
+    left: -1px;
+    font-size: 13px;
+    background-color: rgb(250, 129, 0);
+    font-family: serif;
+    font-style: normal;
+    font-weight: normal;
+    line-height: normal;
+    user-select: none;
+    color: white;
+    padding-left: 2px;
+    padding-right: 2px;
+    white-space: nowrap;
+}
+
+details {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
+
+details[open] {
+    background-color: #e9f5ff;
+}
+
+summary {
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    /* 아이콘과 텍스트 사이 간격 */
+}
+
+summary:before {
+    content: "▶";
+    /* 기본 아이콘 */
+    font-size: 12px;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+details[open] summary:before {
+    content: "▼";
+    /* 열린 상태 아이콘 */
+    transform: rotate(0deg);
+}
