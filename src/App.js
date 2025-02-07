@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { useRecoilState } from 'recoil';
+import apiClient from './utils/apiSpring';
 
 import { userState } from './recoil/UserAtoms';
 import { authState } from './recoil/authAtoms';
@@ -68,7 +69,6 @@ function App() {
       console.log('accessToken 있음')
       setAuth(prev => ({ ...prev, isLogin: true }));
 
-      // 서버에서 닉네임 가져오기
       apiClient.get('/api/member/userinfos', {
 
         headers: { Authorization: `Bearer ${accessToken}` },

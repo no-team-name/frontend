@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=42dot+Sans:wght@300..800&family=Gowun+Batang&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nanum+Pen+Script&family=Rock+Salt&display=swap');
+
+.comment-create-button {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.comment-create-button:hover {
+    background-color: black;  /* 배경색을 검정색으로 설정 */
+    color: white;  /* 글자색을 흰색으로 설정 */
+}
+
+.comment-cancel-update-button {
+    background-color: white;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.comment-cancel-update-button:hover {
+    background-color: black;  /* 배경색을 검정색으로 설정 */
+    color: white;  /* 글자색을 흰색으로 설정 */
+}
+
+.comment-update-button {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.comment-update-button:hover {
+    background-color: black;  /* 배경색을 검정색으로 설정 */
+    color: white;  /* 글자색을 흰색으로 설정 */
+}
+
+.member-nickname {
+    font-family: "42dot Sans", serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+}
+
+
+.home-title {
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'Rock Salt', cursive;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.home-title:hover {
+    background-color: black;
+    color: white;
+}
+
+
+
+
+

@@ -1,10 +1,10 @@
 import axios from "axios";
 import apiClient from "../utils/apiSpring";
-//
+
 
 // const API_BASE_URL = "http://localhost:8080";
 
-// 게시판 목록 가져오기 (페이지 번호를 파라미터로 전달)
+// 게시판 목록 최신순으로 가져오기 (페이지 번호를 파라미터로 전달)
 export const getJoinBoardCard = async (page = 0) => {
     try {
         const response = await apiClient.get(`/api/join-board?page=${page}`);
@@ -16,7 +16,7 @@ export const getJoinBoardCard = async (page = 0) => {
     }
 }
 
-// 게시판 목록 가져오기 (페이지 번호를 파라미터로 전달)
+// 게시판 제목순으로 가져오기 (페이지 번호를 파라미터로 전달)
 export const getJoinBoardCardByTitle = async (page = 0) => {
     try {
         const response = await apiClient.get(`/api/join-board/sort-by-title?page=${page}`);
@@ -68,7 +68,7 @@ export const getJoinBoard = async (joinBoardId) => {
 // 게시글 작성하기 (POST 요청)
 export const createJoinBoard = async (boardData) => {
     try {
-        const response = await apiClient.post(`/api/join-board`, boardData, {
+        const response = await apiClient.post(`/api/members/join-board`, boardData, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -84,7 +84,7 @@ export const createJoinBoard = async (boardData) => {
 // 게시글 수정 API 호출
 export const updateJoinBoard = async (id, boardData) => {
     try {
-        const response = await apiClient.put(`/api/join-board/${id}`, boardData, {
+        const response = await apiClient.put(`/api/members/join-board/${id}`, boardData, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -99,11 +99,77 @@ export const updateJoinBoard = async (id, boardData) => {
 // 게시글 삭제 API 호출
 export const deleteJoinBoard = async (id) => {
     try {
-        const response = await apiClient.delete(`/api/join-board/${id}`);
+        const response = await apiClient.delete(`/api/members/join-board/${id}`);
         return response.data;
     } catch (error) {
         console.error("게시글 삭제 실패:", error);
         throw error;
     }
 };
+
+
+
+
+
+
+
+
+
+// 특정 게시글의 댓글 가져오기
+export const getAllCommentByJoinBoardId = async (joinBoardId) => {
+    try {
+        const response = await apiClient.get(`/api/comment/${joinBoardId}`);
+        return response.data.data;
+    } catch (error) {
+        console.error("댓글 가져오기 실패:", error);
+        throw error;
+    }
+};
+
+// 댓글 작성 (parentCommentId 에 값이 전달안되면 기본값이 null)
+export const createComment = async (joinBoardId, commentData, parentCommentId = null) => {
+
+    console.log(' createComment- parentCommentId:', parentCommentId);  // parentCommentId가 올바르게 출력되는지 확인
+
+    try {
+        // parentCommentId가 있으면 쿼리 파라미터로 추가
+        const response = await apiClient.post(`/api/members/comment/${joinBoardId}`, commentData, {
+            params: {
+                parentCommentId: parentCommentId
+            }
+        });
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        alert('댓글 작성에 실패하였습니다.');
+        console.error("댓글 작성 실패:", error);
+        throw error;
+    }
+};
+
+// 댓글 수정
+export const updateComment = async (commentId, commentData) => {
+    try {
+        const response = await apiClient.put(`/api/members/comment/${commentId}`, commentData);
+        return response.data;
+    } catch (error) {
+        console.error("댓글 수정 실패:", error);
+        throw error;
+    }
+};
+
+// 댓글 삭제
+export const deleteComment = async (commentId) => {
+    try {
+        const response = await apiClient.delete(`/api/members/comment/${commentId}`);
+        return response.data;
+    } catch (error) {
+        alert('댓글 삭제에 실패하였습니다.');
+        console.error("댓글 삭제 실패:", error);
+        throw error;
+    }
+};
+
+
+
 
