@@ -232,7 +232,7 @@ const CommentsSection = ({ joinBoardId }) => {
     <Box>
       <Divider sx={{ my: 2, backgroundColor: '#ddd' }} />
       <Typography variant="h6" sx={{ color: '#333' }}>
-        댓글
+
       </Typography>
       <List>
         {organizedComments.length === 0 ? (

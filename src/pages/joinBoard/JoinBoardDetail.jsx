@@ -157,7 +157,11 @@ function JoinBoardDetail() {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  width: '70px',
+                  width: '80px',
+                  boxSizing: 'border-box',
+                  marginLeft: '10px',
+                  paddingRight: '0px',
+                  marginRight: '7px'
                 }}
               >
                 <Box
@@ -198,52 +202,114 @@ function JoinBoardDetail() {
               <Box
                 sx={{
                   flexGrow: 1,
-                  marginLeft: '40px',
-                  marginTop: '5px',
+                  boxSizing: 'border-box',
+                  marginLeft: '15px',
+                  marginTop: '3px',
+
                 }}
               >
                 <Typography
                   sx={{
                     fontWeight: 'bold',
-                    fontSize: '2rem',
+                      fontSize: '35px',
                     color: '#333',
-                    marginBottom: '10px',
+                    marginBottom: '7px',
                   }}
                 >
                   {post.title}
                 </Typography>
-                <Typography variant="body2" sx={{ color: '#999999' }}>
-                  작성: {post.createdAt}
+                <Typography variant="body2" sx={{ color: '#999999', fontSize: '14px', marginBottom: '2px'  }}>
+                  작성 {post.createdAt}
                 </Typography>
-                <Typography variant="body2" sx={{ color: '#999999' }}>
-                  수정: {post.updatedAt}
+                <Typography variant="body2" sx={{ color: '#999999', fontSize: '14px' }}>
+                  수정 {post.updatedAt}
                 </Typography>
               </Box>
             </Box>
-            <Box sx={{ marginTop: '40px', marginLeft: '50px' }}>
-              <Typography variant="h6" sx={{ color: '#333' }}>
-                주제: {post.topic}
-              </Typography>
-              <Typography variant="h6" sx={{ color: '#333', mt: 1 }}>
-                팀 이름: {post.teamName}
-              </Typography>
-              <Typography variant="h6" sx={{ color: '#333', mt: 1 }}>
-                소개글: {post.projectBio}
-              </Typography>
-              <Typography variant="h6" sx={{ color: '#333', mt: 1 }}>
-                팀원 소개: {post.teamBio}
-              </Typography>
-              <Typography variant="h6" sx={{ color: '#333', mt: 1 }}>
-                프로젝트 기간: {new Date(post.startDate).toLocaleDateString()} ~ {new Date(post.endDate).toLocaleDateString()}
-              </Typography>
-              <Typography variant="h6" sx={{ color: '#333', mt: 1 }}>
-                현재 팀 인원: {post.peopleNumber}명
-              </Typography>
-              <Box sx={{ mt: 4 }}>
-                <Typography sx={{ color: '#333', fontSize: '18px', whiteSpace: 'pre-line' }}>
+
+
+
+
+            <Box sx={{ marginTop: '40px', marginLeft: '50px',
+            }}>
+
+
+                <Box sx={{ display: 'flex', alignItems: 'center',
+                boxSizing: 'border-box', marginTop: '120px'
+                ,marginBottom: '15px'  }}>
+
+                    <Typography variant="h6" sx={{ color: '#a6a6a6',
+                    fontSize: '16px' ,marginRight: '15px'}}>
+                        주제
+                    </Typography>
+                    <Typography variant="h6" sx={{ color: '#a6a6a6', ml: 1 }}>
+                        <span style={{ color: '#595959' }}>{post.topic}</span>
+                    </Typography>
+                </Box>
+
+
+                <Box sx={{ display: 'flex', alignItems: 'center',
+                    boxSizing: 'border-box',marginBottom: '15px'}}>
+                    <Typography variant="h6" sx={{ color: '#a6a6a6' ,fontSize: '16px',marginRight: '15px'}}>
+                        팀이름
+                    </Typography>
+                    <Typography variant="h6" sx={{ color: '#a6a6a6', ml: 1 }}>
+                        <span style={{ color: '#595959' }}>{post.teamName}</span>
+                    </Typography>
+                </Box>
+
+
+                <Box sx={{ display: 'flex', alignItems: 'center'
+                ,boxSizing: 'border-box',marginBottom: '15px'}}>
+                    <Typography variant="h6" sx={{ color: '#a6a6a6' ,fontSize: '16px',marginRight: '15px'}}>
+                        개요
+                    </Typography>
+                    <Typography variant="h6" sx={{ color: '#a6a6a6', ml: 1 }}>
+                        <span style={{ color: '#595959' }}>{post.projectBio}</span>
+                    </Typography>
+                </Box>
+
+
+                <Box sx={{ display: 'flex', alignItems: 'center',boxSizing: 'border-box',marginBottom: '15px' }}>
+                    <Typography variant="h6" sx={{ color: '#a6a6a6',fontSize: '16px' ,marginRight: '15px'}}>
+                        팀원 소개
+                    </Typography>
+                    <Typography variant="h6" sx={{ color: '#a6a6a6', ml: 1 }}>
+                        <span style={{ color: '#595959' }}>{post.teamBio}</span>
+                    </Typography>
+                </Box>
+
+
+
+                <Box sx={{ display: 'flex', alignItems: 'center' ,boxSizing: 'border-box',marginBottom: '15px' }}>
+                    <Typography variant="h6" sx={{ color: '#a6a6a6',fontSize: '16px',marginRight: '15px' }}>
+                        프로젝트 기간
+                    </Typography>
+                    <Typography variant="h6" sx={{ color: '#a6a6a6', ml: 1 }}>
+                        <span style={{ color: '#595959' }}> {new Date(post.startDate).toLocaleDateString()} ~ {new Date(post.endDate).toLocaleDateString()}</span>
+                    </Typography>
+                </Box>
+
+
+                <Box sx={{ display: 'flex', alignItems: 'center',boxSizing: 'border-box',marginBottom: '15px' }}>
+                    <Typography variant="h6" sx={{ color: '#a6a6a6' ,fontSize: '16px',marginRight: '15px'}}>
+                        현재 인원
+                    </Typography>
+                    <Typography variant="h6" sx={{ color: '#a6a6a6', ml: 1 }}>
+                        <span style={{ color: '#595959' }}> {post.peopleNumber}명 </span>
+                    </Typography>
+                </Box>
+
+
+
+              <Box sx={{ mt: 4 , boxSizing: 'border-box' ,marginTop: '200px' , marginBottom: '500px'}}>
+                <Typography sx={{ color: '#333', fontSize: '18px', whiteSpace: 'pre-line'
+                }} >
                   {post.content}
                 </Typography>
               </Box>
+
+
             </Box>
             <CommentsSection joinBoardId={id} />
           </CardContent>

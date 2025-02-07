@@ -7,7 +7,7 @@ import apiClient from "../utils/apiSpring";
 // 게시판 목록 최신순으로 가져오기 (페이지 번호를 파라미터로 전달)
 export const getJoinBoardCard = async (page = 0) => {
     try {
-        const response = await apiClient.get(`/api/members/join-board?page=${page}`);
+        const response = await apiClient.get(`/api/join-board?page=${page}`);
         console.log(response);
         return response;
     } catch (error) {
@@ -19,7 +19,7 @@ export const getJoinBoardCard = async (page = 0) => {
 // 게시판 제목순으로 가져오기 (페이지 번호를 파라미터로 전달)
 export const getJoinBoardCardByTitle = async (page = 0) => {
     try {
-        const response = await apiClient.get(`/api/members/join-board/sort-by-title?page=${page}`);
+        const response = await apiClient.get(`/api/join-board/sort-by-title?page=${page}`);
         console.log(response);
         return response;
     } catch (error) {
@@ -49,7 +49,7 @@ export const searchJoinBoard = async (query, page = 0) => {
 // 특정 게시글 가져오기
 export const getJoinBoard = async (joinBoardId) => {
     try {
-        const response = await apiClient.get(`/api/members/join-board/${joinBoardId}`);
+        const response = await apiClient.get(`/api/join-board/${joinBoardId}`);
         console.log(response); // 응답 로그를 확인하세요
         // 응답에서 실제 데이터에 접근
         if (response && response.data && response.data.data) {
@@ -118,7 +118,7 @@ export const deleteJoinBoard = async (id) => {
 // 특정 게시글의 댓글 가져오기
 export const getAllCommentByJoinBoardId = async (joinBoardId) => {
     try {
-        const response = await apiClient.get(`/api/members/comment/${joinBoardId}`);
+        const response = await apiClient.get(`/api/comment/${joinBoardId}`);
         return response.data.data;
     } catch (error) {
         console.error("댓글 가져오기 실패:", error);
