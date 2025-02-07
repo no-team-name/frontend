@@ -44,8 +44,6 @@ import Footer from './components/common/Footer';
 
 import WithAuthComponent from './hoc/WithAuthComponent';
 
-import apiClient from './utils/apiSpring';
-
 
 function App() {
 
