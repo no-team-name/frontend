@@ -54,6 +54,16 @@ function JoinBoardDetail() {
     }
   };
 
+
+
+    const homeClick = () => {
+        navigate(`/join-board`, { replace: false });
+    };
+
+
+
+
+
   const handleDeleteClick = async () => {
     try {
       await deleteJoinBoard(id);
@@ -118,7 +128,28 @@ function JoinBoardDetail() {
           minHeight: '100vh',
         }}
       >
-        <Card
+            <box style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginRight: '20px',
+                height: '85px',
+                justifyContent: 'space-between',
+                boxSizing: "border-box",
+                paddingTop: '0px',
+                marginTop: '50px',
+                marginBottom: '100px',
+
+            }}>
+          <Typography variant="h3" component="div" align="center"
+                      style={{fontWeight: 'bold', marginBottom: '20px', color: 'black'}}>
+              <span className="home-title" onClick={homeClick} >Join Board</span>
+          </Typography>
+            </box>
+
+
+
+          <Card
           sx={{
             backgroundColor: '#fff',
             borderRadius: '8px',

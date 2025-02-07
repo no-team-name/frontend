@@ -183,7 +183,7 @@ const CommentsSection = ({ joinBoardId }) => {
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                 </Box>
-                <Typography className="member-nickname" sx={{ fontSize: '0.8rem', color: '#333' }}>
+                <Typography className="member-nickname" sx={{ fontSize: '0.9rem', color: '#333' }}>
                   {comment.memberNickname}
                 </Typography>
               </Box>
@@ -191,8 +191,8 @@ const CommentsSection = ({ joinBoardId }) => {
                 primary={comment.content}
                 secondary={comment.createdAt}
                 sx={{
-                  '& .MuiListItemText-primary': { color: '#333', fontSize: '1rem', mb: '5px' },
-                  '& .MuiListItemText-secondary': { color: '#999999', fontSize: '0.8rem' },
+                  '& .MuiListItemText-primary': { color: '#333', fontSize: '17px', mb: '5px' },
+                  '& .MuiListItemText-secondary': { color: '#999999', fontSize: '11px' },
                 }}
               />
               <Box sx={{ display: 'flex', gap: 1, ml: 'auto' }}>

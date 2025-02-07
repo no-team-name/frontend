@@ -36,6 +36,18 @@
 }
 
 
+.home-title {
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'Rock Salt', cursive;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.home-title:hover {
+    background-color: black;
+    color: white;
+}
 
 
 

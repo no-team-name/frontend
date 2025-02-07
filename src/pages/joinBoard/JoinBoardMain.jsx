@@ -171,7 +171,7 @@ function JoinBoardMain({
                     <Container maxWidth="lg" style={{padding: '20px'}}>
                         <br/>
                         <Typography variant="h3" component="div" align="center"
-                                    style={{fontWeight: 'bold', marginBottom: '20px', color: 'black'}}>
+                                    style={{fontWeight: 'bold', marginTop: '50px', marginBottom: '20px', color: 'black'}}>
                             <span className="home-title" onClick={homeClick}>Join Board</span>
                         </Typography>
 
