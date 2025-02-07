@@ -54,7 +54,7 @@ function JoinBoardDetail() {
 
 
     useEffect(() => {
-        if (inputRef.current) {
+        if (replyToId && inputRef.current) {
             inputRef.current.focus();
         }
     }, [replyContent]);
@@ -203,16 +203,11 @@ function JoinBoardDetail() {
 
     // 대댓글 제출
     const handleReplySubmit = async (parentCommentId) => {
-        console.log("handleReplySubmit  - 대댓글 제출 시 부모 댓글 ID:", parentCommentId); // 부모 댓글 ID가 제대로 출력되는지 확인
-        if (!replyContent.trim()) {
-            alert('댓글 내용을 입력해주세요.');
-            return;
-        }
-
         try {
             await createComment(id, {
-                content: replyContent
-            },  parentCommentId);
+                content: replyContent,
+                parentCommentId: parentCommentId
+            });
             setReplyToId(null);
             setReplyContent('');
             fetchComments();
@@ -286,7 +281,11 @@ function JoinBoardDetail() {
                             <TextField
                                 fullWidth
                                 value={editCommentContent}
-                                onChange={(e) => setEditCommentContent(e.target.value)}
+                                onChange={(e) => {
+                                    if (!isComposing) {
+                                        setEditCommentContent(e.target.value);
+                                    }
+                                }}
                                 variant="outlined"
                                 multiline
                                 autoFocus
@@ -381,10 +380,13 @@ function JoinBoardDetail() {
                         flexDirection: 'column',
                         gap: 1
                     }}>
-                        <TextField
+                        <TextField //
                             fullWidth
                             value={replyContent}
-                            onChange={(e) => setReplyContent(e.target.value)}
+                            onChange={(e) => {if (!isComposing) {
+                                setReplyContent(e.target.value);
+                                }
+                            }}
                             onCompositionStart={() => setIsComposing(true)}
                             onCompositionEnd={(e) => {
                                 setIsComposing(false);
@@ -393,7 +395,6 @@ function JoinBoardDetail() {
                             placeholder="답글을 입력하세요"
                             variant="outlined"
                             size="small"
-                            autoFocus
                             InputProps={{
                                 sx: {
                                     "&:hover .MuiOutlinedInput-notchedOutline": {
@@ -709,7 +710,15 @@ function JoinBoardDetail() {
                                     variant="outlined"
                                     label="댓글을 작성하세요"
                                     value={newComment}
-                                    onChange={(e) => setNewComment(e.target.value)}
+                                    onChange={(e) => {
+                                        if (!isComposing) {
+                                            setNewComment(e.target.value);}
+                                    }}
+                                    onCompositionStart={() => setIsComposing(true)}
+                                    onCompositionEnd={(e) => {
+                                        setIsComposing(false);
+                                        setNewComment(e.target.value);
+                                    }}
                                     sx={{ marginBottom: '10px' , "& .MuiOutlinedInput-root": {
                                             "&:hover .MuiOutlinedInput-notchedOutline": {
                                                 borderColor: "black", // 마우스 호버 시 테두리 검정색
