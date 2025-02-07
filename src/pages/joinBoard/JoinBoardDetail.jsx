@@ -188,7 +188,6 @@ function JoinBoardDetail() {
     // 댓글 수정 시작
     const handleEditStart = (comment) => {
         setEditingCommentId(comment.id);
-        // 기존 내용 세팅
         setEditCommentContent(comment.content);
     };
 
@@ -301,8 +300,20 @@ function JoinBoardDetail() {
         ));
     };
 
-    // 댓글/대댓글 Item
+    // CommentItem 컴포넌트 내부 수정
     const CommentItem = ({ comment, depth = 0 }) => {
+
+
+
+        const editInputRef = useRef(null);
+
+        // 수정 모드 시작시 포커스
+        useEffect(() => {
+            if (editingCommentId === comment.id && editInputRef.current) {
+                editInputRef.current.focus();
+            }
+        }, [editingCommentId, comment.id]);
+
         return (
             <>
                 <ListItem
@@ -318,50 +329,34 @@ function JoinBoardDetail() {
                     }}
                 >
                     {editingCommentId === comment.id ? (
-                        // 댓글 수정 모드
-                        <Box
-                            sx={{
-                                width: '100%',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: 2
-                            }}
-                        >
+                        <Box sx={{
+                            width: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: 2
+                        }}>
                             <TextField
                                 fullWidth
                                 value={editCommentContent}
-                                // CHANGED: IME 처리
-                                onChange={(e) => {
-                                    if (!isComposing) {
-                                        setEditCommentContent(e.target.value);
-                                    }
-                                }}
-                                onCompositionStart={() => setIsComposing(true)}
-                                onCompositionEnd={(e) => {
-                                    setIsComposing(false);
-                                    setEditCommentContent(e.target.value);
-                                }}
+                                onChange={(e) => setEditCommentContent(e.target.value)}
                                 variant="outlined"
                                 multiline
-                                // autoFocus 제거 또는 필요 시 조건부
-                                InputProps={{
-                                    sx: {
-                                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                                            borderColor: 'black'
-                                        },
-                                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                            borderColor: 'black'
-                                        }
-                                    }
-                                }}
+                                 InputProps={{
+                                     sx: {
+                                         '&:hover .MuiOutlinedInput-notchedOutline': {
+                                             borderColor: 'black'
+                                         },
+                                         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                             borderColor: 'black'
+                                         }
+                                     }
+                                 }}
                             />
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    gap: 1,
-                                    justifyContent: 'flex-end'
-                                }}
-                            >
+                            <Box sx={{
+                                display: 'flex',
+                                gap: 1,
+                                justifyContent: 'flex-end'
+                            }}>
                                 <Button
                                     className="comment-cancel-update-button"
                                     variant="contained"
@@ -481,53 +476,38 @@ function JoinBoardDetail() {
 
                 {/* 대댓글 작성 폼 */}
                 {replyToId === comment.id && (
-                    <Box
-                        sx={{
-                            marginLeft: `${(depth + 1) * 40}px`,
-                            marginTop: 2,
-                            marginBottom: 2,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: 1
-                        }}
-                    >
+                    <Box sx={{
+                        marginLeft: `${(depth + 1) * 40}px`,
+                        marginTop: 2,
+                        marginBottom: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 1
+                    }}>
                         <TextField
                             fullWidth
-                            inputRef={replyInputRef} // CHANGED: ref 지정
-                            value={replyContent}
-                            // CHANGED: IME 처리
-                            onChange={(e) => {
-                                if (!isComposing) {
-                                    setReplyContent(e.target.value);
-                                }
-                            }}
-                            onCompositionStart={() => setIsComposing(true)}
-                            onCompositionEnd={(e) => {
-                                setIsComposing(false);
-                                setReplyContent(e.target.value);
-                            }}
+                            inputRef={replyInputRef}
+                            // value={replyContent}
+                            // onChange={(e) => setReplyContent(e.target.value)}
                             placeholder="답글을 입력하세요"
                             variant="outlined"
                             size="small"
-                            // autoFocus 제거 (대댓글 열릴 때만 포커스)
-                            InputProps={{
-                                sx: {
-                                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: 'black'
-                                    },
-                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: 'black'
-                                    }
-                                }
-                            }}
+                            // InputProps={{
+                            //     sx: {
+                            //         '&:hover .MuiOutlinedInput-notchedOutline': {
+                            //             borderColor: 'black'
+                            //         },
+                            //         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            //             borderColor: 'black'
+                            //         }
+                            //     }
+                            // }}
                         />
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                gap: 1,
-                                justifyContent: 'flex-end'
-                            }}
-                        >
+                        <Box sx={{
+                            display: 'flex',
+                            gap: 1,
+                            justifyContent: 'flex-end'
+                        }}>
                             <Button
                                 className="comment-cancel-update-button"
                                 variant="contained"
@@ -538,9 +518,7 @@ function JoinBoardDetail() {
                             <Button
                                 className="comment-update-button"
                                 variant="contained"
-                                onClick={() =>
-                                    handleReplySubmit(comment.id)
-                                }
+                                onClick={() => handleReplySubmit(comment.id)}
                             >
                                 답글 작성
                             </Button>
@@ -826,32 +804,24 @@ function JoinBoardDetail() {
                                 <TextField
                                     variant="outlined"
                                     label="댓글을 작성하세요"
-                                    value={newComment}
-                                    onChange={(e) => {
-                                        if (!isComposing) {
-                                            setNewComment(e.target.value);}
-                                    }}
-                                    onCompositionStart={() => setIsComposing(true)}
-                                    onCompositionEnd={(e) => {
-                                        setIsComposing(false);
-                                        setNewComment(e.target.value);
-                                    }}
-                                    sx={{ marginBottom: '10px' , "& .MuiOutlinedInput-root": {
+                                    // onChange={(e) => setNewComment(e.target.value)}
+                                    sx={{
+                                        marginBottom: '10px',
+                                        "& .MuiOutlinedInput-root": {
                                             "&:hover .MuiOutlinedInput-notchedOutline": {
-                                                borderColor: "black", // 마우스 호버 시 테두리 검정색
+                                                borderColor: "black",
                                             },
                                             "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                                                borderColor: "black", // 클릭(포커스) 시 테두리 검정색
+                                                borderColor: "black",
                                             },
-                                        }, '& .MuiInputLabel-outlined': {
+                                        },
+                                        '& .MuiInputLabel-outlined': {
                                             color: "gray",
                                             '&.Mui-focused': {
                                                 color: 'black',
-                                            }},
-
-
+                                            }
+                                        },
                                     }}
-
                                 />
 
                                 <Button
