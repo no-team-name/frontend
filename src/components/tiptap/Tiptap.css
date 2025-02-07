@@ -8,15 +8,15 @@
     height: 100%;
     outline: none;
 
-    > * + * {
+    >*+* {
         margin-top: 0em;
     }
-    
+
     [data-id] {
         border: 3px solid #0D0D0D;
         border-radius: 0.5rem;
         position: relative;
-    
+
         &::before {
             content: attr(data-id);
             background-color: #0D0D0D;
@@ -38,16 +38,12 @@
 .ProseMirror h3,
 .ProseMirror h4,
 .ProseMirror h5,
-.ProseMirror h6 {
-
-}
+.ProseMirror h6 {}
 
 .ProseMirror ul,
-.ProseMirror ol {
-}
+.ProseMirror ol {}
 
-.ProseMirror li {
-}
+.ProseMirror li {}
 
 .ProseMirror pre {
     margin-left: 10px;
@@ -69,8 +65,7 @@ pre {
     font-family: "Fira Code", monospace;
 }
 
-p {
-}
+p {}
 
 pre code {
     background-color: #2d2d2d;
@@ -79,6 +74,7 @@ pre code {
     font-family: "Fira Code", monospace;
     white-space: pre;
     padding-left: 1.4rem;
+    padding-right: 1.4rem;
 }
 
 .markdown-output {
@@ -105,13 +101,14 @@ pre code {
 /* 표 스타일 */
 table {
     border-collapse: collapse;
-    padding: 2px;
+    padding: 4px;
 }
 
 th,
 td {
     border: 1.3px solid #ddd;
     text-align: left;
+    min-height: 10px;
 }
 
 .ProseMirror pre code {
@@ -169,8 +166,7 @@ td {
     cursor: grabbing;
 }
 
-.ProseMirror>.ProseMirror-yjs-cursor:first-child {
-}
+.ProseMirror>.ProseMirror-yjs-cursor:first-child {}
 
 .ProseMirror p:first-child,
 .ProseMirror h1:first-child,
@@ -178,9 +174,7 @@ td {
 .ProseMirror h3:first-child,
 .ProseMirror h4:first-child,
 .ProseMirror h5:first-child,
-.ProseMirror h6:first-child {
-
-}
+.ProseMirror h6:first-child {}
 
 /* This gives the remote user caret. The colors are automatically overwritten*/
 .ProseMirror-yjs-cursor {

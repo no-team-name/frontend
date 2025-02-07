@@ -51,6 +51,7 @@ function RealTimeChart({ queryOptions, timeRangeOptions }) {
         if (jsonData.data && jsonData.data.result) {
           jsonData.data.result.forEach((item) => {
             const label =
+              item.metric.path ||
               item.metric.uri ||
               item.metric.function ||
               item.metric.handler ||

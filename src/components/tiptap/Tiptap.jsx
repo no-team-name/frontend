@@ -19,9 +19,6 @@ import OrderedList from "@tiptap/extension-ordered-list";
 import ListItem from "@tiptap/extension-list-item";
 import Highlight from '@tiptap/extension-highlight'
 import Typography from '@tiptap/extension-typography'
-import Details from '@tiptap-pro/extension-details'
-import DetailsContent from '@tiptap-pro/extension-details-content'
-import DetailsSummary from '@tiptap-pro/extension-details-summary'
 import Placeholder from '@tiptap/extension-placeholder'
 import { all, createLowlight } from "lowlight";
 import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
@@ -33,6 +30,7 @@ import {
 import "highlight.js/styles/github-dark.css";
 
 import DropdownCard from "./DropdownCard";
+import TableModal from "./TableMocal";
 import "./Tiptap.css";
 
 import { YSyncExtension } from "./extension/YSyncExtension";
@@ -55,6 +53,7 @@ const Tiptap = forwardRef((props, ref) => {
   const [dropdownPosition, setDropdownPosition] = useState({ x: 0, y: 0 });
   const [markdown, setMarkdown] = useState("");
   const fileInputRef = useRef(null);
+  const [isTableModalOpen, setIsTableModalOpen] = useState(false);
 
   const yXmlFragment = useRef(yDoc.getXmlFragment('prosemirror'));
 
@@ -73,24 +72,6 @@ const Tiptap = forwardRef((props, ref) => {
         resizable: true,
         cellMinWidth: 50,
         cellMinHeight: 20,
-      }),
-      Details.configure({
-        persist: true,
-        HTMLAttributes: {
-          class: 'details',
-        },
-      }),
-      DetailsSummary,
-      DetailsContent,
-      Placeholder.configure({
-        includeChildren: true,
-        placeholder: ({ node }) => {
-          if (node.type.name === 'detailsSummary') {
-            return 'Summary'
-          }
-
-          return null
-        },
       }),
       Highlight,
       Typography,
@@ -214,8 +195,7 @@ const Tiptap = forwardRef((props, ref) => {
   const slashCommands = [
     {
       label: "table",
-      action: (editor) =>
-        editor.chain().focus().insertTable({ rows: 2, cols: 2 }).run(),
+      action: () => setIsTableModalOpen(true),
     },
     {
       label: "image",
@@ -228,7 +208,13 @@ const Tiptap = forwardRef((props, ref) => {
       action: (editor) => editor.chain().focus().toggleCodeBlock().run(),
     },
   ];
-  // slash 명령 실행
+
+  const handleInsertTable = (rows, cols) => {
+    if (editor) {
+      editor.chain().focus().insertTable({ rows, cols }).run();
+    }
+  };
+
   const handleCommandClick = (command) => {
     if (!editor) return;
     command.action(editor);
@@ -297,6 +283,11 @@ const Tiptap = forwardRef((props, ref) => {
           onChange={handleFileChange}
         />
       </div>
+      <TableModal
+        isOpen={isTableModalOpen}
+        onClose={() => setIsTableModalOpen(false)}
+        onInsert={handleInsertTable}
+      />
     </div>
   );
 });

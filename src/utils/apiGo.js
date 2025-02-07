@@ -1,19 +1,16 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-// 쿠키에서 accessToken / refreshToken 꺼내기
 function getTokens() {
   const accessToken = Cookies.get('accessToken');
   const refreshToken = Cookies.get('refreshToken');
   return { accessToken, refreshToken };
 }
 
-// Axios 인스턴스 생성
 const apiClient = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL + '/go',
 });
 
-// 요청 인터셉터
 apiClient.interceptors.request.use(
   (config) => {
     const { accessToken, refreshToken } = getTokens();
@@ -30,4 +27,19 @@ apiClient.interceptors.request.use(
   }
 );
 
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const errorMessage =
+      error.response?.data?.error || '알 수 없는 에러가 발생했습니다.';
+    
+    if (error.response?.status === 401) {
+      window.location.href = '/unauthorized';
+    } else {
+      alert(errorMessage);
+    }
+    
+    return Promise.reject(error);
+  }
+);
 export default apiClient;

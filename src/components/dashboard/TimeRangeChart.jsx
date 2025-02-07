@@ -61,6 +61,7 @@ function TimeRangeChart({ queryOptions }) {
       const datasets = allResults.map((seriesObj, idx) => {
         const metric = seriesObj.metric;
         const label =
+          metric.path ||
           metric.uri ||
           metric.function ||
           metric.handler ||
