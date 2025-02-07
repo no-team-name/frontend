@@ -1,5 +1,5 @@
-// CommentsSection.jsx
-import React, { useState, useEffect, useRef } from 'react';
+// src/components/joinboard/CommentsSection.jsx
+import React, { useState, useEffect } from 'react';
 import {
   List,
   ListItem,
@@ -20,21 +20,15 @@ import {
   deleteComment,
   updateComment,
 } from '../../service/JoinBoardService';
+import ReplyInputContainer from './ReplyInputContainer';
+import EditCommentInput from './EditCommentInput';
 
 const CommentsSection = ({ joinBoardId }) => {
-  // 상태 관리
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [editingCommentId, setEditingCommentId] = useState(null);
-  const [editCommentContent, setEditCommentContent] = useState('');
   const [replyToId, setReplyToId] = useState(null);
-  const [replyContent, setReplyContent] = useState('');
-  const [isComposing, setIsComposing] = useState(false);
 
-  // 대댓글 입력창 포커스 제어용 ref
-  const replyInputRef = useRef(null);
-
-  // 댓글 목록 불러오기
   const fetchComments = async () => {
     try {
       const data = await getAllCommentByJoinBoardId(joinBoardId);
@@ -48,14 +42,7 @@ const CommentsSection = ({ joinBoardId }) => {
     fetchComments();
   }, [joinBoardId]);
 
-  // replyToId가 변경되면 해당 대댓글 입력창에 포커스
-  useEffect(() => {
-    if (replyToId && replyInputRef.current) {
-      replyInputRef.current.focus();
-    }
-  }, [replyToId]);
-
-  // 댓글/대댓글들을 트리 구조로 조직
+  // 트리 구조로 댓글 정리
   const organizeComments = (commentsArr) => {
     const commentMap = {};
     const rootComments = [];
@@ -77,7 +64,6 @@ const CommentsSection = ({ joinBoardId }) => {
     return rootComments;
   };
 
-  // 댓글 작성 핸들러
   const handleCommentSubmit = async () => {
     if (!newComment.trim()) {
       alert('댓글 내용을 입력해주세요.');
@@ -92,7 +78,6 @@ const CommentsSection = ({ joinBoardId }) => {
     }
   };
 
-  // 댓글 삭제
   const handleDeleteComment = async (commentId) => {
     try {
       await deleteComment(commentId);
@@ -102,28 +87,23 @@ const CommentsSection = ({ joinBoardId }) => {
     }
   };
 
-  // 댓글 수정 시작
+  // 댓글 수정 모드 관리
   const handleEditStart = (comment) => {
     setEditingCommentId(comment.id);
-    setEditCommentContent(comment.content);
   };
 
-  // 댓글 수정 취소
   const handleEditCancel = () => {
     setEditingCommentId(null);
-    setEditCommentContent('');
   };
 
-  // 댓글 수정 제출
-  const handleEditSubmit = async (commentId) => {
-    if (!editCommentContent.trim()) {
+  const handleEditSubmit = async (commentId, newText) => {
+    if (!newText.trim()) {
       alert('댓글 내용을 입력해주세요.');
       return;
     }
     try {
-      await updateComment(commentId, { content: editCommentContent });
+      await updateComment(commentId, { content: newText });
       setEditingCommentId(null);
-      setEditCommentContent('');
       fetchComments();
     } catch (error) {
       console.error('댓글 수정 실패:', error);
@@ -131,35 +111,29 @@ const CommentsSection = ({ joinBoardId }) => {
     }
   };
 
-  // 대댓글 작성 시작
+  // 대댓글 작성 모드 관리
   const handleReplyStart = (commentId) => {
     setReplyToId(commentId);
-    setReplyContent('');
   };
 
-  // 대댓글 작성 취소
   const handleReplyCancel = () => {
     setReplyToId(null);
-    setReplyContent('');
   };
 
-  // 대댓글 제출
-  const handleReplySubmit = async (parentCommentId) => {
-    if (!replyContent.trim()) {
+  const handleReplySubmit = async (commentId, text) => {
+    if (!text.trim()) {
       alert('댓글 내용을 입력해주세요.');
       return;
     }
     try {
-      await createComment(joinBoardId, { content: replyContent }, parentCommentId);
+      await createComment(joinBoardId, { content: text }, commentId);
       setReplyToId(null);
-      setReplyContent('');
       fetchComments();
     } catch (error) {
       console.error('댓글 작성 실패:', error);
     }
   };
 
-  // 댓글 및 대댓글 렌더링을 위한 재귀 컴포넌트
   const CommentItem = ({ comment, depth = 0 }) => {
     return (
       <Box key={comment.id}>
@@ -175,51 +149,12 @@ const CommentsSection = ({ joinBoardId }) => {
           }}
         >
           {editingCommentId === comment.id ? (
-            // 수정 모드
-            <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <TextField
-                fullWidth
-                value={editCommentContent}
-                onChange={(e) => {
-                  if (!isComposing) setEditCommentContent(e.target.value);
-                }}
-                onCompositionStart={() => setIsComposing(true)}
-                onCompositionEnd={(e) => {
-                  setIsComposing(false);
-                  setEditCommentContent(e.target.value);
-                }}
-                variant="outlined"
-                multiline
-                InputProps={{
-                  sx: {
-                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                      borderColor: 'black',
-                    },
-                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      borderColor: 'black',
-                    },
-                  },
-                }}
-              />
-              <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
-                <Button
-                  variant="contained"
-                  className="comment-cancel-update-button"
-                  onClick={handleEditCancel}
-                >
-                  취소
-                </Button>
-                <Button
-                  variant="contained"
-                  className="comment-update-button"
-                  onClick={() => handleEditSubmit(comment.id)}
-                >
-                  수정 완료
-                </Button>
-              </Box>
-            </Box>
+            <EditCommentInput
+              initialValue={comment.content}
+              onSubmit={(newText) => handleEditSubmit(comment.id, newText)}
+              onCancel={handleEditCancel}
+            />
           ) : (
-            // 일반 댓글 모드
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
               <Box
                 sx={{
@@ -275,65 +210,14 @@ const CommentsSection = ({ joinBoardId }) => {
             </Box>
           )}
         </ListItem>
-
-        {/* 대댓글 입력 폼 */}
         {replyToId === comment.id && (
-          <Box
-            sx={{
-              ml: `${(depth + 1) * 40}px`,
-              mt: 2,
-              mb: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 1,
-            }}
-          >
-            <TextField
-              fullWidth
-              inputRef={replyInputRef}
-              value={replyContent}
-              onChange={(e) => {
-                if (!isComposing) setReplyContent(e.target.value);
-              }}
-              onCompositionStart={() => setIsComposing(true)}
-              onCompositionEnd={(e) => {
-                setIsComposing(false);
-                setReplyContent(e.target.value);
-              }}
-              placeholder="답글을 입력하세요"
-              variant="outlined"
-              size="small"
-              InputProps={{
-                sx: {
-                  '&:hover .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'black',
-                  },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'black',
-                  },
-                },
-              }}
+          <Box sx={{ ml: `${(depth + 1) * 40}px`, mt: 2, mb: 2 }}>
+            <ReplyInputContainer
+              onSubmit={(text) => handleReplySubmit(comment.id, text)}
+              onCancel={handleReplyCancel}
             />
-            <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
-              <Button
-                variant="contained"
-                className="comment-cancel-update-button"
-                onClick={handleReplyCancel}
-              >
-                취소
-              </Button>
-              <Button
-                variant="contained"
-                className="comment-update-button"
-                onClick={() => handleReplySubmit(comment.id)}
-              >
-                답글 작성
-              </Button>
-            </Box>
           </Box>
         )}
-
-        {/* 재귀적으로 대댓글 렌더링 */}
         {comment.replies &&
           comment.replies.map((reply) => (
             <CommentItem key={reply.id} comment={reply} depth={depth + 1} />
@@ -359,20 +243,12 @@ const CommentsSection = ({ joinBoardId }) => {
           organizedComments.map((comment) => <CommentItem key={comment.id} comment={comment} />)
         )}
       </List>
-      {/* 새 댓글 입력란 – 대댓글 입력창과 별개로 존재 */}
       <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2 }}>
         <TextField
           variant="outlined"
           label="댓글을 작성하세요"
           value={newComment}
-          onChange={(e) => {
-            if (!isComposing) setNewComment(e.target.value);
-          }}
-          onCompositionStart={() => setIsComposing(true)}
-          onCompositionEnd={(e) => {
-            setIsComposing(false);
-            setNewComment(e.target.value);
-          }}
+          onChange={(e) => setNewComment(e.target.value)}
           sx={{
             mb: 1,
             '& .MuiOutlinedInput-root': {
@@ -385,12 +261,7 @@ const CommentsSection = ({ joinBoardId }) => {
             },
           }}
         />
-        <Button
-          variant="contained"
-          className="comment-create-button"
-          onClick={handleCommentSubmit}
-          sx={{ alignSelf: 'flex-end' }}
-        >
+        <Button variant="contained" onClick={handleCommentSubmit} sx={{ alignSelf: 'flex-end' }}>
           댓글 작성
         </Button>
       </Box>

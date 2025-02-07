@@ -1,10 +1,7 @@
+// src/pages/JoinBoardDetail.jsx
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import {
-  deleteJoinBoard,
-  getJoinBoard,
-  getJoinBoardCard,
-} from '../../service/JoinBoardService';
+import { useParams, useNavigate } from 'react-router-dom';
+import { deleteJoinBoard, getJoinBoard, getJoinBoardCard } from '../../service/JoinBoardService';
 import {
   Container,
   Typography,
@@ -16,9 +13,9 @@ import {
   MenuItem,
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import MainHeader from "../../components/common/MainHeader";
-import CommentsSection from "../../components/joinboard/CommentsSection";
-import "./JoinBoardDetail.css";
+import MainHeader from '../../components/common/MainHeader';
+import CommentsSection from '../../components/joinboard/CommentsSection';
+import './JoinBoardDetail.css';
 
 function JoinBoardDetail() {
   const { id } = useParams();
@@ -28,15 +25,17 @@ function JoinBoardDetail() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [page, setPage] = useState(1);
 
-  // 게시글 상세 불러오기
   const fetchPostDetail = async () => {
     try {
       const data = await getJoinBoard(id);
       setPost(data);
-      localStorage.setItem('currentJoinBoardDetail', JSON.stringify({
-        id: data.id,
-        page: page,
-      }));
+      localStorage.setItem(
+        'currentJoinBoardDetail',
+        JSON.stringify({
+          id: data.id,
+          page: page,
+        })
+      );
     } catch (error) {
       console.error('게시글을 불러오는 데 실패했습니다.', error);
     } finally {
@@ -44,7 +43,6 @@ function JoinBoardDetail() {
     }
   };
 
-  // 게시글 목록 (페이징) 불러오기
   const fetchPageData = async () => {
     const savedPage = localStorage.getItem('currentPage');
     const pageNum = savedPage ? parseInt(savedPage) : 1;
@@ -52,11 +50,10 @@ function JoinBoardDetail() {
       await getJoinBoardCard(pageNum - 1);
       setPage(pageNum);
     } catch (error) {
-      console.error("게시판 목록을 가져오는 데 실패했습니다.", error);
+      console.error('게시판 목록을 가져오는 데 실패했습니다.', error);
     }
   };
 
-  // 게시글 삭제
   const handleDeleteClick = async () => {
     try {
       await deleteJoinBoard(id);
@@ -69,7 +66,6 @@ function JoinBoardDetail() {
     handleClose();
   };
 
-  // 모달(메뉴) 열기/닫기
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -77,13 +73,11 @@ function JoinBoardDetail() {
     setAnchorEl(null);
   };
 
-  // 게시글 수정 이동
   const handleEditClick = () => {
     navigate(`/edit-join-board/${id}`, { replace: false });
     handleClose();
   };
 
-  // 초기 데이터 로드 및 페이지 상태 관리
   useEffect(() => {
     fetchPostDetail();
     fetchPageData();
@@ -134,7 +128,6 @@ function JoinBoardDetail() {
           }}
         >
           <CardContent>
-            {/* 게시글 상세 내용 */}
             <IconButton
               sx={{
                 position: 'absolute',
@@ -159,7 +152,6 @@ function JoinBoardDetail() {
                 marginLeft: '20px',
               }}
             >
-              {/* 프로필 섹션 */}
               <Box
                 sx={{
                   display: 'flex',
@@ -203,8 +195,6 @@ function JoinBoardDetail() {
                   {post.memberNickname}
                 </Typography>
               </Box>
-
-              {/* 타이틀 및 작성 정보 */}
               <Box
                 sx={{
                   flexGrow: 1,
@@ -230,8 +220,6 @@ function JoinBoardDetail() {
                 </Typography>
               </Box>
             </Box>
-
-            {/* 게시글 본문 (예시) */}
             <Box sx={{ marginTop: '40px', marginLeft: '50px' }}>
               <Typography variant="h6" sx={{ color: '#333' }}>
                 주제: {post.topic}
@@ -257,8 +245,6 @@ function JoinBoardDetail() {
                 </Typography>
               </Box>
             </Box>
-
-            {/* 댓글 섹션 컴포넌트 */}
             <CommentsSection joinBoardId={id} />
           </CardContent>
         </Card>
