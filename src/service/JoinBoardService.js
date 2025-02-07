@@ -7,7 +7,7 @@ import apiClient from "../utils/apiSpring";
 // 게시판 목록 최신순으로 가져오기 (페이지 번호를 파라미터로 전달)
 export const getJoinBoardCard = async (page = 0) => {
     try {
-        const response = await apiClient.get(`/api/join-board?page=${page}`);
+        const response = await apiClient.get(`/api/members/join-board?page=${page}`);
         console.log(response);
         return response;
     } catch (error) {
@@ -19,7 +19,7 @@ export const getJoinBoardCard = async (page = 0) => {
 // 게시판 제목순으로 가져오기 (페이지 번호를 파라미터로 전달)
 export const getJoinBoardCardByTitle = async (page = 0) => {
     try {
-        const response = await apiClient.get(`/api/join-board/sort-by-title?page=${page}`);
+        const response = await apiClient.get(`/api/members/join-board/sort-by-title?page=${page}`);
         console.log(response);
         return response;
     } catch (error) {
@@ -49,7 +49,7 @@ export const searchJoinBoard = async (query, page = 0) => {
 // 특정 게시글 가져오기
 export const getJoinBoard = async (joinBoardId) => {
     try {
-        const response = await apiClient.get(`/api/join-board/${joinBoardId}`);
+        const response = await apiClient.get(`/api/members/join-board/${joinBoardId}`);
         console.log(response); // 응답 로그를 확인하세요
         // 응답에서 실제 데이터에 접근
         if (response && response.data && response.data.data) {
@@ -68,7 +68,7 @@ export const getJoinBoard = async (joinBoardId) => {
 // 게시글 작성하기 (POST 요청)
 export const createJoinBoard = async (boardData) => {
     try {
-        const response = await apiClient.post(`/api/join-board`, boardData, {
+        const response = await apiClient.post(`/api/members/join-board`, boardData, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -84,7 +84,7 @@ export const createJoinBoard = async (boardData) => {
 // 게시글 수정 API 호출
 export const updateJoinBoard = async (id, boardData) => {
     try {
-        const response = await apiClient.put(`/api/join-board/${id}`, boardData, {
+        const response = await apiClient.put(`/api/members/join-board/${id}`, boardData, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -99,7 +99,7 @@ export const updateJoinBoard = async (id, boardData) => {
 // 게시글 삭제 API 호출
 export const deleteJoinBoard = async (id) => {
     try {
-        const response = await apiClient.delete(`/api/join-board/${id}`);
+        const response = await apiClient.delete(`/api/members/join-board/${id}`);
         return response.data;
     } catch (error) {
         console.error("게시글 삭제 실패:", error);
@@ -118,7 +118,7 @@ export const deleteJoinBoard = async (id) => {
 // 특정 게시글의 댓글 가져오기
 export const getAllCommentByJoinBoardId = async (joinBoardId) => {
     try {
-        const response = await apiClient.get(`/api/comment/${joinBoardId}`);
+        const response = await apiClient.get(`/api/members/comment/${joinBoardId}`);
         return response.data.data;
     } catch (error) {
         console.error("댓글 가져오기 실패:", error);
@@ -133,7 +133,7 @@ export const createComment = async (joinBoardId, commentData, parentCommentId = 
 
     try {
         // parentCommentId가 있으면 쿼리 파라미터로 추가
-        const response = await apiClient.post(`/api/comment/${joinBoardId}`, commentData, {
+        const response = await apiClient.post(`/api/members/comment/${joinBoardId}`, commentData, {
             params: {
                 parentCommentId: parentCommentId
             }
@@ -150,7 +150,7 @@ export const createComment = async (joinBoardId, commentData, parentCommentId = 
 // 댓글 수정
 export const updateComment = async (commentId, commentData) => {
     try {
-        const response = await apiClient.put(`/api/comment/${commentId}`, commentData);
+        const response = await apiClient.put(`/api/members/comment/${commentId}`, commentData);
         return response.data;
     } catch (error) {
         console.error("댓글 수정 실패:", error);
@@ -161,7 +161,7 @@ export const updateComment = async (commentId, commentData) => {
 // 댓글 삭제
 export const deleteComment = async (commentId) => {
     try {
-        const response = await apiClient.delete(`/api/comment/${commentId}`);
+        const response = await apiClient.delete(`/api/members/comment/${commentId}`);
         return response.data;
     } catch (error) {
         alert('댓글 삭제에 실패하였습니다.');
