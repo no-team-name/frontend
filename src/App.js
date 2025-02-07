@@ -154,7 +154,7 @@ function App() {
             <Route path="/admin/members" element={<WithAuthComponent component={AdminMemberPage} requiredRole="ADMIN" {...sharedProps} />} />
             <Route path="/admin/members/:memberId" element={<WithAuthComponent component={AdminMemberDetailPage} requiredRole="ADMIN" {...sharedProps} />} />
 
-          <Route path="/about-us" element={<AboutUs {...sharedProps} />} />
+            <Route path="/about-us" element={<AboutUs {...sharedProps} />} />
 
             {/* ✅ 가입 게시판 관련 (로그인 필요) */}
             <Route path="/join-board" element={<WithAuthComponent component={JoinBoardMain} {...sharedProps} />} />
