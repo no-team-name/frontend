@@ -385,6 +385,11 @@ function JoinBoardDetail() {
                             fullWidth
                             value={replyContent}
                             onChange={(e) => setReplyContent(e.target.value)}
+                            onCompositionStart={() => setIsComposing(true)}
+                            onCompositionEnd={(e) => {
+                                setIsComposing(false);
+                                setReplyContent(e.target.value);
+                            }}
                             placeholder="답글을 입력하세요"
                             variant="outlined"
                             size="small"
@@ -741,5 +746,4 @@ function JoinBoardDetail() {
         </>
     );
 }
-
 export default JoinBoardDetail;
