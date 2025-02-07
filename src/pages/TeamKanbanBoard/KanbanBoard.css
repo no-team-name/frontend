@@ -1,0 +1,14 @@
+.sidebar-open {
+    margin-left: 250px;
+    transition: margin-left 0.3s ease;
+}
+
+.sidebar-closed {
+    margin-left: 0;
+    transition: margin-left 0.3s ease;
+}
+
+.NoteHeader {
+    position: relative;
+    z-index: 1100;
+}

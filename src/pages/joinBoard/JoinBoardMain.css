@@ -68,8 +68,13 @@
     background-color: #efefef;
 }
 
+.test {
+
+}
+
 .board-container {
     transition: margin-left 0.3s ease;
+    min-height: 800px;
 }
 
 
@@ -84,3 +89,4 @@
     font-weight: 500;
     font-style: normal;
 }
+

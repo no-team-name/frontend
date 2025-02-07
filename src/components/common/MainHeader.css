@@ -46,6 +46,6 @@
 
 .header {
     position: relative;
-    z-index: 1100;
-    /* 헤더의 z-index를 사이드바보다 높게 설정 */
+    z-index: 100;
+
 }

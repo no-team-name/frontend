@@ -13,6 +13,8 @@ import {
 } from "../../service/KanbanBoardService";
 import { useRecoilValue } from 'recoil';
 import {userState} from "../../recoil/UserAtoms";
+import Sidebar from "../../components/common/Sidebar";
+import "./KanbanBoard.css";
 
 /**
  * KanbanBoard
@@ -22,17 +24,26 @@ import {userState} from "../../recoil/UserAtoms";
  */
 
 
-const KanbanBoard = () => {
+const KanbanBoard = ({
+  openLoginModal,
+  openLogoutModal,
+  openAccountDeleteModal,
+  openNicknameModal,
+}) => {
     const {teamId} = useParams();
     const [teamInfo, setTeamInfo] = useState({});
     const [columns, setColumns] = useState([]);
     const [nextColumnId, setNextColumnId] = useState(1);
     const [nextCardId, setNextCardId] = useState(1);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const user = useRecoilValue(userState);
     const userId = user.memberId;
-    /**
-     * 컬럼 추가
-     */
+    const userNickname = user.nickname;
+
+    const handleMenuClick = () => {
+        setIsSidebarOpen(!isSidebarOpen);
+    };
+
     const handleAddColumn = async () => {
         const newColumn = {
             id: nextColumnId,
@@ -40,11 +51,15 @@ const KanbanBoard = () => {
             cards: []
         };
         const response = await createKanbanBoardColumn(teamId, newColumn.name);
-
         if (response) {
-            window.location.reload()
+            const responseColumn = {
+                id: response.data.columnId,
+                name: response.data.title,
+                cards: []
+            }
+            setColumns((prevColumns) => [...prevColumns, responseColumn]);
+            setNextColumnId(nextColumnId + 1);
         }
-
     }
 
     /**
@@ -67,11 +82,25 @@ const KanbanBoard = () => {
         const newCard = {
             id: nextCardId,
             title: `Card`,
+            membername: userNickname,
         };
         const response = await createKanbanBoardCard(userId,teamId,newCard.title,columnId);
 
         if (response) {
-            window.location.reload()
+            console.log(response);
+            const responesCard = {
+                id: response.data.cardId,
+                title: response.data.title,
+                memberNickName: response.data.memberNickname
+            }
+            setColumns((prevColumns) =>
+                prevColumns.map((column) =>
+                    column.id === columnId
+                    ? { ...column, cards: [...column.cards, responesCard] }
+                    : column
+                )
+            );
+            setNextCardId(nextCardId + 1);
         }
 
 
@@ -81,13 +110,15 @@ const KanbanBoard = () => {
      */
 
     const handleDeleteCard = async (cardId) => {
-
         console.log(cardId);
-
         const response = await deleteKanbanBoardCard(cardId);
-
         if (response) {
-            window.location.reload()
+            setColumns((prevColumns) =>
+                prevColumns.map((column) => ({
+                    ...column,
+                    cards: column.cards.filter((card) => card.id !== cardId)
+                }))
+            );
         }
 
     };
@@ -189,9 +220,17 @@ const KanbanBoard = () => {
     }, [teamId]);
 
     return (
-        <div className="flex justify-center items-center">
-            <div className="flex flex-col justify-center w-full">
-                <NoteHeader />
+        <div className={`relative flex justify-center items-center ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+        <div className="flex flex-col justify-center w-full">
+                <NoteHeader
+                    teamId={teamId}
+                    onMenu={handleMenuClick}
+                    onOpenLoginModal={openLoginModal}
+                    onOpenLogoutModal={openLogoutModal}
+                    onOpenAccountDeleteModal={openAccountDeleteModal}
+                    onOpenNicknameModal={openNicknameModal}
+                />
+                <Sidebar isOpen={isSidebarOpen} onClose={handleMenuClick} />
                 {/* 컬럼 추가 버튼 */}
                 <TopPlate teamInfo={teamInfo.teamName} onAddColumn={handleAddColumn} />
                 {/*
@@ -208,9 +247,9 @@ const KanbanBoard = () => {
                         {(provided) => (
                             <div
                                 className="
-                  bg-white w-full flex justify-start items-start
-                  px-[40px] gap-5 h-[1000px] overflow-x-auto
-                "
+                                    bg-white w-full flex justify-start items-start
+                                    px-[40px] gap-5 h-[1200px] overflow-x-auto ml-6
+                                    "
                                 ref={provided.innerRef}
                                 {...provided.droppableProps}
                             >

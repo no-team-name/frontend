@@ -22,6 +22,7 @@ const MainHeader = ({
   openAccountDeleteModal,
   openNicknameModal,
   onSidebarToggle,
+  openProfileImageChangeModal
 }) => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -64,6 +65,7 @@ const MainHeader = ({
                 nickname={nickname}
                 onOpenNicknameModal={openNicknameModal}
                 onOpenAccountDeleteModal={openAccountDeleteModal}
+                onOpenProfileImageModal={openProfileImageChangeModal} 
                 onOpenLogoutConfirm={openLogoutModal}
               />
             </>

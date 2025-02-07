@@ -11,7 +11,7 @@ const getTeam = async (teamId) => {
 }
 
 const createKanbanBoardColumn = async (teamId, title) => {
-    const response = await apiClient.post(`/api/kanbanboard/create`, {
+    const response = await apiClient.post(`/api/kanbanboard`, {
       teamId: teamId,
       title: title
     })
@@ -19,14 +19,14 @@ const createKanbanBoardColumn = async (teamId, title) => {
 }
 
 const deleteKanbanBoardColumn = async (boardId) => {
-    const response = await apiClient.delete(`/api/kanbanboard/delete`, {
+    const response = await apiClient.delete(`/api/kanbanboard`, {
         data: { boardId }
     })
     return response;
 }
 
 const createKanbanBoardCard = async (memberId,teamId,content,columnId) => {
-    const response = await apiClient.post(`/api/kanbanboardcard/create`, {
+    const response = await apiClient.post(`/api/kanbanboardcard`, {
         memberId: memberId,
         teamId: teamId,
         content: content,
@@ -36,21 +36,21 @@ const createKanbanBoardCard = async (memberId,teamId,content,columnId) => {
 }
 
 const deleteKanbanBoardCard = async (cardId) => {
-    const response = await apiClient.delete(`/api/kanbanboardcard/delete`, {
+    const response = await apiClient.delete(`/api/kanbanboardcard`, {
         data: { cardId }
     })
     return response;
 }
 
 const updateKanbanBoard = async (boardId,title) => {
-    const response = await apiClient.put(`/api/kanbanboard/update`, {
+    const response = await apiClient.put(`/api/kanbanboard`, {
         boardId: boardId,
         title: title
     })
 }
 
 const updateKanbanBoardCard = async (cardId,content) => {
-    const response = await apiClient.put(`/api/kanbanboardcard/update`, {
+    const response = await apiClient.put(`/api/kanbanboardcard`, {
         cardId: cardId,
         content: content
     })

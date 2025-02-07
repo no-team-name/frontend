@@ -37,16 +37,16 @@ const realTimeQueryOptions = [
     label: 'JVM GC Pauses (초)',
     value: 'sum(rate(jvm_gc_pause_seconds_sum[TIME_RANGE])) by (gc)',
   },
-  {
-    label: '[Node] CPU 사용률(%)',
-    value:
-      '100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[TIME_RANGE])) * 100)',
-  },
-  {
-    label: '[Node] 메모리 사용률(%)',
-    value:
-      '(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100',
-  },
+  // {
+  //   label: '[Node] CPU 사용률(%)',
+  //   value:
+  //     '100 - (avg by (instance) (irate(node_cpu_seconds_total{mode="idle"}[TIME_RANGE])) * 100)',
+  // },
+  // {
+  //   label: '[Node] 메모리 사용률(%)',
+  //   value:
+  //     '(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100',
+  // },
   {
     label: 'Go: Goroutines',
     value: 'go_goroutines',

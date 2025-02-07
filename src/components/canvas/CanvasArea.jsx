@@ -17,7 +17,6 @@ const CanvasArea = forwardRef(({ teamId, yDoc, provider, awareness, canvasSize, 
   const [selectedShapeIndex, setSelectedShapeIndex] = useState(null);
   const [textEditVisible, setTextEditVisible] = useState(false);
   const [textEditValue, setTextEditValue] = useState('');
-  const [textEditPosition, setTextEditPosition] = useState({ x: 0, y: 0 });
   const [textEditIndex, setTextEditIndex] = useState(null);
   const transformerRef = useRef(null);
   const [scale, setScale] = useState(1);
@@ -277,7 +276,6 @@ const handleMouseDown = (e) => {
     const shape = shapes[index];
     setTextEditVisible(true);
     setTextEditValue(shape.text);
-    setTextEditPosition({ x: shape.x, y: shape.y });
     setTextEditIndex(index);
   };
 
@@ -299,13 +297,32 @@ const handleMouseDown = (e) => {
     setTextEditIndex(null);
   };
 
+  const handleTextEditSubmit = () => {
+    const updatedShapes = shapes.map((shape, idx) => {
+      if (idx === textEditIndex) {
+        return { ...shape, text: textEditValue };
+      }
+      return shape;
+    });
+    setShapes(updatedShapes);
+
+    // Yjs 업데이트 (기존 도형을 삭제 후 새 도형 삽입)
+    const yShapes = yDoc.getArray('shapes');
+    yShapes.delete(textEditIndex, 1);
+    yShapes.insert(textEditIndex, [{ ...shapes[textEditIndex], text: textEditValue }]);
+
+    // 모달 닫기 및 상태 초기화
+    setTextEditVisible(false);
+    setTextEditIndex(null);
+    setTextEditValue('');
+  };  
+
   const handleShapeClick = (index) => {
     if (!tool) return;
     if (tool === 'eraser') {
       const updatedShapes = shapes.filter((_, i) => i !== index);
       setShapes(updatedShapes);
 
-      // Yjs에서 도형 삭제
       const yShapes = yDoc.getArray('shapes');
       yShapes.delete(index, 1);
     } else {
@@ -496,25 +513,47 @@ const handleTextEditKeyDown = (e) => {
         </Layer>
       </Stage>
       {textEditVisible && (
-        <input
-          style={{
-            position: 'absolute',
-            top: textEditPosition.y,
-            left: textEditPosition.x,
-            fontSize: '20px',
-            border: 'none',
-            outline: 'none',
-            background: 'none',
-          }}
-          value={textEditValue}
-          onChange={handleTextEditChange}
-          onBlur={handleTextEditBlur}
-          onKeyDown={handleTextEditKeyDown}
-          autoFocus
-        />
+        <div style={modalOverlayStyle}>
+          <div style={modalContentStyle}>
+            <h3>Edit Text</h3>
+            <input
+              type="text"
+              value={textEditValue}
+              onChange={(e) => setTextEditValue(e.target.value)}
+              style={{ width: '100%', padding: '8px', fontSize: '16px' }}
+            />
+            <div style={{ marginTop: '10px', textAlign: 'right' }}>
+              <button onClick={() => setTextEditVisible(false)} style={{ marginRight: '8px' }}>
+                Cancel
+              </button>
+              <button onClick={handleTextEditSubmit}>Save</button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );
 });
+
+const modalOverlayStyle = {
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  width: '100vw',
+  height: '100vh',
+  background: 'rgba(0, 0, 0, 0.5)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  zIndex: 1100,
+};
+
+const modalContentStyle = {
+  background: '#fff',
+  padding: '20px',
+  borderRadius: '8px',
+  width: '300px',
+  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+};
 
 export default CanvasArea;
