@@ -8,8 +8,6 @@ import apiClient from './utils/apiSpring';
 import { userState } from './recoil/UserAtoms';
 import { authState } from './recoil/authAtoms';
 
-import apiClient from './utils/apiSpring';
-
 import AdminMemberPage from './pages/admin/AdminMemberPage';
 import AdminMemberDetailPage from './pages/admin/AdminMemberDetailPage';
 import TeamNote from './pages/TeamNote/TeamNote';

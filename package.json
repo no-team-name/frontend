@@ -83,7 +83,6 @@
     "y-webrtc": "^10.3.0",
     "yjs": "^13.6.23"
   },
-  "proxy": "http://localhost:8080",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
