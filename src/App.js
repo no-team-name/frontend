@@ -42,6 +42,7 @@ import UnauthorizedPage from './pages/error/UnauthorizedPage';
 import Footer from './components/common/Footer';
 
 import WithAuthComponent from './hoc/WithAuthComponent';
+import OAuthCallback from './components/auth/OAuthCallback';
 
 
 function App() {
@@ -163,6 +164,7 @@ function App() {
             {/* ✅ 에러 페이지 (모든 사용자 접근 가능) */}
             <Route path="/error" element={<ErrorPage {...sharedProps} />} />
             <Route path="/unauthorized" element={<UnauthorizedPage {...sharedProps} />} />
+            <Route path="/oauth-callback" element={<OAuthCallback />} />
 
         </Routes>
 

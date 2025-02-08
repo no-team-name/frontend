@@ -11,7 +11,7 @@ function LoginModal({ open, onClose }) {
   // 소셜 로그인
   const handleOAuthLogin = (provider) => {
     // 서버 OAuth2 라우트 주소로 이동
-    window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`;
+    window.location.href = `http://ec2-3-25-127-75.ap-southeast-2.compute.amazonaws.com:8080/oauth2/authorization/${provider}`;
   };
 
   return (
