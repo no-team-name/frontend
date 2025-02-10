@@ -357,7 +357,7 @@ https://accord.my/
 <br>
 
 # 아키텍쳐
-![Web App Reference Architecture (2)](https://github.com/user-attachments/assets/69f38fef-cd8b-4893-b5d6-2714924a7bb6)
+![Web App Reference Architecture (3)](https://github.com/user-attachments/assets/6cf6d24c-2669-40b2-b91e-fe28b1928493)
 
 
 # 플로우차트
