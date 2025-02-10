@@ -78,6 +78,7 @@
         - OAuth2.0 로그인 개발<br>
         - JWT 키롤링 기능 개발<br>
         - Spring 백엔드 gRPC 클라이언트 개발<br>
+        - 관리자 기본기능 개발 <br>
         - React 프론트 UI 제작
       </td>
       <td style="text-align: center;"><a href="mailto:ensoary@gmail.com">ensoary@gmail.com</a></td>
