@@ -13,69 +13,91 @@
 7. ERD
 
 # 팀원 소개 및 역할
+
 <table>
-<thead>
-<tr>
-<th style="text-align: center;">이름</th>
-<th style="text-align: center;">역할</th>
-<th style="text-align: center;">담당 업무</th>
-<th style="text-align: center;">이메일</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;"><b>박유빈</b></td>
-<td style="text-align: center;">팀장 <br> Backend/Frontend</td>
-<td style="text-align: center;">
-<b><br><br>#설계</b><br>- Figma 설계<br>- ERD 설계<br><br>
-<b>#Backend</b>
-<b>#Frontend</b>
-</td>
-<td style="text-align: center;"><a href="mailto:hazing0910@gmail.com">hazing0910@gmail.com</a></td>
-</tr>
-<tr>
-<td style="text-align: center;"><b>정석환</b></td>
-<td style="text-align: center;">팀원 <br> Backend/Frontend</td>
-<td style="text-align: center;">
-<b><br><br>#설계</b><br>- Figma 설계<br>- ERD 설계<br><br>
-<b>#Backend</b>
-<b>#Frontend</b>
-</td>
-<td style="text-align: center;"><a href="mailto:jsver12@gmail.com">jsver12@gmail.com</a></td>
-</tr>
-<tr>
-<td style="text-align: center;"><b>최요셉</b></td>
-<td style="text-align: center;">팀원 <br> Backend/Frontend</td>
-<td style="text-align: center;">
-<b><br><br>#설계</b><br>- Figma 설계<br>- ERD 설계<br><br>
-<b>#Backend</b>
-<b>#Frontend</b>
-</td>
-<td style="text-align: center;"><a href="mailto:aslopeys941@gmail.com">aslopeys941@gmail.com</a></td>
-</tr>
-<tr>
-<td style="text-align: center;"><b>심윤보</b></td>
-<td style="text-align: center;">팀원 <br> Backend/Frontend</td>
-<td style="text-align: center;">
-<b><br><br>#설계</b><br>- Figma 설계<br>- ERD 설계<br><br>
-<b>#Backend</b>
-<b>#Frontend</b>
-</td>
-<td style="text-align: center;"><a href="mailto:ensoary@gmail.com">ensoary@gmail.com</a></td>
-</tr>
-<tr>
-<td style="text-align: center;"><b>이시현</b></td>
-<td style="text-align: center;">팀원 <br> Backend/Frontend</td>
-<td style="text-align: center;">
-<b><br><br>#설계</b><br>- Figma 설계<br>- ERD 설계<br><br>
-<b>#Backend</b>
-<b>#Frontend</b>
-</td>
-<td style="text-align: center;"><a href="mailto:tlgus7777@gmail.com">tlgus7777@gmail.com</a></td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th style="text-align: center;">이름</th>
+      <th style="text-align: center;">역할</th>
+      <th style="text-align: center;">담당 업무</th>
+      <th style="text-align: center;">이메일</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center;"><b>박유빈</b></td>
+      <td style="text-align: center;">팀장 <br> Backend/Frontend</td>
+      <td style="text-align: center;">
+        <b>#공통 작업</b><br>
+        - ERD/Figma/Flowchart 설계<br><br>
+        <b>#주요 업무</b><br>
+        - API Gateway 개발<br>
+        - STUN, TURN 서버 개발<br>
+        - Signaling 서버 개발<br>
+        - GO 백엔드 서버 개발<br>
+        - 몽고DB 및 Redis 구성<br>
+        - CI/CD 구성<br>
+        - React 프론트엔드 개발<br>
+        - 기술 공유 및 일정 조율
+      </td>
+      <td style="text-align: center;"><a href="mailto:hazing0910@gmail.com">hazing0910@gmail.com</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center;"><b>이시현</b></td>
+      <td style="text-align: center;">팀원 <br> Backend/Frontend</td>
+      <td style="text-align: center;">
+        <b>#공통 작업</b><br>
+        - ERD/Figma/Flowchart 설계<br><br>
+        <b>#주요 업무</b><br>
+        - S3를 통한 프로필 이미지 CRUD 기능 개발<br>
+        - RabbitMQ를 통한 채팅 기능 개발<br>
+        - React 프론트 UI 제작
+      </td>
+      <td style="text-align: center;"><a href="mailto:tlgus7777@gmail.com">tlgus7777@gmail.com</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center;"><b>정석환</b></td>
+      <td style="text-align: center;">팀원 <br> Backend/Frontend</td>
+      <td style="text-align: center;">
+        <b>#공통 작업</b><br>
+        - ERD/Figma/Flowchart 설계<br><br>
+        <b>#주요 업무</b><br>
+        - SMTP 메일링 서비스를 이용한 팀 초대 기능 개발<br>
+        - 팀프로젝트 칸반보드 기능 개발<br>
+        - React 프론트 UI 제작
+      </td>
+      <td style="text-align: center;"><a href="mailto:jsver12@gmail.com">jsver12@gmail.com</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center;"><b>심윤보</b></td>
+      <td style="text-align: center;">팀원 <br> Backend/Frontend</td>
+      <td style="text-align: center;">
+        <b>#공통 작업</b><br>
+        - ERD/Figma/Flowchart 설계<br><br>
+        <b>#주요 업무</b><br>
+        - OAuth2.0 로그인 개발<br>
+        - JWT 키롤링 기능 개발<br>
+        - Spring 백엔드 gRPC 클라이언트 개발<br>
+        - React 프론트 UI 제작
+      </td>
+      <td style="text-align: center;"><a href="mailto:ensoary@gmail.com">ensoary@gmail.com</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center;"><b>최요셉</b></td>
+      <td style="text-align: center;">팀원 <br> Backend/Frontend</td>
+      <td style="text-align: center;">
+        <b>#공통 작업</b><br>
+        - ERD/Figma/Flowchart 설계<br><br>
+        <b>#주요 업무</b><br>
+        - 프로젝트 팀 구성 개발<br>
+        - 팀원 모집 게시판 CRUD 기능 개발<br>
+        - 팀원 모집 게시판 댓글 관련 기능 개발<br>
+        - React 프론트 UI 제작
+      </td>
+      <td style="text-align: center;"><a href="mailto:aslopeys941@gmail.com">aslopeys941@gmail.com</a></td>
+    </tr>
+  </tbody>
 </table>
-<br>
 <br>
 
 
