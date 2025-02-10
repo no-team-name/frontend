@@ -66,7 +66,8 @@
         <b>#주요 업무</b><br>
         - SMTP 메일링 서비스를 이용한 팀 초대 기능 개발<br>
         - 팀프로젝트 칸반보드 기능 개발<br>
-        - React 프론트 UI 제작
+        - aop 기능 개발<br>
+        - React 칸반보드 프론트 UI 제작
       </td>
       <td style="text-align: center;"><a href="mailto:jsver12@gmail.com">jsver12@gmail.com</a></td>
     </tr>
