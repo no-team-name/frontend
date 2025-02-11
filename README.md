@@ -121,6 +121,13 @@
   <img src="https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=Grafana&logoColor=white">
   <img src="https://img.shields.io/badge/gRPC-4285F4?style=for-the-badge&logo=gRPC&logoColor=white">
   <img src="https://img.shields.io/badge/Consul-593D88?style=for-the-badge&logo=Consul&logoColor=white">
+  <img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white">
+  <img src="https://img.shields.io/badge/Pion-29ABE2?style=for-the-badge&logo=webrtc&logoColor=white">
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white">
+  <img src="https://img.shields.io/badge/Fiber-6C5DD3?style=for-the-badge&logo=Gofiber&logoColor=white">
+  <img src="https://img.shields.io/badge/AlanAI-FF5722?style=for-the-badge&logo=alan-ai&logoColor=white">
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white">
+  <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white">
 </div>
 <br>
 <br>
